@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Lockout.aspx.cs" Inherits="RecipeApp.Account.Lockout" %>
+﻿<%@ Page Title="" Language="vb" MasterPageFile="~/Site.Master" AutoEventWireup="false" CodeBehind="Lockout.aspx.vb" Inherits="RecipeApp.Lockout" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <hgroup>

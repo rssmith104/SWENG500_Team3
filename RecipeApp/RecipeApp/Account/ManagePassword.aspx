@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Manage Password" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ManagePassword.aspx.cs" Inherits="RecipeApp.Account.ManagePassword" %>
+﻿<%@ Page Title="Manage Password" Language="vb" MasterPageFile="~/Site.Master" AutoEventWireup="false" CodeBehind="ManagePassword.aspx.vb" Inherits="RecipeApp.ManagePassword" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <h2><%: Title %>.</h2>
