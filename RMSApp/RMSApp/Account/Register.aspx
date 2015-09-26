@@ -9,6 +9,7 @@
     </p>
     <div class="form-horizontal" style="background-image: url('/Images/vegetable-stock-recipe.jpg')">
         <h4>Create a new account</h4>
+        <asp:Label ID="Label1" runat="server" Text="Label" ForeColor="#CC0000">Required fields are marked with an asterisk *</asp:Label>
         <hr />
         <asp:ValidationSummary runat="server" CssClass="text-danger" />
         <asp:table runat="server"></asp:table>
@@ -16,7 +17,7 @@
         <asp:Table ID="Table1" runat="server">
             <asp:TableRow>
                 <asp:TableCell VerticalAlign="Top">
-                    <asp:Label runat="server" AssociatedControlID="Email" CssClass="col-md-2 control-label">Email</asp:Label>
+                    <asp:Label runat="server" AssociatedControlID="Email" CssClass="col-md-2 control-label" ForeColor="#CC0000">Email*</asp:Label>
                 </asp:TableCell>
                 <asp:TableCell>
                     <div class="col-md-10">
@@ -25,7 +26,7 @@
                              CssClass="text-danger" ErrorMessage="The email field is required." />
                     </div>
                 </asp:TableCell><asp:TableCell VerticalAlign="Top">
-                    <asp:Label runat="server" AssociatedControlID="Password" CssClass="col-md-2 control-label">Password</asp:Label>
+                    <asp:Label runat="server" AssociatedControlID="Password" CssClass="col-md-2 control-label" ForeColor="#CC0000">Password*</asp:Label>
                 </asp:TableCell><asp:TableCell>
                     <div class="col-md-10">
                         <asp:TextBox runat="server" ID="Password" TextMode="Password" CssClass="form-control" />
@@ -34,7 +35,7 @@
                     </div>
                 </asp:TableCell></asp:TableRow><asp:TableRow>
                 <asp:TableCell>&nbsp;</asp:TableCell><asp:TableCell>&nbsp;</asp:TableCell><asp:TableCell VerticalAlign="Top">
-                    <asp:Label runat="server" AssociatedControlID="ConfirmPassword" CssClass="col-md-2 control-label">Confirm Password</asp:Label>
+                    <asp:Label runat="server" AssociatedControlID="ConfirmPassword" CssClass="col-md-2 control-label" ForeColor="#CC0000">Confirm Password*</asp:Label>
                 </asp:TableCell><asp:TableCell>
                     <div class="col-md-10">
                         <asp:TextBox runat="server" ID="ConfirmPassword" TextMode="Password" CssClass="form-control" />
@@ -44,7 +45,7 @@
                             CssClass="text-danger" Display="Dynamic" ErrorMessage="The password and confirmation password do not match." />
                     </div>
                 </asp:TableCell></asp:TableRow><asp:TableRow>
-                <asp:TableCell ColSpan="4"><hr /></asp:TableCell>
+                <asp:TableCell ColumnSpan="4"><hr /></asp:TableCell>
             </asp:TableRow>
             <asp:TableRow>
                 <asp:TableCell VerticalAlign="Top">
@@ -80,14 +81,16 @@
                         <asp:TextBox runat="server" ID="City" CssClass="form-control" />
                     </div>
                 </asp:TableCell><asp:TableCell VerticalAlign="Top">
-                    <asp:Label runat="server" AssociatedControlID="State" CssClass="col-md-2 control-label">State</asp:Label>
+                    <asp:Label runat="server" AssociatedControlID="ddState" CssClass="col-md-2 control-label">State</asp:Label>
                 </asp:TableCell><asp:TableCell>
                     <div class="col-md-10">
-                        <asp:TextBox runat="server" ID="State" CssClass="form-control" />
+                        <asp:DropDownList ID="ddState" runat="server" CssClass="form-control"></asp:DropDownList>
                     </div>
-                </asp:TableCell></asp:TableRow><asp:TableRow>
+                </asp:TableCell>
+            </asp:TableRow>
+            <asp:TableRow>
                 <asp:TableCell VerticalAlign="Top">
-                    <asp:Label runat="server" AssociatedControlID="Zip" CssClass="col-md-2 control-label">Zip</asp:Label>
+                    <asp:Label runat="server" AssociatedControlID="Zip" CssClass="col-md-2 control-label" ForeColor="#CC0000">Zip*</asp:Label>
                 </asp:TableCell><asp:TableCell>
                     <div class="col-md-10">
                         <asp:TextBox runat="server" ID="Zip" CssClass="form-control" />
@@ -99,16 +102,18 @@
             </asp:TableRow>
             <asp:TableRow>
                 <asp:TableCell VerticalAlign="Top">
-                    <asp:Label runat="server" AssociatedControlID="SecurityQuestion" CssClass="col-md-2 control-label">Security Question</asp:Label>
+                    <asp:Label runat="server" AssociatedControlID="ddSecurityQuestion" CssClass="col-md-2 control-label" ForeColor="#CC0000">Security Question*</asp:Label>
                 </asp:TableCell><asp:TableCell>
                     <div class="col-md-10">
-                        <asp:TextBox runat="server" ID="SecurityQuestion" CssClass="form-control" />
+                        <asp:DropDownList ID="ddSecurityQuestion" runat="server" CssClass="form-control"></asp:DropDownList>
                     </div>
                 </asp:TableCell><asp:TableCell VerticalAlign="Top">
-                    <asp:Label runat="server" AssociatedControlID="SecurityResponse" CssClass="col-md-2 control-label">Security Response</asp:Label>
+                    <asp:Label runat="server" AssociatedControlID="SecurityResponse" CssClass="col-md-2 control-label" ForeColor="#CC0000">Security Response*</asp:Label>
                 </asp:TableCell><asp:TableCell>
                         <asp:TextBox runat="server" ID="SecurityResponse" CssClass="form-control" />
-                </asp:TableCell></asp:TableRow><asp:TableRow>
+                </asp:TableCell>
+            </asp:TableRow>
+            <asp:TableRow>
                 <asp:TableCell ColumnSpan="4"><hr /></asp:TableCell>
             </asp:TableRow>
             <asp:TableRow>
@@ -118,4 +123,7 @@
                             <asp:Button runat="server" OnClick="CreateUser_Click" Text="Register" CssClass="btn btn-primary btn-lg" />
                         </div>
                     </div>
-                </asp:TableCell></asp:TableRow></asp:Table></div></div></asp:Content>
+                </asp:TableCell>
+            </asp:TableRow>
+        </asp:Table>
+    </div></asp:Content>
