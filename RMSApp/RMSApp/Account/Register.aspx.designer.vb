@@ -23,6 +23,15 @@ Partial Public Class Register
     Protected WithEvents ErrorMessage As Global.System.Web.UI.WebControls.Literal
     
     '''<summary>
+    '''Label1 control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
     '''Table1 control.
     '''</summary>
     '''<remarks>
@@ -104,13 +113,13 @@ Partial Public Class Register
     Protected WithEvents City As Global.System.Web.UI.WebControls.TextBox
     
     '''<summary>
-    '''State control.
+    '''ddState control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents State As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents ddState As Global.System.Web.UI.WebControls.DropDownList
     
     '''<summary>
     '''Zip control.
@@ -122,13 +131,13 @@ Partial Public Class Register
     Protected WithEvents Zip As Global.System.Web.UI.WebControls.TextBox
     
     '''<summary>
-    '''SecurityQuestion control.
+    '''ddSecurityQuestion control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents SecurityQuestion As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents ddSecurityQuestion As Global.System.Web.UI.WebControls.DropDownList
     
     '''<summary>
     '''SecurityResponse control.
