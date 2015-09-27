@@ -31,6 +31,7 @@
                             <asp:RequiredFieldValidator runat="server" ControlToValidate="Password" CssClass="text-danger" ErrorMessage="The password field is required." />
                         </div>
                     </div>
+                    <%--
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
                             <div class="checkbox">
@@ -39,6 +40,7 @@
                             </div>
                         </div>
                     </div>
+                    --%>
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
                             <asp:Button runat="server" OnClick="LogIn" Text="Log in" CssClass="btn btn-primary btn-lg" />
@@ -49,9 +51,9 @@
                     <asp:HyperLink runat="server" ID="RegisterHyperLink" ViewStateMode="Disabled">Register as a new user</asp:HyperLink>
                 </p>
                 <p>
-                    <%-- Enable this once you have account confirmation enabled for password reset functionality
+                    <%-- Enable this once you have account confirmation enabled for password reset functionality --%>
                     <asp:HyperLink runat="server" ID="ForgotPasswordHyperLink" ViewStateMode="Disabled">Forgot your password?</asp:HyperLink>
-                    --%>
+
                 </p>
             </section>
         </div>
