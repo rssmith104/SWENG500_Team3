@@ -31,6 +31,13 @@ Partial Public Class Register
         Dim strSecurityQuestion As String = Me.ddSecurityQuestion.SelectedValue.ToString
         Dim strSecurityResponse As String = Me.SecurityResponse.Text
 
+        Dim strEncryptedPassword As String
+
+        Dim objDes_Codec As DES_Codec = New DES_Codec()
+        strEncryptedPassword = objDes_Codec.EncodeString(strPassword)
+        objDes_Codec = Nothing
+
+
         Dim objData_DB As clsData_DB
         Dim objParams(5) As SqlParameter
         Dim strConnectionString As String
@@ -48,7 +55,7 @@ Partial Public Class Register
 
             objParams(0) = objData_DB.MakeInParam("@Email", SqlDbType.VarChar, 50, strEmail)
             objParams(1) = objData_DB.MakeInParam("@isGoogle", SqlDbType.Bit, 1, (0))
-            objParams(2) = objData_DB.MakeInParam("@PasswordHash", SqlDbType.VarChar, 128, strPassword)
+            objParams(2) = objData_DB.MakeInParam("@PasswordHash", SqlDbType.VarChar, 128, strEncryptedPassword)
             objParams(3) = objData_DB.MakeInParam("@PasswordSalt", SqlDbType.VarChar, 10, "0123456789")
             objParams(4) = objData_DB.MakeInParam("@SecurityQuestion", SqlDbType.VarChar, 200, strSecurityQuestion)
             objParams(5) = objData_DB.MakeInParam("@SecurityResponse", SqlDbType.VarChar, 200, UCase(strSecurityResponse))

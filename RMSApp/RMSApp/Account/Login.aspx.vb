@@ -84,6 +84,8 @@ Partial Public Class Login
         Dim objParams(0) As SqlParameter
         Dim strConnectionString As String
         Dim objDR As SqlDataReader
+        Dim strEncryptedPassword As String
+        Dim strDecryptedPassword As String
 
         Dim iStatus As Integer
 
@@ -107,7 +109,12 @@ Partial Public Class Login
             iStatus = objDR("Status")
             If iStatus = 0 Then
                 ' Check the password.
-                If objDR("PasswordHash").ToString = strPassword Then
+                strEncryptedPassword = objDR("PasswordHash").ToString
+                Dim objDes_Codec As DES_Codec = New DES_Codec()
+                strDecryptedPassword = objDes_Codec.DecodeString(strEncryptedPassword)
+                objDes_Codec = Nothing
+
+                If strDecryptedPassword = strPassword Then
                     strResponse = "SUCCESS"
                 Else
                     strResponse = "INVALID_PASSWORD"
