@@ -13,6 +13,7 @@ Imports System.Data.SqlClient
 Partial Public Class Login
     Inherits Page
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
+
         RegisterHyperLink.NavigateUrl = "Register"
         ' Enable this once you have account confirmation enabled for password reset functionality
         ForgotPasswordHyperLink.NavigateUrl = "Forgot"
@@ -25,7 +26,6 @@ Partial Public Class Login
 
     Protected Sub LogIn(sender As Object, e As EventArgs)
 
-
         If IsValid Then
 
             Dim strPasswordCheck As String = Me.VerifyLogin(Email.Text, Password.Text)
@@ -35,6 +35,10 @@ Partial Public Class Login
                     'Response.Redirect()
                     FailureText.Text = "Successful Login"
                     ErrorMessage.Visible = True
+                    Session("RMS_Authenticated") = "True"
+                    Session("RMS_LoggedInUser") = Email.Text
+                    Session("RMS_Function") = "LOGIN"
+                    Response.Redirect("/RMSApp/Default.aspx")
                     Exit Select
 
                 Case "INVALID_PASSWORD"

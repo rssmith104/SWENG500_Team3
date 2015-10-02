@@ -6,6 +6,10 @@ Public Class SiteMaster
     Private Const AntiXsrfUserNameKey As String = "__AntiXsrfUserName"
     Private _antiXsrfTokenValue As String
 
+    Public strLoggedInUser As String
+    Public strAuthenticated As String
+    Public strFunction As String
+
     Protected Sub Page_Init(sender As Object, e As EventArgs)
         ' The code below helps to protect against XSRF attacks
         Dim requestCookie = Request.Cookies(AntiXsrfTokenKey)
@@ -46,7 +50,9 @@ Public Class SiteMaster
     End Sub
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-
+        strLoggedInUser = Session("RMS_LoggedInUser")
+        strAuthenticated = Session("RMS_Authenticated")
+        strFunction = Session("RMS_Function")
     End Sub
 
     Protected Sub Unnamed_LoggingOut(sender As Object, e As LoginCancelEventArgs)
