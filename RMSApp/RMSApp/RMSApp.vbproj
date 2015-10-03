@@ -223,6 +223,7 @@
     <Content Include="Account\Manage.aspx" />
     <Content Include="Account\ManageLogins.aspx" />
     <Content Include="Account\ManagePassword.aspx" />
+    <Content Include="Account\ManageProfile.aspx" />
     <Content Include="Account\OpenAuthProviders.ascx" />
     <Content Include="Account\Register.aspx" />
     <Content Include="Account\RegisterExternalLogin.aspx" />
@@ -350,6 +351,13 @@
     </Compile>
     <Compile Include="Account\ManagePassword.aspx.vb">
       <DependentUpon>ManagePassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\ManageProfile.aspx.designer.vb">
+      <DependentUpon>ManageProfile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\ManageProfile.aspx.vb">
+      <DependentUpon>ManageProfile.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Account\OpenAuthProviders.ascx.designer.vb">

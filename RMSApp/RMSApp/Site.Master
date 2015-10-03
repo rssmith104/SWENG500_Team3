@@ -54,7 +54,7 @@
                 <div class="navbar-collapse collapse">
                     <% If strAuthenticated = "True" Then %>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a runat="server" href="~/Account/Manage" title="Manage your account">Hello, <%=strLoggedInUser%>!</a></li>
+                        <li><a runat="server" href="~/Account/ManageProfile" title="Manage your account">Hello, <%=strLoggedInUser%>!</a></li>
                         <li><a runat="server" href="~/Account/Logout" title="Logout of Account">Log Out</a></li>
                     </ul>
 
