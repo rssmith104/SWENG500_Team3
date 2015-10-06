@@ -22,19 +22,35 @@ Partial Public Class ManageProfile
     Public strFirstName As String
     Public strLastName As String
 
+    Public strMessage As String
+
     Protected Sub SaveChanges_Click(sender As Object, e As EventArgs)
         Dim strErr As String = ""
 
-        strErr = Me.UpdateUserAccount()
-        If strErr = "" Then
-            strErr = Me.UpdateSecurityQuestion()
+        ErrorMessage.Text = Me.UpdateUserAccount()
+        If ErrorMessage.Text = "" Then
+            ErrorMessage.Text = Me.UpdateSecurityQuestion()
         End If
 
-        If strErr = "" Then
-            strErr = "Record Successfully Updated"
+        If ErrorMessage.Text = "" Then
+            ErrorMessage.Text = "Record Successfully Updated"
         End If
 
-        ErrorMessage.Text = strErr
+    End Sub
+
+    Protected Sub ResetPassword_Click(sender As Object, e As EventArgs)
+        Dim strEncryptString As String
+
+        Session("RMS_LoggedInUser") = strLoggedInUser
+        Session("RMS_Authenticated") = strAuthenticated
+        Session("RMS_Function") = "PASSWORD_RESET"
+        Session("RMS_ReturnPage") = "~/Account/ManageProfile"
+
+        Dim objDes_Codec As DES_Codec = New DES_Codec()
+        strEncryptString = objDes_Codec.EncodeString(strLoggedInUser)
+        objDes_Codec = Nothing
+
+        Response.Redirect("~/Account/ManagePassword.aspx?et=" & strEncryptString)
     End Sub
 
     Private Function UpdateUserAccount() As String
@@ -228,6 +244,11 @@ Partial Public Class ManageProfile
         strLoggedInUser = Session("RMS_LoggedInUser")
         strAuthenticated = Session("RMS_Authenticated")
         strFunction = Session("RMS_Function")
+
+        strMessage = Request.QueryString("m")
+        If strMessage = "SetPwdSuccess" Then
+            ErrorMessage.Text = "Password Change Successful"
+        End If
 
         If Not IsPostBack Then
             Me.Populate_SecurityQuestion_DropDown()

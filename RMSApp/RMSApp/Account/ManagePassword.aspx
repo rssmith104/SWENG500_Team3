@@ -10,7 +10,7 @@
                         password so you can log in without an external login.
                 </p>
                 <div class="form-horizontal">
-                    <h4>Set Password Form</h4>
+                    <h4>Set Password Form User Account:  <%=LoggedInUser() %></h4>
                     <asp:ValidationSummary runat="server" ShowModelStateErrors="true" CssClass="text-danger" />
                     <hr />
                     <div class="form-group">

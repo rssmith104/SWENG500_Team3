@@ -123,7 +123,7 @@
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <asp:Button runat="server" OnClick="SaveChanges_Click" Text="Cancel Changes" CssClass="btn btn-primary btn-lg" />
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <asp:Button runat="server" OnClick="SaveChanges_Click" Text="Reset Password" CssClass="btn btn-primary btn-lg" />
+                            <asp:Button runat="server" OnClick="ResetPassword_Click" Text="Reset Password" CssClass="btn btn-primary btn-lg" />
                         </div>
                     </div>
                 </asp:TableCell>
