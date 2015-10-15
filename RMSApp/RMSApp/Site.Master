@@ -57,7 +57,6 @@
                         <li><a runat="server" href="~/Account/ManageProfile" title="Manage your account">Hello, <%=strLoggedInUser%>!</a></li>
                         <li><a runat="server" href="~/Account/Logout" title="Logout of Account">Log Out</a></li>
                     </ul>
-
                     <% Else %>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a runat="server" href="~/Account/Register">Register</a></li>
@@ -66,6 +65,41 @@
                     </ul>
                     <% End If %>
                 </div>
+
+                <% If strAuthenticated = "True" Then %>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav dropdown_menu">
+                        <asp:Menu ID="Menu1" runat="server" Orientation="Horizontal" StaticMenuItemStyle-HorizontalPadding="20px" StaticMenuItemStyle-ForeColor="White" StaticHoverStyle-ForeColor="#ff6666">
+                        <LevelSubMenuStyles>
+                            <asp:SubMenuStyle ForeColor="White" />
+                            <asp:SubMenuStyle BackColor="WhiteSmoke" ForeColor="Black" HorizontalPadding="15px"/>
+                        </LevelSubMenuStyles>
+                        <Items>
+                             <asp:MenuItem Text="HOME" NavigateUrl="~/Default.aspx" Value="Home" ></asp:MenuItem>
+                             <asp:MenuItem Text="SEARCH"  Value="Search" NavigateUrl="~/Default.aspx"></asp:MenuItem>
+                             <asp:MenuItem Text="MY RMS" Value="MyRMS">
+                                 <asp:MenuItem Text="PROFILE MANAGER"></asp:MenuItem>
+                                 <asp:MenuItem Text="Change Password"></asp:MenuItem>
+                                 <asp:MenuItem Text="Logout" NavigateUrl="~/Account/Logout.aspx" Value="Logout"></asp:MenuItem>
+                             </asp:MenuItem>
+                             <asp:MenuItem Text="MY RECIPES" Value="MyRecipes">
+                                 <asp:MenuItem Text="Add A Recipe" Value="AddARecipe"></asp:MenuItem>
+                                 <asp:MenuItem Text="Manage My Recipes" Value="ManageMyRecipes"></asp:MenuItem>
+                                 <asp:MenuItem Text="Favorites" Value="Favorites"></asp:MenuItem>
+                                 <asp:MenuItem Text="Recipe Search" Value="MySearch"></asp:MenuItem>
+                             </asp:MenuItem>
+                             <asp:MenuItem Text="CIRCLE OF FRIENDS" Value="CircleOfFriends">
+                                 <asp:MenuItem Text="Manage Circles" Value="ManageCircles"></asp:MenuItem>
+                                 <asp:MenuItem Text="Diplay My Circles" Value="DisplayCircles"></asp:MenuItem>
+                             </asp:MenuItem>
+                             <asp:MenuItem Text="CONTACT" NavigateUrl="~/Contact.aspx" Value="Contact"></asp:MenuItem>
+                             <asp:MenuItem Text="FAQs" Value="FAQs"></asp:MenuItem>
+                         </Items>
+                        </asp:Menu>
+                    </ul>
+                </div>
+                <div class="navbar-collapse collapse"><ul /></div>
+                <%End If%>
             </div>
         </div>
         <div class="container body-content">
