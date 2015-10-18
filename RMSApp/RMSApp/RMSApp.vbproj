@@ -220,6 +220,7 @@
     <Content Include="Account\Lockout.aspx" />
     <Content Include="Account\Login.aspx" />
     <Content Include="Account\Logout.aspx" />
+    <Content Include="Account\PanelControl.aspx" />
     <Content Include="Account\Manage.aspx" />
     <Content Include="Account\ManageLogins.aspx" />
     <Content Include="Account\ManagePassword.aspx" />
@@ -333,6 +334,13 @@
     <Compile Include="Account\Logout.aspx.vb">
       <DependentUpon>Logout.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Account\PanelControl.aspx.designer.vb">
+      <DependentUpon>PanelControl.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\PanelControl.aspx.vb">
+      <DependentUpon>PanelControl.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Account\Manage.aspx.designer.vb">
       <DependentUpon>Manage.aspx</DependentUpon>
