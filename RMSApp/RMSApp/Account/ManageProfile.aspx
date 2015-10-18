@@ -116,6 +116,23 @@
                 <asp:TableCell ColumnSpan="4"><hr /></asp:TableCell>
             </asp:TableRow>
             <asp:TableRow>
+                <asp:TableCell ColumnSpan="1" HorizontalAlign="Left">
+                    <h3>Profile Pic</h3>
+                </asp:TableCell>
+                <asp:TableCell ColumnSpan="1" HorizontalAlign="Left">
+                    <asp:Image ID="imProfileImage" runat="server"  />
+                </asp:TableCell>
+                <asp:TableCell ColumnSpan="1" HorizontalAlign="Left">
+                    <asp:FileUpload ID="fuProfilePicUpload" runat="server" />
+                </asp:TableCell>
+                <asp:TableCell ColumnSpan="1" HorizontalAlign="Center">
+                    <asp:Button ID="btnImageUpload" runat="server" Text="Image Upload" OnClick="Image_Upload" />
+                </asp:TableCell>
+            </asp:TableRow>
+            <asp:TableRow>
+                <asp:TableCell ColumnSpan="4"><hr /></asp:TableCell>
+            </asp:TableRow>
+            <asp:TableRow>
                 <asp:TableCell ColumnSpan="4" HorizontalAlign="Center">
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">

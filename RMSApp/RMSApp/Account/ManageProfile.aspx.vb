@@ -7,6 +7,9 @@ Imports Microsoft.AspNet.Identity.EntityFramework
 Imports Microsoft.AspNet.Identity.Owin
 Imports Owin
 
+Imports System.IO
+Imports System.Collections.Generic
+
 ' ADDED RSS 9-21-2015
 Imports System.Data
 Imports System.Data.SqlClient
@@ -18,6 +21,7 @@ Partial Public Class ManageProfile
     Public strLoggedInUser As String
     Public strAuthenticated As String
     Public strFunction As String
+    Public strProfileImage As String
 
     Public strFirstName As String
     Public strLastName As String
@@ -30,6 +34,7 @@ Partial Public Class ManageProfile
         ErrorMessage.Text = Me.UpdateUserAccount()
         If ErrorMessage.Text = "" Then
             ErrorMessage.Text = Me.UpdateSecurityQuestion()
+            Me.UpdateInsertProfileImage()
         End If
 
         If ErrorMessage.Text = "" Then
@@ -125,6 +130,45 @@ Partial Public Class ManageProfile
         Return strErr
     End Function
 
+    Private Sub UpdateInsertProfileImage()
+        Dim strEmail As String = Me.Email.Text
+        Dim strImageURL As String = Me.imProfileImage.ImageUrl.ToString()
+
+        Dim objData_DB As clsData_DB
+        Dim objParams(1) As SqlParameter
+        Dim strConnectionString As String
+        Dim objDR As SqlDataReader
+        Dim objByte As Byte = &H20
+
+        If strImageURL <> "" Then
+            ' Get the connection string out of the Web.Config file.  Connection is tha actual name portion of the name value pair
+            Dim objWebConfig As New clsWebConfig()
+            strConnectionString = objWebConfig.GetWebConfig("Connection".ToString)
+
+            ' Use the Connection string to instantiate a new Database class object.
+            objData_DB = New clsData_DB(strConnectionString)
+
+            objParams(0) = objData_DB.MakeInParam("@Email", SqlDbType.VarChar, 50, strEmail)
+            objParams(1) = objData_DB.MakeInParam("@ImageText", SqlDbType.VarChar, 200, strImageURL)
+
+            ' Run the stored procedure by name.  Pass with it the parameter list.
+            objDR = objData_DB.RunStoredProc("usp_UserAccountImage_InsertUpdate", objParams)
+
+            ' CleanUp on our way out.  Make sure that we kill the connection so that we do not run our limit on concurrent 
+            ' database connections.
+            If Not IsNothing(objDR) Then
+                objDR.Close()
+                objDR = Nothing
+            End If
+
+            If Not IsNothing(objData_DB) Then
+                objData_DB.Close()
+                objData_DB = Nothing
+            End If
+
+        End If
+    End Sub
+
     Private Function UpdateSecurityQuestion() As String
         Dim strErr As String
         Dim strEmail As String = Me.Email.Text
@@ -174,7 +218,6 @@ Partial Public Class ManageProfile
 
     End Function
 
-
     Private Function SaveProfileUpdate(ByVal strCon As String, ByVal strEmail As String,
                                   ByVal strFN As String, ByVal strLN As String,
                                   ByVal strPhone As String, ByVal strAddr As String,
@@ -222,6 +265,7 @@ Partial Public Class ManageProfile
 
         Return strAccountID
     End Function
+
     Private Function ValidateInput() As String
         Dim strRet As String = "NOERROR"
 
@@ -232,35 +276,6 @@ Partial Public Class ManageProfile
         Return strRet
 
     End Function
-
-    ''' <summary>
-    ''' Register_Load - Page Load Event Handler
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    Private Sub ManageProfile_Load(sender As Object, e As EventArgs) Handles Me.Load
-        ' On Page Load of the Registration Page, we want to populate the SecurityQuestion dropdown listbox.
-        ' Only perform is it is new.  If Postback, we should already be good to go.
-        strLoggedInUser = Session("RMS_LoggedInUser")
-        strAuthenticated = Session("RMS_Authenticated")
-        strFunction = Session("RMS_Function")
-
-        strMessage = Request.QueryString("m")
-        If strMessage = "SetPwdSuccess" Then
-            ErrorMessage.Text = "Password Change Successful"
-        End If
-
-        If Not IsPostBack Then
-            Me.Populate_SecurityQuestion_DropDown()
-            Me.Populate_StateProv_DropDown()
-
-            ' Get Profile Data
-            Me.GetProfileData(strLoggedInUser)
-        End If
-
-
-
-    End Sub
 
     Private Sub Populate_SecurityQuestion_DropDown()
         Dim objData_DB As clsData_DB
@@ -399,5 +414,90 @@ Partial Public Class ManageProfile
         End If
 
     End Sub
+
+    Private Sub GetImageProfile(ByVal strEmailID As String)
+        Dim objData_DB As clsData_DB
+        Dim objParams(0) As SqlParameter
+        Dim objDR As SqlDataReader
+        Dim strConnectionString As String
+
+        Dim strAccountID As String = ""
+        Dim objWebConfig As New clsWebConfig()
+        strConnectionString = objWebConfig.GetWebConfig("Connection".ToString)
+
+        ' Use the Connection string to instantiate a new Database class object.
+        objData_DB = New clsData_DB(strConnectionString)
+
+        objParams(0) = objData_DB.MakeInParam("@EmailID", SqlDbType.VarChar, 50, strEmailID)
+
+        ' Run the stored procedure by name.  Pass with it the parameter list.
+        objDR = objData_DB.RunStoredProc("usp_UserAccountImage_Select", objParams)
+
+        If objDR.HasRows Then
+            objDR.Read()
+            Me.imProfileImage.ImageUrl = objDR("ImageText").ToString
+            'Session("RMS_ProfileImage") = objDR("ImageText").ToString
+
+        End If
+
+        ' CleanUp on our way out.  Make sure that we kill the connection so that we do not run our limit on concurrent 
+        ' database connections.
+        If Not IsNothing(objDR) Then
+            objDR.Close()
+            objDR = Nothing
+        End If
+
+        If Not IsNothing(objData_DB) Then
+            objData_DB.Close()
+            objData_DB = Nothing
+        End If
+
+    End Sub
+
+    Protected Sub Image_Upload(sender As Object, e As EventArgs)
+        If Me.fuProfilePicUpload.HasFile Then
+            Dim strFileName As String = Path.GetFileName(Me.fuProfilePicUpload.PostedFile.FileName)
+            fuProfilePicUpload.PostedFile.SaveAs(Server.MapPath("~/Images/") + strFileName)
+
+            Me.imProfileImage.ImageUrl = Server.MapPath("~/Images/") + strFileName
+            Session("RMS_ProfileImage") = "~/Images/" & strFileName
+            Response.Redirect(Request.Url.AbsoluteUri)
+
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Register_Load - Page Load Event Handler
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub ManageProfile_Load(sender As Object, e As EventArgs) Handles Me.Load
+        ' On Page Load of the Registration Page, we want to populate the SecurityQuestion dropdown listbox.
+        ' Only perform is it is new.  If Postback, we should already be good to go.
+        strLoggedInUser = Session("RMS_LoggedInUser")
+        strAuthenticated = Session("RMS_Authenticated")
+        strFunction = Session("RMS_Function")
+        strProfileImage = Session("RMS_ProfileImage")
+
+        strMessage = Request.QueryString("m")
+        If strMessage = "SetPwdSuccess" Then
+            ErrorMessage.Text = "Password Change Successful"
+        End If
+
+        If Not IsPostBack Then
+            Me.Populate_SecurityQuestion_DropDown()
+            Me.Populate_StateProv_DropDown()
+
+            ' Get Profile Data
+            Me.GetProfileData(strLoggedInUser)
+            Me.GetImageProfile(strLoggedInUser)
+        End If
+
+        If strProfileImage <> "" Then
+            Me.imProfileImage.ImageUrl = strProfileImage
+        End If
+
+    End Sub
+
 End Class
 

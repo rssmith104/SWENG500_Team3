@@ -12,7 +12,7 @@ Option Explicit On
 
 
 Partial Public Class ManageProfile
-
+    
     '''<summary>
     '''ErrorMessage control.
     '''</summary>
@@ -21,7 +21,7 @@ Partial Public Class ManageProfile
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ErrorMessage As Global.System.Web.UI.WebControls.Literal
-
+    
     '''<summary>
     '''Label1 control.
     '''</summary>
@@ -30,7 +30,7 @@ Partial Public Class ManageProfile
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
-
+    
     '''<summary>
     '''Table1 control.
     '''</summary>
@@ -39,7 +39,7 @@ Partial Public Class ManageProfile
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Table1 As Global.System.Web.UI.WebControls.Table
-
+    
     '''<summary>
     '''Email control.
     '''</summary>
@@ -48,7 +48,7 @@ Partial Public Class ManageProfile
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Email As Global.System.Web.UI.WebControls.TextBox
-
+    
     '''<summary>
     '''FirstName control.
     '''</summary>
@@ -57,7 +57,7 @@ Partial Public Class ManageProfile
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents FirstName As Global.System.Web.UI.WebControls.TextBox
-
+    
     '''<summary>
     '''LastName control.
     '''</summary>
@@ -66,7 +66,7 @@ Partial Public Class ManageProfile
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LastName As Global.System.Web.UI.WebControls.TextBox
-
+    
     '''<summary>
     '''Phone control.
     '''</summary>
@@ -75,7 +75,7 @@ Partial Public Class ManageProfile
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Phone As Global.System.Web.UI.WebControls.TextBox
-
+    
     '''<summary>
     '''Address control.
     '''</summary>
@@ -84,7 +84,7 @@ Partial Public Class ManageProfile
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Address As Global.System.Web.UI.WebControls.TextBox
-
+    
     '''<summary>
     '''City control.
     '''</summary>
@@ -93,7 +93,7 @@ Partial Public Class ManageProfile
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents City As Global.System.Web.UI.WebControls.TextBox
-
+    
     '''<summary>
     '''ddState control.
     '''</summary>
@@ -102,7 +102,7 @@ Partial Public Class ManageProfile
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ddState As Global.System.Web.UI.WebControls.DropDownList
-
+    
     '''<summary>
     '''Zip control.
     '''</summary>
@@ -111,7 +111,7 @@ Partial Public Class ManageProfile
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Zip As Global.System.Web.UI.WebControls.TextBox
-
+    
     '''<summary>
     '''ddSecurityQuestion control.
     '''</summary>
@@ -120,7 +120,7 @@ Partial Public Class ManageProfile
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ddSecurityQuestion As Global.System.Web.UI.WebControls.DropDownList
-
+    
     '''<summary>
     '''SecurityResponse control.
     '''</summary>
@@ -129,4 +129,31 @@ Partial Public Class ManageProfile
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents SecurityResponse As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
+    '''imProfileImage control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents imProfileImage As Global.System.Web.UI.WebControls.Image
+    
+    '''<summary>
+    '''fuProfilePicUpload control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents fuProfilePicUpload As Global.System.Web.UI.WebControls.FileUpload
+    
+    '''<summary>
+    '''btnImageUpload control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnImageUpload As Global.System.Web.UI.WebControls.Button
 End Class
