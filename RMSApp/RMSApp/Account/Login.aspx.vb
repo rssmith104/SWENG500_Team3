@@ -38,7 +38,7 @@ Partial Public Class Login
                     Session("RMS_Authenticated") = "True"
                     Session("RMS_LoggedInUser") = Email.Text
                     Session("RMS_Function") = "LOGIN"
-                    Response.Redirect("~/Default.aspx")
+                    Response.Redirect("~/Authenticated_Default.aspx")
                     Exit Select
 
                 Case "INVALID_PASSWORD"
