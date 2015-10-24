@@ -1,7 +1,6 @@
-﻿<%@ Page Title="Welcome" Language="VB" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Welcome.aspx.vb" Inherits="RMSApp._Default" %>
+﻿<%@ Page Title="Home Page" Language="VB" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Authenticated_Default.aspx.vb" Inherits="RMSApp._Default" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -10,13 +9,11 @@
   <style>
   .carousel-inner > .item > img,
   .carousel-inner > .item > a > img {
-      width: 70%;
+      width: 40%;
       margin: auto;
   }
   </style>
 
-<div class="container">
-  <br>
   <div id="myCarousel" class="carousel slide" data-ride="carousel">
     <!-- Indicators -->
     <ol class="carousel-indicators">
@@ -73,24 +70,37 @@
       <span class="sr-only">Next</span>
     </a>
   </div>
-</div>
-
-    <hr />
 
     <div class="row">
-        <br />
-        <table>
-            <div class="col-md-1">
-
-                <td id="left" style="float: left">
-                    <img src="Images/Japanese_Salt_flavor_Sapporo_Ramen.JPG" style="width: 520px; height: 380px" />
-                </td>
-                <td id="right" style="float: right">
-                    <br />
-                    <h2>Sapporo Ramen</h2>
-                    <p></p>
-                </td>
-            </div>
-        </table>
+        <div class="col-md-4">
+            <h2>Store Recipes</h2>
+            <p>
+                Store hundreds of you family favorite recipes.  Share them with family.  
+            </p>
+            <p>
+                <a class="btn btn-default" href="./Account/Register">Create An Account &raquo;</a>
+            </p>
+        </div>
+        <div class="col-md-4">
+            <h2>Search for Popular Recipes</h2>
+            <p>
+                Search the Recipe Management System Recipe archives for thousands of favorite recipes from either your own circle of friends or
+                from other RMS users..
+            </p>
+            <p>
+                <a class="btn btn-default" href="./Account/Login">Already Have an Account &raquo;</a>
+            </p>
+        </div>
+        <div class="col-md-4">
+            <h2>Online Purchasing</h2>
+            <p>
+                Do not have an ingredient on-hand? RMS provides One-Click shopping directly from the recipe to the vendor for fast, accruate & convenient
+                purchasing for those hard-to-find ingredients.  Who actually has "liquid smoke" in their pantry!  Really!
+            </p>
+            <p>
+                <a class="btn btn-default" href="./Account/Register">Let's Get Started &raquo;</a>
+            </p>
+        </div>
     </div>
+
 </asp:Content>
