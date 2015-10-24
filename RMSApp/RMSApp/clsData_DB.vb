@@ -477,6 +477,43 @@ Public Class clsData_DB
         End If
         Return param
     End Function    'MakeParam
+
+    Public Overloads Function RunCommand(ByVal strSQLCmd As String) As SqlDataReader
+        Dim objOleDBCmd As SqlCommand = CreateSQLCommand(strSQLCmd, Nothing)
+        Dim objSQLDataReader As SqlDataReader
+
+        objSQLDataReader = objOleDBCmd.ExecuteReader(CommandBehavior.CloseConnection)
+        Return objSQLDataReader
+
+    End Function 'RunProc
+
+    Private Function CreateSQLCommand(ByVal strSQL As String, ByVal prams() As SqlParameter) As SqlCommand
+        ' make sure connection is open
+        Me.Open()
+
+        Dim SQLcmd As New SqlCommand(strSQL, SQLcon)
+
+        SQLcmd.CommandType = CommandType.Text
+        SQLcmd.CommandTimeout = 600                         ' Timeout = 10 minutes
+
+        ' add proc parameters
+        If Not (prams Is Nothing) Then
+            Dim parameter As SqlParameter
+            For Each parameter In prams
+                SQLcmd.Parameters.Add(parameter)
+            Next parameter
+        End If
+
+        'See if returnvalue parameter has already set
+        If SQLcmd.Parameters.Contains("ReturnValue") = False Then
+            ' add a return param to the parameter list
+            SQLcmd.Parameters.Add(New SqlParameter("ReturnValue", SqlDbType.Int, 0, ParameterDirection.ReturnValue, False, 0, 0, String.Empty, DataRowVersion.Default, Nothing))
+        End If
+
+        Return SQLcmd
+    End Function    'CreateCommand
+
+
 #End Region
 
 #Region "Destructors"
