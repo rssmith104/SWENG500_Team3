@@ -12,7 +12,7 @@ Option Explicit On
 
 
 Partial Public Class AddRecipe
-
+    
     '''<summary>
     '''ErrorMessage control.
     '''</summary>
@@ -21,7 +21,7 @@ Partial Public Class AddRecipe
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ErrorMessage As Global.System.Web.UI.WebControls.Literal
-
+    
     '''<summary>
     '''Label1 control.
     '''</summary>
@@ -30,7 +30,7 @@ Partial Public Class AddRecipe
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
-
+    
     '''<summary>
     '''Table1 control.
     '''</summary>
@@ -39,7 +39,7 @@ Partial Public Class AddRecipe
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Table1 As Global.System.Web.UI.WebControls.Table
-
+    
     '''<summary>
     '''RecipeTitle control.
     '''</summary>
@@ -48,7 +48,7 @@ Partial Public Class AddRecipe
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents RecipeTitle As Global.System.Web.UI.WebControls.TextBox
-
+    
     '''<summary>
     '''RecipeServingSize control.
     '''</summary>
@@ -57,7 +57,7 @@ Partial Public Class AddRecipe
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents RecipeServingSize As Global.System.Web.UI.WebControls.DropDownList
-
+    
     '''<summary>
     '''ddRecipeCategory control.
     '''</summary>
@@ -66,7 +66,7 @@ Partial Public Class AddRecipe
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ddRecipeCategory As Global.System.Web.UI.WebControls.DropDownList
-
+    
     '''<summary>
     '''txtRecipeSearch control.
     '''</summary>
@@ -75,7 +75,7 @@ Partial Public Class AddRecipe
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtRecipeSearch As Global.System.Web.UI.WebControls.TextBox
-
+    
     '''<summary>
     '''rbRecipeMeasurement control.
     '''</summary>
@@ -84,7 +84,7 @@ Partial Public Class AddRecipe
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents rbRecipeMeasurement As Global.System.Web.UI.WebControls.RadioButtonList
-
+    
     '''<summary>
     '''Button1 control.
     '''</summary>
@@ -93,7 +93,7 @@ Partial Public Class AddRecipe
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Button1 As Global.System.Web.UI.WebControls.Button
-
+    
     '''<summary>
     '''pnlIngredients control.
     '''</summary>
@@ -102,7 +102,7 @@ Partial Public Class AddRecipe
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents pnlIngredients As Global.System.Web.UI.WebControls.Panel
-
+    
     '''<summary>
     '''btnAddStep control.
     '''</summary>
@@ -111,7 +111,7 @@ Partial Public Class AddRecipe
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnAddStep As Global.System.Web.UI.WebControls.Button
-
+    
     '''<summary>
     '''pnlDirections control.
     '''</summary>
@@ -120,13 +120,4 @@ Partial Public Class AddRecipe
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents pnlDirections As Global.System.Web.UI.WebControls.Panel
-
-    '''<summary>
-    '''Table2 control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents Table2 As Global.System.Web.UI.WebControls.Table
 End Class

@@ -13,105 +13,113 @@
         <asp:ValidationSummary runat="server" CssClass="text-danger" />
         <asp:table runat="server"></asp:table>
 
-        <asp:Table ID="Table1" runat="server">
+        <asp:Table ID="Table1" runat="server" Width="100%">
             <asp:TableRow>
-                <asp:TableCell VerticalAlign="Top" HorizontalAlign="Center" ColumnSpan="2">
-                     <div class="col-md-10" > 
-                        <asp:Label runat="server" AssociatedControlID="RecipeTitle" CssClass="col-md-2 control-label">Recipe Title</asp:Label>
-                    </div>
+                <asp:TableCell Width="16%">&nbsp;</asp:TableCell>
+                <asp:TableCell Width ="17%">&nbsp;</asp:TableCell>
+                <asp:TableCell Width="16%">&nbsp;</asp:TableCell>
+                <asp:TableCell Width ="17%">&nbsp;</asp:TableCell>
+                <asp:TableCell Width="16%">&nbsp;</asp:TableCell>
+                <asp:TableCell Width ="18%">&nbsp;</asp:TableCell>
+            </asp:TableRow>
+            <asp:TableRow>
+                <asp:TableCell VerticalAlign="Middle" HorizontalAlign="Left" ColumnSpan="1">
+                        <b>RECIPE TITLE:</b>
                 </asp:TableCell>
-                <asp:TableCell VerticalAlign="Top" HorizontalAlign="Center" ColumnSpan="2">
+                <asp:TableCell VerticalAlign="Middle" HorizontalAlign="Left" ColumnSpan="5">
                     <div class="col-md-10">
-                        <asp:TextBox runat="server" ID="RecipeTitle" CssClass="form-control" TextMode="SingleLine" ReadOnly="false"/>
+                        <asp:TextBox runat="server" ID="RecipeTitle" CssClass="form-control" TextMode="SingleLine" ReadOnly="false" Width ="90%"/>
                     </div> 
                 </asp:TableCell>
             </asp:TableRow>
              <asp:TableRow>
-                <asp:TableCell ColumnSpan="4"><hr /></asp:TableCell>
+                <asp:TableCell ColumnSpan="6"><hr /></asp:TableCell>
             </asp:TableRow>
             <asp:TableRow>
-                <asp:TableCell VerticalAlign="Top" HorizontalAlign="Center" ColumnSpan="2">
-                  <!-- <div class="col-md-10">-->
-                        <asp:Label runat="server" AssociatedControlID="RecipeServingSize" CssClass="col-md-2 control-label">Recipe Serving Size</asp:Label>
-                    <!--</div>-->
+                <asp:TableCell VerticalAlign="Middle" HorizontalAlign="Left" ColumnSpan="1">
+                        <b>Recipe Serving Size</b>
                 </asp:TableCell>
-                <asp:TableCell VerticalAlign="Top" HorizontalAlign="Center" ColumnSpan="2">
-                  <!-- <div class="col-md-10">-->
-                        <asp:DropDownList runat="server" ID="RecipeServingSize" CssClass="form-control" ReadOnly="false"/>
-                    <!--</div>-->
-                </asp:TableCell>
-            </asp:TableRow>
-            <asp:TableRow>
-               <asp:TableCell VerticalAlign="Top" HorizontalAlign="Center" ColumnSpan="2">
+                <asp:TableCell VerticalAlign="Middle" HorizontalAlign="Left" ColumnSpan="5">
                     <div class="col-md-10">
-                        <asp:Label runat="server" AssociatedControlID="ddRecipeCategory" CssClass="col-md-2 control-label">Category</asp:Label>
-                    </div>
+                        <asp:DropDownList runat="server" ID="RecipeServingSize" CssClass="form-control" ReadOnly="false"/>
+                     </div>
                 </asp:TableCell>
-                 <asp:TableCell VerticalAlign="Top" HorizontalAlign="Center" ColumnSpan="2">
+            </asp:TableRow>
+            <asp:TableRow>
+               <asp:TableCell VerticalAlign="Middle" HorizontalAlign="Left" ColumnSpan="1">
+                        <b>Category</b>
+                </asp:TableCell>
+                 <asp:TableCell VerticalAlign="Middle" HorizontalAlign="Left" ColumnSpan="5">
                     <div class="col-md-10">
                         <asp:DropDownList runat="server" ID="ddRecipeCategory" CssClass="form-control" TextMode="SingleLine" ReadOnly="false"/>
                     </div>
                 </asp:TableCell>
             </asp:TableRow>
             <asp:TableRow>
-                <asp:TableCell VerticalAlign="Top" HorizontalAlign="Center" ColumnSpan="2">
-                    <div class="col-md-10">
-                        <asp:Label runat="server" AssociatedControlID="txtRecipeSearch" CssClass="col-md-2 control-label">Search Keywords</asp:Label>
-                    </div>
+                <asp:TableCell VerticalAlign="Middle" HorizontalAlign="Left" ColumnSpan="1">
+                        <b>Search Keywords</b>
                 </asp:TableCell>
-                  <asp:TableCell VerticalAlign="Top" HorizontalAlign="Center" ColumnSpan="2">
+                  <asp:TableCell VerticalAlign="Middle" HorizontalAlign="Left" ColumnSpan="5">
                     <div class="col-md-10">
                         <asp:TextBox runat="server" ID="txtRecipeSearch" CssClass="form-control" TextMode="SingleLine" ReadOnly="false"/>
                     </div>
                 </asp:TableCell>
             </asp:TableRow>
              <asp:TableRow>
-                <asp:TableCell VerticalAlign="Top" HorizontalAlign="Center" ColumnSpan="2">
-                    <div class="col-md-10">
-                        <asp:Label runat="server" AssociatedControlID="rbRecipeMeasurement" CssClass="col-md-2 control-label">Measurement System</asp:Label>
-                    </div>
+                <asp:TableCell VerticalAlign="Middle" HorizontalAlign="Left" ColumnSpan="1">
+                        <b>Measurement System</b>
                 </asp:TableCell>
-                  <asp:TableCell VerticalAlign="Top" HorizontalAlign="Center" ColumnSpan="2">
+                 <asp:TableCell VerticalAlign="Middle" HorizontalAlign="Left" ColumnSpan="5">
                     <div class="col-md-10">
                         <asp:RadioButtonList id="rbRecipeMeasurement" runat="server">
                             <asp:ListItem>US</asp:ListItem>
                             <asp:ListItem>Metric</asp:ListItem>
                         </asp:RadioButtonList>
                     </div>
+                 </asp:TableCell>
+            </asp:TableRow>
+            <asp:TableRow>
+                <asp:TableCell><b>Ingredients</b></asp:TableCell>
+                <asp:TableCell HorizontalAlign="Left" ColumnSpan="5">
+                    <div class="col-md-10">
+                        <asp:Button ID="Button1" Text="+" OnClick="AddIngredients" runat="server"/>
+                    </div>
                 </asp:TableCell>
             </asp:TableRow>
             <asp:TableRow>
-                        <asp:TableCell>Ingredients</asp:TableCell>
-                        <asp:TableCell HorizontalAlign="Left" ColumnSpan="3"><asp:Button ID="Button1" Text="+" OnClick="AddIngredients" runat="server"/></asp:TableCell>
-            </asp:TableRow>
-            <asp:TableRow>
-                <asp:TableCell Width="100%" ColumnSpan="4">
-                    <asp:Panel ID="pnlIngredients" runat="server" BorderWidth="2" Width="100%" >
+                <asp:TableCell Width="100%" ColumnSpan="6">
+                    <asp:Panel ID="pnlIngredients" runat="server" BorderWidth="1" Width="100%" >
                     </asp:Panel>
                 </asp:TableCell>
             </asp:TableRow>
              <asp:TableRow>
-                <asp:TableCell>Directions:</asp:TableCell>
-                <asp:TableCell HorizontalAlign="Left" ColumnSpan="3"><asp:Button ID="btnAddStep" Text="+" OnClick="AddAStep" runat="server"/></asp:TableCell>
+                <asp:TableCell><b>Directions:</b></asp:TableCell>
+                <asp:TableCell HorizontalAlign="Left" ColumnSpan="5">
+                    <div class="col-md-10">
+                        <asp:Button ID="btnAddStep" Text="+" OnClick="AddAStep" runat="server"/>
+                    </div>
+                </asp:TableCell>
             </asp:TableRow>
             <asp:TableRow>
-                <asp:TableCell Width="100%" ColumnSpan="4">
-                    <asp:Panel ID="pnlDirections" runat="server" BorderWidth="2" Width="100%" >
+                <asp:TableCell Width="100%" ColumnSpan="6">
+                    <asp:Panel ID="pnlDirections" runat="server" BorderWidth="1" Width="100%" >
                     </asp:Panel>
                 </asp:TableCell>
             </asp:TableRow>
-            </asp:Table>
-        <asp:Table ID="Table2" runat="server">
-           
             <asp:TableRow>
-                <asp:TableCell ColumnSpan="4"><hr /></asp:TableCell>
+                <asp:TableCell ColumnSpan="6"><hr /></asp:TableCell>
             </asp:TableRow>
             <asp:TableRow>
-                <asp:TableCell ColumnSpan="4" HorizontalAlign="Center">
+                <asp:TableCell ColumnSpan="3" HorizontalAlign="Right" VerticalAlign="Middle">
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
                             <asp:Button runat="server" OnClick="SaveChanges_Click" Text="Save Changes" CssClass="btn btn-primary btn-lg" />
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </div>
+                    </div>
+                </asp:TableCell>
+                <asp:TableCell ColumnSpan="3" HorizontalAlign="Left" VerticalAlign="Middle">
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
                             <asp:Button runat="server" OnClick="SaveChanges_Click" Text="Cancel Changes" CssClass="btn btn-primary btn-lg" />
                         </div>
                     </div>
