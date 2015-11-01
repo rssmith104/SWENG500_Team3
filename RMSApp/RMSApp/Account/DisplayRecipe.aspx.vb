@@ -1,0 +1,227 @@
+﻿Imports System
+Imports System.Linq
+Imports System.Web
+Imports System.Web.UI
+Imports Microsoft.AspNet.Identity
+Imports Microsoft.AspNet.Identity.EntityFramework
+Imports Microsoft.AspNet.Identity.Owin
+Imports Owin
+
+' ADDED RSS 9-21-2015
+Imports System.Data
+Imports System.Data.SqlClient
+' END ADD
+
+Partial Public Class DisplayRecipe
+    Inherits Page
+
+    Public strLoggedInUser As String
+    Public strAuthenticated As String
+    Public strFunction As String
+
+    Public strFirstName As String
+    Public strLastName As String
+    Friend WithEvents EventLog1 As EventLog
+    Public strMessage As String
+
+    Private m_strRecipeID As String
+    Private m_intRecipeID As Int16
+
+
+    Protected Property NumberOfControls() As Integer
+        Get
+            Return m_NumberOfControls
+        End Get
+        Private Set(value As Integer)
+            m_NumberOfControls = value
+        End Set
+    End Property
+    Protected m_NumberOfControls As Integer
+
+    Protected Property IngredientsNumberOfControls() As Integer
+        Get
+            Return m_IngredientsNumberOfControls
+        End Get
+        Private Set(value As Integer)
+            m_IngredientsNumberOfControls = value
+        End Set
+    End Property
+    Protected m_IngredientsNumberOfControls As Integer
+
+    ''' <summary>
+    ''' Register_Load - Page Load Event Handler
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub DisplayRecipe_Load(sender As Object, e As EventArgs) Handles Me.Load
+        ' On Page Load of the Registration Page, we want to populate the SecurityQuestion dropdown listbox.
+        ' Only perform is it is new.  If Postback, we should already be good to go.
+
+        strLoggedInUser = Session("RMS_LoggedInUser")
+        strAuthenticated = Session("RMS_Authenticated")
+        strFunction = Session("RMS_Function")
+
+        If Not IsPostBack Then
+            ' On initial load, we need to first extract the target recipe from the querystring indicator
+            m_strRecipeID = Request.QueryString("RecipeID")
+
+            ' We then transalate it into an integer
+            m_intRecipeID = ExtractRecipeID(m_strRecipeID)
+
+            ' Bind the data to the form controls on the page.
+            BindRecipeContent(m_intRecipeID)
+        Else
+        End If
+    End Sub
+
+    Private Function BindRecipeContent(ByVal intRecipeID As Int16) As String
+        Dim strRetVal As String = ""
+
+
+        ' Bind the Recipe Name
+        Me.ltRecipeName.Text = "Grandms's Famous Old Country Meat Lasagna"
+
+        ' Bind the Owner Name
+        Me.ltOwner.Text = "rss261@psu.edu"
+        Me.ltSubmissionDate.Text = "February 3, 2014"
+
+        ' Bind the Rating
+        Me.ltRating.Text = "4.5 Out of 5 Stars"
+
+        'Bind the Image
+        Me.imgRecipeImage.ImageUrl = "~/images/Lasagna_Meat.jpg"
+
+        'Bind the Recipe Description
+        Me.ltRecipeDescription.Text = "Everyone loves a good lasagna, right? It's a great way to feed a crowd and a perfect dish " &
+            "to bring to a potluck. It freezes well. It reheats well. Leftovers will keep you happy for days. " &
+            "Simply Recipes reader Alton Hoover sent me his favorite recipe for lasagna which he has been " &
+            "cooking up since college days. His original recipe created enough lasagna for a small army so " &
+            "I halved it. What Is posted here will easily serve 8 people"
+
+        ' Serving Size 
+        Me.ltServingSize.Text = "8 Portions"
+
+        ' Add Ingredients
+        AddIngredientHeader()
+        AddIngredient("fresh ginger", "1", "Piece(s)", "peeled, 1"" piece", 1)
+        AddIngredient("Fresh Parsley", "1", "Piece(s)", "", 2)
+        AddIngredient("Black Peppercorns", "1", "Teaspoon(s)", "Whole ", 3)
+        AddIngredient("Chicken", "3 1/2 - 4", "Pound(s)", "Whole", 4)
+        AddIngredient("Kosher Salt", "1", "Teaspoon(s)", "", 5)
+        AddIngredient("dried, extra wide Egg Noodles", "8", "Ounce(s)", "(4 cups cooked)", 6)
+        AddIngredient("Lemon juice", "1/4", "Cup(s)", "", 7)
+        AddIngredient("Fresh Dill", "1/4", "Cup(s)", "Snipped", 8)
+
+        'Add Instructions
+        AddInstructionHeader()
+        AddInstruction("Cut the stems from the bunch of parsley, reserving the leaves for another use. Place the parsley stems, ginger, garlic, cloves, peppercorns, chicken, carrots, celery, parsnips, onion, and salt in a la", 1)
+        AddInstruction("Skim the surface with a slotted spoon. Cover; reduce the heat to medium-low and simmer for 40 to 50 minutes or until the chicken is cooked through and is falling away from the bones.", 2)
+        AddInstruction("Turn off the heat. Carefully remove the chicken and set aside. Place a large strainer over a very large bowl. Pour the broth through the strainer. Remove the carrots and parsnips to a cutting board an", 3)
+        AddInstruction("Carefully pour the broth back into the pot and bring to boiling over high heat. Add the noodles and cook for 8 to 10 minutes or until tender. Remove pot from heat. Add the chicken, carrots and parsnip", 4)
+
+        Return strRetVal
+    End Function
+
+    Private Sub AddIngredient(ByVal strIngredName As String,
+                              ByVal strQty As String,
+                              ByVal strUOM As String,
+                              ByVal strPrepText As String,
+                              ByVal intIngredNo As Int16)
+
+        Dim strIngredText As String
+        Dim objBtnCtrl As Button = New Button()
+
+        objBtnCtrl.Text = "Purchase Online"
+        objBtnCtrl.ID = "btnIngred_" & intIngredNo.ToString
+        objBtnCtrl.Attributes.Add("Class", "btn btn-primary btn-sm")
+
+        strIngredText = "<p style=""font-family: 'Courier New'"">" & PadRightSpace(CInt(intIngredNo), 4) & PadRightSpace(strIngredName, 32) & PadRightSpace(strQty, 12) & PadRightSpace(strUOM, 12) & PadRightSpace(strPrepText, 20)
+
+        Me.pnlIngredients.Controls.Add(New LiteralControl(strIngredText))
+        Me.pnlIngredients.Controls.Add(objBtnCtrl)
+        Me.pnlIngredients.Controls.Add(New LiteralControl("</p>"))  '<br />
+
+    End Sub
+
+    Private Sub AddIngredientHeader()
+        Dim strIngredHdr As String
+
+        strIngredHdr = "<p style=""font-family: 'Courier New'""><b>" &
+                       PadRightSpace("NO", 4) &
+                       PadRightSpace("INGREDIENT", 32) &
+                       PadRightSpace("QUANTITY", 12) &
+                       PadRightSpace("MEASUREMENT", 12) &
+                       PadRightSpace("PREPARATION", 20) &
+                       "</b></p>"
+        Me.pnlIngredients.Controls.Add(New LiteralControl(strIngredHdr))
+
+    End Sub
+
+    Private Function PadRightSpace(ByVal strText As String, ByVal intPadNo As Int16) As String
+        Dim strRet As String
+        Dim iCounter As Int16 = 0
+
+        strRet = Trim(strText)
+
+        Do While iCounter < intPadNo - Len(Trim(strText))
+            strRet &= "&nbsp;"
+            iCounter += 1
+        Loop
+
+        Return strRet
+
+    End Function
+
+    Private Sub AddInstruction(ByVal strInstruction As String, ByVal intStepNo As Int16)
+        Dim strInstructionText As String
+        Dim objLabelCtrl As Label = New Label()
+
+        ' Setup Textbox Attributes
+        strInstructionText = "<p style=""font-family: 'Courier New'"">&nbsp;&nbsp;&nbsp;"
+
+        objLabelCtrl.ID = "lblInstruction_" & intStepNo.ToString
+        'objTxtCtrl.Attributes.Add("style", "width:80%")
+        objLabelCtrl.Text = strInstruction
+
+        Me.pnlInstructions.Controls.Add(objLabelCtrl)
+        Me.pnlInstructions.Controls.Add(New LiteralControl("</p>"))  '<br />
+
+    End Sub
+
+    Private Sub AddInstructionHeader()
+        Dim strInstructionHdr As String
+
+        strInstructionHdr = "<p style=""font-family: 'Courier New'""><b>INSTRUCTIONS</b></p>"
+
+        Me.pnlInstructions.Controls.Add(New LiteralControl(strInstructionHdr))
+
+
+    End Sub
+
+    Private Function ExtractRecipeID(ByVal strRecipeID As String) As Int16
+        Dim intReturnID As Int16
+        Dim strTokens() As String
+
+        strTokens = Split(strRecipeID, "_")
+
+        Try
+            intReturnID = CInt(strTokens(1))
+        Catch ex As Exception
+            intReturnID = -1
+        End Try
+
+        Return intReturnID
+    End Function
+
+    Private Sub InitializeComponent()
+        Me.EventLog1 = New System.Diagnostics.EventLog()
+        CType(Me.EventLog1, System.ComponentModel.ISupportInitialize).BeginInit()
+        '
+        'EventLog1
+        '
+        CType(Me.EventLog1, System.ComponentModel.ISupportInitialize).EndInit()
+
+    End Sub
+
+End Class
+
