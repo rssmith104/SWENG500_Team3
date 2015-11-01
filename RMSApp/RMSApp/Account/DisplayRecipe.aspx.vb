@@ -77,6 +77,221 @@ Partial Public Class DisplayRecipe
     Private Function BindRecipeContent(ByVal intRecipeID As Int16) As String
         Dim strRetVal As String = ""
 
+        If intRecipeID = 0 Then
+            strRetVal = BindDemoRecipeData()
+        Else
+            strRetVal = BindRecipeData(intRecipeID)
+        End If
+
+        Return strRetVal
+    End Function
+
+    Private Function BindRecipeData(ByVal intRecipeID As Int16) As String
+        Dim strRetVal As String = ""
+
+        BindRecipeHeaderData(intRecipeID)
+        BindRecipeImageData(intRecipeID)
+        BindIngredientData(intRecipeID)
+        BindInstructionData(intRecipeID)
+
+        Return strRetVal
+    End Function
+
+    Private Sub BindRecipeHeaderData(ByVal intRecipeID As Int16)
+        '
+        Dim objData_DB As clsData_DB
+        Dim objParams(0) As SqlParameter
+        Dim objDR As SqlDataReader
+        Dim strConnectionString As String
+
+        ' Get the connection string out of the Web.Config file.  Connection is tha actual name portion of the name value pair
+        Dim objWebConfig As New clsWebConfig()
+        strConnectionString = objWebConfig.GetWebConfig("Connection".ToString)
+
+        ' Use the Connection string to instantiate a new Database class object.
+        objData_DB = New clsData_DB(strConnectionString)
+
+        ' Setup the parameters.  NOte that the Name, type and size must all match.  The final value is the paramter value
+        objParams(0) = objData_DB.MakeInParam("@RecipeID", SqlDbType.Int, 1, intRecipeID)
+
+        ' Run the stored procedure by name.  Pass with it the parameter list.
+        objDR = objData_DB.RunStoredProc("usp_Recipe_Select_byRecipeID", objParams)
+
+        ' Do we have rows returned?
+        If objDR.HasRows Then
+
+            objDR.Read()
+
+            'Add Header Data
+            ' Bind the Recipe Name
+            Me.ltRecipeName.Text = objDR("RecipeName").ToString
+
+            ' Bind the Owner Name
+            Me.ltOwner.Text = objDR("Owner_Email").ToString
+            Me.ltSubmissionDate.Text = objDR("SubmissionDate").ToString
+
+            ' Bind the Rating
+            Me.ltRating.Text = "4.5 Out of 5 Stars"
+
+            'Bind the Recipe Description
+            Me.ltRecipeDescription.Text = objDR("RecipeDescription").ToString
+
+            ' Serving Size 
+            Me.ltServingSize.Text = objDR("ServingSize").ToString & " Portion(s)"
+        Else
+            '<TODO>  Assign Invalid Recipe
+        End If
+
+        ' CleanUp on our way out.  Make sure that we kill the connection so that we do not run our limit on concurrent 
+        ' database connections.
+        If Not IsNothing(objDR) Then
+            objDR.Close()
+            objDR = Nothing
+        End If
+
+        If Not IsNothing(objData_DB) Then
+            objData_DB.Close()
+            objData_DB = Nothing
+        End If
+
+    End Sub
+
+
+    Private Sub BindRecipeImageData(ByVal intRecipeID As Int16)
+        Dim objData_DB As clsData_DB
+        Dim objParams(0) As SqlParameter
+        Dim objDR As SqlDataReader
+        Dim strConnectionString As String
+
+        ' Get the connection string out of the Web.Config file.  Connection is tha actual name portion of the name value pair
+        Dim objWebConfig As New clsWebConfig()
+        strConnectionString = objWebConfig.GetWebConfig("Connection".ToString)
+
+        ' Use the Connection string to instantiate a new Database class object.
+        objData_DB = New clsData_DB(strConnectionString)
+
+        ' Setup the parameters.  NOte that the Name, type and size must all match.  The final value is the paramter value
+        objParams(0) = objData_DB.MakeInParam("@RecipeID", SqlDbType.Int, 1, intRecipeID)
+
+        ' Run the stored procedure by name.  Pass with it the parameter list.
+        objDR = objData_DB.RunStoredProc("usp_RecipeImage_Select", objParams)
+
+        ' Do we have rows returned?
+        If objDR.HasRows Then
+
+            objDR.Read()
+
+            'Add Image
+            Me.imgRecipeImage.ImageUrl = objDR("ImageText").ToString
+        Else
+            '<TODO>  Assign No Image Image
+        End If
+
+        ' CleanUp on our way out.  Make sure that we kill the connection so that we do not run our limit on concurrent 
+        ' database connections.
+        If Not IsNothing(objDR) Then
+            objDR.Close()
+            objDR = Nothing
+        End If
+
+        If Not IsNothing(objData_DB) Then
+            objData_DB.Close()
+            objData_DB = Nothing
+        End If
+
+    End Sub
+
+    Private Sub BindInstructionData(ByVal intRecipeID As Int16)
+        Dim objData_DB As clsData_DB
+        Dim objParams(0) As SqlParameter
+        Dim objDR As SqlDataReader
+        Dim strConnectionString As String
+
+        ' Get the connection string out of the Web.Config file.  Connection is tha actual name portion of the name value pair
+        Dim objWebConfig As New clsWebConfig()
+        strConnectionString = objWebConfig.GetWebConfig("Connection".ToString)
+
+        ' Use the Connection string to instantiate a new Database class object.
+        objData_DB = New clsData_DB(strConnectionString)
+
+        ' Setup the parameters.  NOte that the Name, type and size must all match.  The final value is the paramter value
+        objParams(0) = objData_DB.MakeInParam("@RecipeID", SqlDbType.Int, 1, intRecipeID)
+
+        ' Run the stored procedure by name.  Pass with it the parameter list.
+        objDR = objData_DB.RunStoredProc("usp_InstructionStep_SelectByRecipe", objParams)
+
+        ' Do we have rows returned?
+        If objDR.HasRows Then
+            AddInstructionHeader()
+            Dim iCounter As Integer = 1
+            While objDR.Read()
+
+                'Add Instructions
+                AddInstruction(objDR("StepText").ToString, iCounter)
+                iCounter += 1
+            End While
+        End If
+
+        ' CleanUp on our way out.  Make sure that we kill the connection so that we do not run our limit on concurrent 
+        ' database connections.
+        If Not IsNothing(objDR) Then
+            objDR.Close()
+            objDR = Nothing
+        End If
+
+        If Not IsNothing(objData_DB) Then
+            objData_DB.Close()
+            objData_DB = Nothing
+        End If
+
+    End Sub
+
+    Private Sub BindIngredientData(ByVal intRecipeID As Int16)
+        Dim objData_DB As clsData_DB
+        Dim objParams(0) As SqlParameter
+        Dim objDR As SqlDataReader
+        Dim strConnectionString As String
+
+        ' Get the connection string out of the Web.Config file.  Connection is tha actual name portion of the name value pair
+        Dim objWebConfig As New clsWebConfig()
+        strConnectionString = objWebConfig.GetWebConfig("Connection".ToString)
+
+        ' Use the Connection string to instantiate a new Database class object.
+        objData_DB = New clsData_DB(strConnectionString)
+
+        ' Setup the parameters.  NOte that the Name, type and size must all match.  The final value is the paramter value
+        objParams(0) = objData_DB.MakeInParam("@RecipeID", SqlDbType.Int, 1, intRecipeID)
+
+        ' Run the stored procedure by name.  Pass with it the parameter list.
+        objDR = objData_DB.RunStoredProc("usp_RecipeIngredient_SelectByRecipe", objParams)
+
+        ' Do we have rows returned?
+        If objDR.HasRows Then
+            AddIngredientHeader()
+            Dim iCounter As Integer = 1
+            While objDR.Read()
+
+                'Add Ingredient
+                AddIngredient(objDR("IngredientName").ToString, objDR("Qty").ToString, objDR("UOMType").ToString, objDR("PreparationText").ToString, iCounter)
+                iCounter += 1
+            End While
+        End If
+
+        ' CleanUp on our way out.  Make sure that we kill the connection so that we do not run our limit on concurrent 
+        ' database connections.
+        If Not IsNothing(objDR) Then
+            objDR.Close()
+            objDR = Nothing
+        End If
+
+        If Not IsNothing(objData_DB) Then
+            objData_DB.Close()
+            objData_DB = Nothing
+        End If
+    End Sub
+
+    Private Function BindDemoRecipeData() As String
+        Dim strRetVal As String = ""
 
         ' Bind the Recipe Name
         Me.ltRecipeName.Text = "Grandms's Famous Old Country Meat Lasagna"
@@ -119,7 +334,10 @@ Partial Public Class DisplayRecipe
         AddInstruction("Turn off the heat. Carefully remove the chicken and set aside. Place a large strainer over a very large bowl. Pour the broth through the strainer. Remove the carrots and parsnips to a cutting board an", 3)
         AddInstruction("Carefully pour the broth back into the pot and bring to boiling over high heat. Add the noodles and cook for 8 to 10 minutes or until tender. Remove pot from heat. Add the chicken, carrots and parsnip", 4)
 
+        strRetVal = "SUCCESS"
+
         Return strRetVal
+
     End Function
 
     Private Sub AddIngredient(ByVal strIngredName As String,
