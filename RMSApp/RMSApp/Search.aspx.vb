@@ -202,7 +202,7 @@ Partial Public Class Search
     Private Sub btnDisplay_Click(sender As Object, e As EventArgs)
         Dim objBtnCtrl As System.Web.UI.WebControls.Button = sender
 
-        Response.Redirect("~/DisplayMenu?RecipeID=" & objBtnCtrl.ID.ToString)
+        Response.Redirect("~/Account/DisplayRecipe?RecipeID=" & objBtnCtrl.ID.ToString)
 
     End Sub
 
