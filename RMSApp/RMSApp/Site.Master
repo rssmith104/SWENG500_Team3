@@ -81,7 +81,7 @@
                         </LevelSubMenuStyles>
                         <Items>
                              <asp:MenuItem Text="HOME" NavigateUrl="~/Authenticated_Default.aspx" Value="Home" ></asp:MenuItem>
-                             <asp:MenuItem Text="SEARCH"  Value="Search" NavigateUrl="~/Default.aspx"></asp:MenuItem>
+                             <asp:MenuItem Text="SEARCH"  Value="Search" NavigateUrl="~/Search.aspx"></asp:MenuItem>
                              <asp:MenuItem Text="MY RMS" Value="MyRMS">
                                  <asp:MenuItem Text="PROFILE MANAGER"></asp:MenuItem>
                                  <asp:MenuItem Text="Change Password"></asp:MenuItem>
