@@ -215,9 +215,11 @@
   <ItemGroup>
     <Content Include="About.aspx" />
     <Content Include="Account\AddPhoneNumber.aspx" />
+    <Content Include="Account\AddRecipe.aspx" />
     <Content Include="Account\Confirm.aspx" />
     <Content Include="Account\Forgot.aspx" />
     <Content Include="Account\Lockout.aspx" />
+    <Content Include="Search.aspx" />
     <Content Include="Account\Login.aspx" />
     <Content Include="Account\Logout.aspx" />
     <Content Include="Account\PanelControl.aspx" />
@@ -302,6 +304,13 @@
       <DependentUpon>AddPhoneNumber.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Account\AddRecipe.aspx.designer.vb">
+      <DependentUpon>AddRecipe.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\AddRecipe.aspx.vb">
+      <DependentUpon>AddRecipe.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Account\Confirm.aspx.designer.vb">
       <DependentUpon>Confirm.aspx</DependentUpon>
     </Compile>
@@ -321,6 +330,13 @@
     </Compile>
     <Compile Include="Account\Lockout.aspx.vb">
       <DependentUpon>Lockout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Search.aspx.designer.vb">
+      <DependentUpon>Search.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Search.aspx.vb">
+      <DependentUpon>Search.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Account\Login.aspx.designer.vb">
