@@ -89,13 +89,13 @@ Partial Public Class Search
                              "u.FirstName + ' ' + u.LastName AS [OwnerName] " &
                         "FROM dbo.Recipe r " &
                         "RIGHT JOIN dbo.RecipeIngredientList il ON il.RecipeID = r.RecipeID " &
-                        "JOIN dbo.UserAccount u ON u.LoginID = r.OwnerID " &
-                        "JOIN dbo.RecipeCuisineCategoryMap rc ON rc.RecipeID = r.RecipeID " &
-                        "JOIN dbo.CuisineCatgList cc ON cc.CuisineCategoryID = rc.CuisineCategoryID"
+                        "JOIN dbo.UserAccount u ON u.LoginID = r.OwnerID "
+        '"JOIN dbo.RecipeCuisineCategoryMap rc ON rc.RecipeID = r.RecipeID " &
+        '"JOIN dbo.CuisineCatgList cc ON cc.CuisineCategoryID = rc.CuisineCategoryID"
 
 
         If ddCategoryList.Text <> "" Then
-            strSQL_where &= "cc.CuisineCategory = '" & ddCategoryList.Text & "'"
+            strSQL_where &= "r.CuisineCategory = '" & ddCategoryList.Text & "'"
             bAnd = True
         End If
 
