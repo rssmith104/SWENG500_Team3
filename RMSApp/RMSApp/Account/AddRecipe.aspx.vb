@@ -453,8 +453,14 @@ Partial Public Class AddRecipe
             Me.GetIngredients()
             Me.GetDirections()
             ErrorMessage.Text = "Record Successfully Updated"
+
+            Response.Redirect("~/Account/AddRecipe?err=Success")
         End If
 
+    End Sub
+
+    Protected Sub CancelRecipe_Click(sender As Object, e As EventArgs)
+        Response.Redirect("~/Authenticated_Default")
     End Sub
 
     Private Sub Populate_Sharing_DropDown()
@@ -646,6 +652,14 @@ Partial Public Class AddRecipe
             NumberOfControls = 0
             Session("RMS_NumberOfControls") = Me.NumberOfControls.ToString
             Session("RMS_IngredientsNumberOfControls") = Me.NumberOfControls.ToString
+
+            Dim strErr As String
+            strErr = Request.QueryString("err")
+
+            If strErr = "Success" Then
+                ErrorMessage.Text = "Record Successfully Updated"
+            End If
+
         Else
             Me.CreateIngredientsControls()
             Me.CreateControls()

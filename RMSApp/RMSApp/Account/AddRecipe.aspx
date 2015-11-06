@@ -167,7 +167,7 @@
                 <asp:TableCell ColumnSpan="3" HorizontalAlign="Left" VerticalAlign="Middle">
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <asp:Button runat="server" OnClick="SaveRecipeChanges_Click" Text="Cancel Changes" CssClass="btn btn-primary btn-lg" />
+                            <asp:Button runat="server" OnClick="CancelRecipe_Click" Text="Cancel Changes" CssClass="btn btn-primary btn-lg" CausesValidation="false" />
                         </div>
                     </div>
                 </asp:TableCell>
