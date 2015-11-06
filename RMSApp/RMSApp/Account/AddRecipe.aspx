@@ -13,7 +13,7 @@
         <asp:ValidationSummary runat="server" CssClass="text-danger" />
         <asp:table runat="server"></asp:table>
 
-        <asp:Table ID="Table1" runat="server" Width="100%" >
+        <asp:Table ID="Table1" runat="server" Width="100%" GridLines="None" >
             <asp:TableRow>
                 <asp:TableCell Width="16%">&nbsp;</asp:TableCell>
                 <asp:TableCell Width ="17%">&nbsp;</asp:TableCell>
@@ -118,7 +118,7 @@
                 <asp:TableCell><b>Ingredients</b></asp:TableCell>
                 <asp:TableCell HorizontalAlign="Left" ColumnSpan="5">
                     <div class="col-md-10">
-                        <asp:Button ID="Button1" Text="+" OnClick="AddIngredients" runat="server"/>
+                        <asp:Button ID="Button1" Text="+" OnClick="AddIngredients" runat="server" CausesValidation="false"/>
                     </div>
                 </asp:TableCell>
             </asp:TableRow>
@@ -132,7 +132,7 @@
                 <asp:TableCell><b>Directions</b></asp:TableCell>
                 <asp:TableCell HorizontalAlign="Left" ColumnSpan="5">
                     <div class="col-md-10">
-                        <asp:Button ID="btnAddStep" Text="+" OnClick="AddAStep" runat="server"/>
+                        <asp:Button ID="btnAddStep" Text="+" OnClick="AddAStep" runat="server" CausesValidation="false"/>
                     </div>
                 </asp:TableCell>
             </asp:TableRow>
@@ -143,17 +143,14 @@
                 </asp:TableCell>
             </asp:TableRow>
             <asp:TableRow>
-                <asp:TableCell ColumnSpan="1" HorizontalAlign="Left">
-                    <h3>Recipe Image</h3>
+                <asp:TableCell ColumnSpan="2" HorizontalAlign="Right">
+                    <h3><b>Recipe Image:&nbsp</b></h3>
                 </asp:TableCell>
-                <asp:TableCell ColumnSpan="3" HorizontalAlign="Left">
+                <asp:TableCell ColumnSpan="2" HorizontalAlign="Center">
                     <asp:Image ID="imRecipeImage" runat="server" width="300px" Height="300px" ImageUrl="~/images/Default_Image.png"/>
                 </asp:TableCell>
-                <asp:TableCell ColumnSpan="1" HorizontalAlign="Left">
-                    <asp:FileUpload ID="fuRecipePicUpload" runat="server" />
-                </asp:TableCell>
-                <asp:TableCell ColumnSpan="1" HorizontalAlign="Center">
-                     <asp:Button ID="btnRecipeImageUpload" runat="server" Text="Upload Image" OnClick="Recipe_Image_Upload" /> 
+                <asp:TableCell ColumnSpan="2" HorizontalAlign="Left">
+                    <asp:FileUpload ID="fuRecipePicUpload" runat="server" /><br /><asp:Button ID="btnRecipeImageUpload" runat="server" Text="Upload Image" OnClick="Recipe_Image_Upload" CausesValidation="false"/>
                 </asp:TableCell>
             </asp:TableRow>
             <asp:TableRow>
@@ -163,7 +160,7 @@
                 <asp:TableCell ColumnSpan="3" HorizontalAlign="Right" VerticalAlign="Middle">
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <asp:Button runat="server" OnClick="SaveRecipeChanges_Click" Text="Save Changes" CssClass="btn btn-primary btn-lg" />
+                            <asp:Button runat="server" OnClick="SaveRecipeChanges_Click" Text="Save Changes" CssClass="btn btn-primary btn-lg" ID="btnSave" />
                         </div>
                     </div>
                 </asp:TableCell>

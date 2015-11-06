@@ -603,7 +603,7 @@ Partial Public Class AddRecipe
             'Me.imRecipeImage.ImageUrl = Server.MapPath("~/Images/") + strFileName
             'Me.imRecipeImage.Attributes.Add("ImageUrl", "Server.MapPath(""~/Images/"") + strFileName")
             Session("RMS_RecipeImage") = "~/Images/" & strFileName
-            Me.SetFocus(fuRecipePicUpload)
+            Me.SetFocus(Me.btnSave)
             'Response.Redirect(Request.Url.AbsoluteUri)
 
         End If
