@@ -13,7 +13,7 @@
         <asp:ValidationSummary runat="server" CssClass="text-danger" />
         <asp:table runat="server"></asp:table>
 
-        <asp:Table ID="Table1" runat="server" Width="100%">
+        <asp:Table ID="Table1" runat="server" Width="100%" >
             <asp:TableRow>
                 <asp:TableCell Width="16%">&nbsp;</asp:TableCell>
                 <asp:TableCell Width ="17%">&nbsp;</asp:TableCell>
@@ -23,12 +23,34 @@
                 <asp:TableCell Width ="18%">&nbsp;</asp:TableCell>
             </asp:TableRow>
             <asp:TableRow>
-                <asp:TableCell VerticalAlign="Middle" HorizontalAlign="Left" ColumnSpan="1">
-                        <b>RECIPE TITLE:</b>
+                <asp:TableCell VerticalAlign="Middle" HorizontalAlign="Left" ColumnSpan="1" ForeColor="#CC0000">
+                        <b>Recipe Title*</b>
                 </asp:TableCell>
                 <asp:TableCell VerticalAlign="Middle" HorizontalAlign="Left" ColumnSpan="5">
                     <div class="col-md-10">
-                        <asp:TextBox runat="server" ID="RecipeTitle" CssClass="form-control" TextMode="SingleLine" ReadOnly="false" Width ="90%"/>
+                        <asp:TextBox runat="server" ID="RecipeTitle" CssClass="form-control" TextMode="MultiLine" ReadOnly="false" MaxLength="150" Rows="1" />
+                        <asp:RequiredFieldValidator runat="server" ControlToValidate="RecipeTitle"
+                             CssClass="text-danger" ErrorMessage="The Recipe Title field is required." />
+                    </div> 
+                </asp:TableCell>
+            </asp:TableRow>
+            <asp:TableRow>
+                <asp:TableCell VerticalAlign="Middle" HorizontalAlign="Left" ColumnSpan="1">
+                     <b>Recipe Description</b>
+                    </asp:TableCell> 
+                <asp:TableCell VerticalAlign="Middle" HorizontalAlign="Left" ColumnSpan="5">
+                    <div class="col-md-10">
+                        <asp:TextBox runat="server" ID="RecipeDescription" CssClass="form-control" TextMode="MultiLine" ReadOnly="false" Rows="4" MaxLength="150" />
+                    </div> 
+                </asp:TableCell>
+            </asp:TableRow>
+            <asp:TableRow>
+                <asp:TableCell VerticalAlign="Middle" HorizontalAlign="Left" ColumnSpan="1">
+                    <b>Approximate Cooking Time</b>
+                    </asp:TableCell>
+                <asp:TableCell VerticalAlign="Middle" HorizontalAlign="Left" ColumnSpan="5">
+                    <div class="col-md-10">
+                        <asp:TextBox runat="server" ID="RecipeCookingTime" CssClass="form-control" TextMode="SingleLine" ReadOnly="false" MaxLength="50" />
                     </div> 
                 </asp:TableCell>
             </asp:TableRow>
@@ -36,22 +58,36 @@
                 <asp:TableCell ColumnSpan="6"><hr /></asp:TableCell>
             </asp:TableRow>
             <asp:TableRow>
-                <asp:TableCell VerticalAlign="Middle" HorizontalAlign="Left" ColumnSpan="1">
-                        <b>Recipe Serving Size</b>
+                <asp:TableCell VerticalAlign="Middle" HorizontalAlign="Left" ColumnSpan="1" ForeColor="#CC0000">
+                        <b>Recipe Serving Size*</b>
                 </asp:TableCell>
                 <asp:TableCell VerticalAlign="Middle" HorizontalAlign="Left" ColumnSpan="5">
                     <div class="col-md-10">
                         <asp:DropDownList runat="server" ID="RecipeServingSize" CssClass="form-control" ReadOnly="false"/>
+                        <asp:RequiredFieldValidator runat="server" ControlToValidate="RecipeServingSize"
+                             CssClass="text-danger" ErrorMessage="The Recipe Serving Size field is required." />
                      </div>
                 </asp:TableCell>
             </asp:TableRow>
             <asp:TableRow>
                <asp:TableCell VerticalAlign="Middle" HorizontalAlign="Left" ColumnSpan="1">
-                        <b>Category</b>
+                        <b>Recipe Category</b>
                 </asp:TableCell>
                  <asp:TableCell VerticalAlign="Middle" HorizontalAlign="Left" ColumnSpan="5">
                     <div class="col-md-10">
                         <asp:DropDownList runat="server" ID="ddRecipeCategory" CssClass="form-control" TextMode="SingleLine" ReadOnly="false"/>
+                    </div>
+                </asp:TableCell>
+            </asp:TableRow>
+            <asp:TableRow>
+               <asp:TableCell VerticalAlign="Middle" HorizontalAlign="Left" ColumnSpan="1" ForeColor="#CC0000">
+                   <b>Recipe Sharing*</b>
+                   </asp:TableCell>
+                <asp:TableCell VerticalAlign="Middle" HorizontalAlign="Left" ColumnSpan="5">
+                    <div class="col-md-10">
+                        <asp:DropDownList runat="server" ID="ddRecipeSharing" CssClass="form-control" TextMode="SingleLine" ReadOnly="false" ForeColor="Black" />
+                        <asp:RequiredFieldValidator runat="server" ControlToValidate="ddRecipeSharing"
+                             CssClass="text-danger" ErrorMessage="The Recipe Sharing field is required." />
                     </div>
                 </asp:TableCell>
             </asp:TableRow>
@@ -61,7 +97,7 @@
                 </asp:TableCell>
                   <asp:TableCell VerticalAlign="Middle" HorizontalAlign="Left" ColumnSpan="5">
                     <div class="col-md-10">
-                        <asp:TextBox runat="server" ID="txtRecipeSearch" CssClass="form-control" TextMode="SingleLine" ReadOnly="false"/>
+                        <asp:TextBox runat="server" ID="txtRecipeSearch" CssClass="form-control" TextMode="MultiLine" ReadOnly="false"/>
                     </div>
                 </asp:TableCell>
             </asp:TableRow>
@@ -93,7 +129,7 @@
                 </asp:TableCell>
             </asp:TableRow>
              <asp:TableRow>
-                <asp:TableCell><b>Directions:</b></asp:TableCell>
+                <asp:TableCell><b>Directions</b></asp:TableCell>
                 <asp:TableCell HorizontalAlign="Left" ColumnSpan="5">
                     <div class="col-md-10">
                         <asp:Button ID="btnAddStep" Text="+" OnClick="AddAStep" runat="server"/>
@@ -107,20 +143,34 @@
                 </asp:TableCell>
             </asp:TableRow>
             <asp:TableRow>
+                <asp:TableCell ColumnSpan="1" HorizontalAlign="Left">
+                    <h3>Recipe Image</h3>
+                </asp:TableCell>
+                <asp:TableCell ColumnSpan="3" HorizontalAlign="Left">
+                    <asp:Image ID="imRecipeImage" runat="server"  />
+                </asp:TableCell>
+                <asp:TableCell ColumnSpan="1" HorizontalAlign="Left">
+                    <asp:FileUpload ID="fuRecipePicUpload" runat="server" />
+                </asp:TableCell>
+                <asp:TableCell ColumnSpan="1" HorizontalAlign="Center">
+                     <asp:Button ID="btnRecipeImageUpload" runat="server" Text="Upload Image" OnClick="Recipe_Image_Upload" /> 
+                </asp:TableCell>
+            </asp:TableRow>
+            <asp:TableRow>
                 <asp:TableCell ColumnSpan="6"><hr /></asp:TableCell>
             </asp:TableRow>
             <asp:TableRow>
                 <asp:TableCell ColumnSpan="3" HorizontalAlign="Right" VerticalAlign="Middle">
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <asp:Button runat="server" OnClick="SaveChanges_Click" Text="Save Changes" CssClass="btn btn-primary btn-lg" />
+                            <asp:Button runat="server" OnClick="SaveRecipeChanges_Click" Text="Save Changes" CssClass="btn btn-primary btn-lg" />
                         </div>
                     </div>
                 </asp:TableCell>
                 <asp:TableCell ColumnSpan="3" HorizontalAlign="Left" VerticalAlign="Middle">
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <asp:Button runat="server" OnClick="SaveChanges_Click" Text="Cancel Changes" CssClass="btn btn-primary btn-lg" />
+                            <asp:Button runat="server" OnClick="SaveRecipeChanges_Click" Text="Cancel Changes" CssClass="btn btn-primary btn-lg" />
                         </div>
                     </div>
                 </asp:TableCell>

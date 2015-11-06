@@ -50,6 +50,24 @@ Partial Public Class AddRecipe
     Protected WithEvents RecipeTitle As Global.System.Web.UI.WebControls.TextBox
     
     '''<summary>
+    '''RecipeDescription control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents RecipeDescription As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
+    '''RecipeCookingTime control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents RecipeCookingTime As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
     '''RecipeServingSize control.
     '''</summary>
     '''<remarks>
@@ -66,6 +84,15 @@ Partial Public Class AddRecipe
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ddRecipeCategory As Global.System.Web.UI.WebControls.DropDownList
+    
+    '''<summary>
+    '''ddRecipeSharing control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents ddRecipeSharing As Global.System.Web.UI.WebControls.DropDownList
     
     '''<summary>
     '''txtRecipeSearch control.
@@ -120,4 +147,31 @@ Partial Public Class AddRecipe
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents pnlDirections As Global.System.Web.UI.WebControls.Panel
+    
+    '''<summary>
+    '''imRecipeImage control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents imRecipeImage As Global.System.Web.UI.WebControls.Image
+    
+    '''<summary>
+    '''fuRecipePicUpload control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents fuRecipePicUpload As Global.System.Web.UI.WebControls.FileUpload
+    
+    '''<summary>
+    '''btnRecipeImageUpload control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnRecipeImageUpload As Global.System.Web.UI.WebControls.Button
 End Class

@@ -6,6 +6,7 @@ Imports Microsoft.AspNet.Identity
 Imports Microsoft.AspNet.Identity.EntityFramework
 Imports Microsoft.AspNet.Identity.Owin
 Imports Owin
+Imports System.IO
 
 ' ADDED RSS 9-21-2015
 Imports System.Data
@@ -23,6 +24,10 @@ Partial Public Class AddRecipe
     Public strLastName As String
     Friend WithEvents EventLog1 As EventLog
     Public strMessage As String
+    Public strRecipeImage As String
+    Public arrayUomList As Array
+    Public strRecipeId As String
+
     Protected Property NumberOfControls() As Integer
         Get
             Return m_NumberOfControls
@@ -43,68 +48,64 @@ Partial Public Class AddRecipe
     End Property
     Protected m_IngredientsNumberOfControls As Integer
 
-    Protected Sub SaveChanges_Click(sender As Object, e As EventArgs)
-        Dim strErr As String = ""
+    Private Function InsertRecipe() As String
+        Dim strErr As String
+        Dim strRecipeTitle As String = Me.RecipeTitle.Text
+        Dim strRecipeDescription As String = Me.RecipeDescription.Text
+        Dim strCookingTime As String = Me.RecipeCookingTime.Text
+        Dim intServingSize As Int16 = Me.RecipeServingSize.Text
+        Dim strCategory As String = Me.ddRecipeCategory.Text
+        Dim strShareRecipe As String = Me.ddRecipeSharing.Text
+        Dim strSearchKeyWord As String = Me.txtRecipeSearch.Text
+        Dim strMeasurementSystem As String = Me.rbRecipeMeasurement.Text
+        Dim strLogInUser As String = Me.strLoggedInUser
 
-        ' ErrorMessage.Text = Me.UpdateUserAccount()
-        If ErrorMessage.Text = "" Then
-            '    ErrorMessage.Text = Me.UpdateSecurityQuestion()
-        End If
-
-        If ErrorMessage.Text = "" Then
-            ErrorMessage.Text = "Record Successfully Updated"
-        End If
-
-    End Sub
-
-    Protected Sub ResetPassword_Click(sender As Object, e As EventArgs)
-        Dim strEncryptString As String
-
-        Session("RMS_LoggedInUser") = strLoggedInUser
-        Session("RMS_Authenticated") = strAuthenticated
-        Session("RMS_Function") = "PASSWORD_RESET"
-        Session("RMS_ReturnPage") = "~/Account/ManageProfile"
-
-        Dim objDes_Codec As DES_Codec = New DES_Codec()
-        strEncryptString = objDes_Codec.EncodeString(strLoggedInUser)
-        objDes_Codec = Nothing
-
-        Response.Redirect("~/Account/ManagePassword.aspx?et=" & strEncryptString)
-    End Sub
-
-
-
-    Private Function SaveProfileUpdate(ByVal strCon As String, ByVal strEmail As String,
-                                  ByVal strFN As String, ByVal strLN As String,
-                                  ByVal strPhone As String, ByVal strAddr As String,
-                                  ByVal strCity As String, ByVal strState As String,
-                                  ByVal strZip As String, ByVal strCountry As String) As String
         Dim objData_DB As clsData_DB
-        Dim objParams(9) As SqlParameter
+        Dim objParams(8) As SqlParameter
+        Dim strConnectionString As String
         Dim objDR As SqlDataReader
 
-        Dim strAccountID As String = ""
+        Dim strDebugMsg As String = ""
 
-        ' Use the Connection string to instantiate a new Database class object.
-        objData_DB = New clsData_DB(strCon)
+        strErr = Me.ValidateInput()
+        If strErr = "NOERROR" Then
+            Try
 
-        objParams(0) = objData_DB.MakeInParam("@Email", SqlDbType.VarChar, 50, strEmail)
-        objParams(1) = objData_DB.MakeInParam("@FirstName", SqlDbType.VarChar, 50, strFN)
-        objParams(2) = objData_DB.MakeInParam("@LastName", SqlDbType.VarChar, 50, strLN)
-        objParams(3) = objData_DB.MakeInParam("@PhoneNumber", SqlDbType.VarChar, 12, strPhone)
-        objParams(4) = objData_DB.MakeInParam("@StreetAddressLine1", SqlDbType.VarChar, 60, strAddr)
-        objParams(5) = objData_DB.MakeInParam("@StreetAddressLine2", SqlDbType.VarChar, 60, "Not Used")
-        objParams(6) = objData_DB.MakeInParam("@City ", SqlDbType.VarChar, 50, strCity)
-        objParams(7) = objData_DB.MakeInParam("@StateProvName ", SqlDbType.VarChar, 50, strState)
-        objParams(8) = objData_DB.MakeInParam("@PostalCode ", SqlDbType.NChar, 10, strZip)
-        objParams(9) = objData_DB.MakeInParam("@CountryName ", SqlDbType.VarChar, 50, strCountry)
+                ' Get the connection string out of the Web.Config file.  Connection is tha actual name portion of the name value pair
+                Dim objWebConfig As New clsWebConfig()
+                strConnectionString = objWebConfig.GetWebConfig("Connection".ToString)
 
-        ' Run the stored procedure by name.  Pass with it the parameter list.
-        objDR = objData_DB.RunStoredProc("usp_UserAccount_Insert_AltOutput", objParams)
+                ' Use the Connection string to instantiate a new Database class object.
+                objData_DB = New clsData_DB(strConnectionString)
 
-        If objDR.HasRows Then
-            objDR.Read()
-            strAccountID = objDR("UserAccountID").ToString
+                objParams(0) = objData_DB.MakeInParam("@RecipeName", SqlDbType.VarChar, 150, strRecipeTitle)
+                objParams(1) = objData_DB.MakeInParam("@RecipeDescription", SqlDbType.VarChar, 150, strRecipeDescription)
+                objParams(2) = objData_DB.MakeInParam("@ServingSize", SqlDbType.SmallInt, 2, intServingSize)
+                objParams(3) = objData_DB.MakeInParam("@ShareLevelType", SqlDbType.VarChar, 30, strShareRecipe)
+                objParams(4) = objData_DB.MakeInParam("@SearchTerm", SqlDbType.VarChar, 500, strSearchKeyWord)
+                objParams(5) = objData_DB.MakeInParam("@CookingTime", SqlDbType.VarChar, 50, strCookingTime)
+                objParams(6) = objData_DB.MakeInParam("@MeasurementSystem", SqlDbType.VarChar, 30, strMeasurementSystem)
+                objParams(7) = objData_DB.MakeInParam("@Email", SqlDbType.VarChar, 50, strLogInUser)
+                objParams(8) = objData_DB.MakeInParam("@CuisineCategory", SqlDbType.VarChar, 50, strCategory)
+
+
+                ' Run the stored procedure by name.  Pass with it the parameter list.
+                objDR = objData_DB.RunStoredProc("usp_Recipe_Insert_Full", objParams)
+
+                If objDR.HasRows Then
+                    objDR.Read()
+
+                    If objDR("Status").ToString = "FAIL" Then
+                        strErr = "ERROR"
+                    Else
+                        strErr = ""
+                        strRecipeId = objDR("RecipeID").ToString
+                    End If
+                End If
+            Catch ex As Exception
+                Response.Write(ex.Message)
+                Response.End()
+            End Try
         End If
 
         ' CleanUp on our way out.  Make sure that we kill the connection so that we do not run our limit on concurrent 
@@ -119,8 +120,145 @@ Partial Public Class AddRecipe
             objData_DB = Nothing
         End If
 
-        Return strAccountID
+        Return strErr
     End Function
+
+    Private Function InsertIngredients(ByVal strIngredientName As String, ByVal strIngredientQuantity As String, ByVal strIngredientUom As String) As String
+
+        Dim strErr As String = ""
+        Dim objData_DB As clsData_DB
+        Dim objParams(3) As SqlParameter
+        Dim strConnectionString As String
+        Dim objDR As SqlDataReader
+
+        ' Get the connection string out of the Web.Config file.  Connection is tha actual name portion of the name value pair
+        Dim objWebConfig As New clsWebConfig()
+        strConnectionString = objWebConfig.GetWebConfig("Connection".ToString)
+
+        ' Use the Connection string to instantiate a new Database class object.
+        objData_DB = New clsData_DB(strConnectionString)
+
+        objParams(0) = objData_DB.MakeInParam("@RecipeStr", SqlDbType.VarChar, 6, strRecipeId)
+        objParams(1) = objData_DB.MakeInParam("@IngredientName", SqlDbType.VarChar, 100, strIngredientName)
+        objParams(2) = objData_DB.MakeInParam("@UnitOfMeasureType", SqlDbType.VarChar, 50, strIngredientUom)
+        objParams(3) = objData_DB.MakeInParam("@Qty", SqlDbType.VarChar, 10, strIngredientQuantity)
+
+
+        ' Run the stored procedure by name.  Pass with it the parameter list.
+        objDR = objData_DB.RunStoredProc("usp_RecipeIngredientList_Insert", objParams)
+
+        'Response.Write("RecipeId " + objParams(0).Value + "Name " + objParams(1).Value + "UOM " + objParams(2).Value + "Qty " + objParams(3).Value)
+        'Response.End()
+
+        If objDR.HasRows Then
+            objDR.Read()
+
+            If objDR("Status").ToString = "FAIL" Then
+                strErr = "ERROR"
+            Else
+                strErr = ""
+            End If
+        End If
+
+        ' CleanUp on our way out.  Make sure that we kill the connection so that we do not run our limit on concurrent 
+        ' database connections.
+        If Not IsNothing(objDR) Then
+            objDR.Close()
+            objDR = Nothing
+        End If
+
+        If Not IsNothing(objData_DB) Then
+            objData_DB.Close()
+            objData_DB = Nothing
+        End If
+        Return strErr
+    End Function
+
+    Private Function GetIngredients() As String
+
+        Dim strIngredientName As String = ""
+        Dim strIngredientQuantity As String = ""
+        Dim strIngredientUom As String = ""
+        Dim strErr As String = ""
+
+        For iCount As Integer = 1 To IngredientsNumberOfControls()
+            strIngredientName = CType(pnlIngredients.FindControl("TextBox1_" & iCount.ToString), TextBox).Text
+            strIngredientUom = CType(pnlIngredients.FindControl("DropDown3_" & iCount.ToString), DropDownList).SelectedValue.ToString
+            strIngredientQuantity = CType(pnlIngredients.FindControl("TextBox3_" & iCount.ToString), TextBox).Text
+
+            Me.InsertIngredients(strIngredientName, strIngredientQuantity, strIngredientUom)
+
+        Next
+        Dim strDebugMsg As String = ""
+
+        strErr = Me.ValidateInput()
+        If strErr = "NOERROR" Then
+        End If
+        Return strErr
+    End Function
+
+    Private Function InsertDirections(ByVal strDirectionsText As String, ByVal i As Integer) As String
+
+        Dim objData_DB As clsData_DB
+        Dim objParams(2) As SqlParameter
+        Dim strConnectionString As String
+        Dim objDR As SqlDataReader
+        Dim strErr As String = ""
+
+        ' Get the connection string out of the Web.Config file.  Connection is tha actual name portion of the name value pair
+        Dim objWebConfig As New clsWebConfig()
+        strConnectionString = objWebConfig.GetWebConfig("Connection".ToString)
+
+        ' Use the Connection string to instantiate a new Database class object.
+        objData_DB = New clsData_DB(strConnectionString)
+
+        objParams(0) = objData_DB.MakeInParam("@RecipeStr", SqlDbType.VarChar, 6, strRecipeId)
+        objParams(1) = objData_DB.MakeInParam("@StepNumber", SqlDbType.Int, 2, i)
+        objParams(2) = objData_DB.MakeInParam("@StepText", SqlDbType.VarChar, 200, strDirectionsText)
+
+
+        ' Run the stored procedure by name.  Pass with it the parameter list.
+        objDR = objData_DB.RunStoredProc("usp_InstructionStep_Insert", objParams)
+
+        If objDR.HasRows Then
+            objDR.Read()
+
+            If objDR("Status").ToString = "FAIL" Then
+                strErr = "ERROR"
+            Else
+                strErr = ""
+            End If
+        End If
+
+        ' CleanUp on our way out.  Make sure that we kill the connection so that we do not run our limit on concurrent 
+        ' database connections.
+        If Not IsNothing(objDR) Then
+            objDR.Close()
+            objDR = Nothing
+        End If
+
+        If Not IsNothing(objData_DB) Then
+            objData_DB.Close()
+            objData_DB = Nothing
+        End If
+
+    End Function
+
+    Private Function GetDirections() As String
+
+        Dim strErr As String = ""
+        Dim strDirectionsText As String = ""
+        For i As Integer = 1 To NumberOfControls()
+            strDirectionsText = CType(pnlDirections.FindControl("Control_" & i.ToString), TextBox).Text
+            Me.InsertDirections(strDirectionsText, i)
+        Next
+        Dim strDebugMsg As String = ""
+        strErr = Me.ValidateInput()
+        If strErr = "NOERROR" Then
+        End If
+        Return strErr
+    End Function
+
     Private Function ValidateInput() As String
         Dim strRet As String = "NOERROR"
 
@@ -128,7 +266,7 @@ Partial Public Class AddRecipe
         'strRet = "Email Address is Required"
         'End If
 
-        ' Return strRet
+        Return strRet
 
     End Function
 
@@ -138,12 +276,10 @@ Partial Public Class AddRecipe
         For iCounter As Integer = 1 To IngredientsNumberOfControls()
 
             Dim ingredientCtrl1 As TextBox = New TextBox()
-            Dim ingredientCtrl2 As TextBox = New TextBox()
+            Dim ingredientCtrl3 As TextBox = New TextBox()
             Dim ingredientLabel1 As Label = New Label()
             Dim ingredientLabel2 As Label = New Label()
             Dim ingredientLabel3 As Label = New Label()
-            Dim ingredientDropDown1 As DropDownList = New DropDownList()
-            Dim ingredientDropDown2 As DropDownList = New DropDownList()
             Dim ingredientDropDown3 As DropDownList = New DropDownList()
 
             ingredientLabel1.ID = "Label1_" & iCounter.ToString
@@ -151,22 +287,19 @@ Partial Public Class AddRecipe
             ingredientCtrl1.ID = "TextBox1_" & iCounter.ToString
             ingredientLabel2.ID = "Label2_" & iCounter.ToString
             ingredientLabel2.Text = " Quantity "
-            ingredientDropDown1.ID = "DropDown1_" & iCounter.ToString
-            ingredientDropDown2.ID = "DropDown2_" & iCounter.ToString
+            ingredientCtrl3.ID = "TextBox3_" & iCounter.ToString
             ingredientLabel3.ID = "Label3_" & iCounter.ToString
             ingredientLabel3.Text = " UOM "
             ingredientDropDown3.ID = "DropDown3_" & iCounter.ToString
-            ingredientCtrl2.ID = "TextBox2_" & iCounter.ToString
 
             Me.pnlIngredients.Controls.Add(ingredientLabel1)
             Me.pnlIngredients.Controls.Add(ingredientCtrl1)
             Me.pnlIngredients.Controls.Add(ingredientLabel2)
-            Me.pnlIngredients.Controls.Add(ingredientDropDown1)
-            Me.pnlIngredients.Controls.Add(ingredientDropDown2)
+            Me.pnlIngredients.Controls.Add(ingredientCtrl3)
             Me.pnlIngredients.Controls.Add(ingredientLabel3)
             Me.pnlIngredients.Controls.Add(ingredientDropDown3)
-            Me.pnlIngredients.Controls.Add(ingredientCtrl2)
             Me.pnlIngredients.Controls.Add(New LiteralControl("<br />"))
+            Me.Populate_Uom_DropDown(ingredientDropDown3)
 
         Next
     End Sub
@@ -181,30 +314,37 @@ Partial Public Class AddRecipe
         ' Only perform is it is new.  If Postback, we should already be good to go.
         strLoggedInUser = Session("RMS_LoggedInUser")
         strAuthenticated = Session("RMS_Authenticated")
+        strRecipeImage = Session("RMS_RecipeImage")
         strFunction = Session("RMS_Function")
-        Me.NumberOfControls = Convert.ToInt16(Session("RMS_NumberOfControls"))
-        Me.NumberOfControls = Convert.ToInt16(Session("RMS_IngredientsNumberOfControls"))
 
         If Not IsPostBack Then
             Me.Populate_ServingSize_DropDown()
             Me.populate_RecipeCategory_DropDown()
+            Me.Populate_Sharing_DropDown()
+            Me.rbRecipeMeasurement.SelectedIndex = 0
             NumberOfControls = 0
             Session("RMS_NumberOfControls") = Me.NumberOfControls.ToString
             Session("RMS_IngredientsNumberOfControls") = Me.NumberOfControls.ToString
         Else
             Me.CreateIngredientsControls()
             Me.CreateControls()
+            If Convert.ToInt16(Session("RMS_IngredientsNumberOfControls")) > 0 Then
+                Me.rbRecipeMeasurement.Enabled = False
+            End If
+            'Me.GetRecipeImage()
+        End If
+        If strRecipeImage <> "" Then
+            Me.imRecipeImage.ImageUrl = strRecipeImage
         End If
     End Sub
+
     Protected Sub AddIngredients(sender As Object, e As EventArgs)
 
         Dim ingredientCtrl1 As TextBox = New TextBox()
-        Dim ingredientCtrl2 As TextBox = New TextBox()
+        Dim ingredientCtrl3 As TextBox = New TextBox()
         Dim ingredientLabel1 As Label = New Label()
         Dim ingredientLabel2 As Label = New Label()
         Dim ingredientLabel3 As Label = New Label()
-        Dim ingredientDropDown1 As DropDownList = New DropDownList()
-        Dim ingredientDropDown2 As DropDownList = New DropDownList()
         Dim ingredientDropDown3 As DropDownList = New DropDownList()
 
         Me.IngredientsNumberOfControls += 1
@@ -215,22 +355,18 @@ Partial Public Class AddRecipe
         ingredientCtrl1.ID = "TextBox1_" & IngredientsNumberOfControls.ToString
         ingredientLabel2.ID = "Label2_" & IngredientsNumberOfControls.ToString
         ingredientLabel2.Text = " Quantity "
-        ingredientDropDown1.ID = "DropDown1_" & IngredientsNumberOfControls.ToString
-        ingredientDropDown2.ID = "DropDown2_" & IngredientsNumberOfControls.ToString
+        ingredientCtrl3.ID = "TextBox3_" & IngredientsNumberOfControls.ToString
         ingredientLabel3.ID = "Label3_" & IngredientsNumberOfControls.ToString
         ingredientLabel3.Text = " UOM "
         ingredientDropDown3.ID = "DropDown3_" & IngredientsNumberOfControls.ToString
-        ingredientCtrl2.ID = "TextBox2_" & IngredientsNumberOfControls.ToString
-
         Me.pnlIngredients.Controls.Add(ingredientLabel1)
         Me.pnlIngredients.Controls.Add(ingredientCtrl1)
         Me.pnlIngredients.Controls.Add(ingredientLabel2)
-        Me.pnlIngredients.Controls.Add(ingredientDropDown1)
-        Me.pnlIngredients.Controls.Add(ingredientDropDown2)
+        Me.pnlIngredients.Controls.Add(ingredientCtrl3)
         Me.pnlIngredients.Controls.Add(ingredientLabel3)
         Me.pnlIngredients.Controls.Add(ingredientDropDown3)
-        Me.pnlIngredients.Controls.Add(ingredientCtrl2)
         Me.pnlIngredients.Controls.Add(New LiteralControl("<br />"))
+        Me.Populate_Uom_DropDown(ingredientDropDown3)
 
     End Sub
 
@@ -243,6 +379,7 @@ Partial Public Class AddRecipe
 
             objCtrl.ID = "Control_" & iCounter.ToString
             objCtrl.TextMode = TextBoxMode.MultiLine
+            objCtrl.Attributes.Add("style", "width:800px")
             objLabel.ID = "Label_" & iCounter.ToString
             objLabel.Text = "Step " & iCounter.ToString & ":  "
 
@@ -263,12 +400,17 @@ Partial Public Class AddRecipe
         Session("RMS_NumberOfControls") = Me.NumberOfControls.ToString
 
         objCtrl.ID = "Control_" & NumberOfControls.ToString
+        objCtrl.TextMode = TextBoxMode.MultiLine
+        objCtrl.Attributes.Add("style", "width:800px")
         objLabel.ID = "Label_" & NumberOfControls.ToString
         objLabel.Text = "Step " & NumberOfControls.ToString & ":  "
 
         Me.pnlDirections.Controls.Add(objLabel)
         Me.pnlDirections.Controls.Add(objCtrl)
         Me.pnlDirections.Controls.Add(New LiteralControl("<br />"))
+        Me.SetFocus(btnAddStep)
+        Me.SetFocus(pnlDirections)
+        Me.SetFocus(objCtrl)
 
     End Sub
 
@@ -329,6 +471,169 @@ Partial Public Class AddRecipe
             Me.RecipeServingSize.Items.Add(New ListItem(iServingSize.ToString))
         Next
     End Sub
+
+    Protected Sub SaveRecipeChanges_Click(sender As Object, e As EventArgs)
+        Dim strErr As String = ""
+
+        ErrorMessage.Text = Me.InsertRecipe()
+        If ErrorMessage.Text = "" Then
+            Me.InsertRecipeImage()
+            Me.GetIngredients()
+            Me.GetDirections()
+            ErrorMessage.Text = "Record Successfully Updated"
+        End If
+
+    End Sub
+
+    Private Sub Populate_Sharing_DropDown()
+        Dim objData_DB As clsData_DB
+        Dim objParams(0) As SqlParameter
+        Dim strConnectionString As String
+        Dim objDR As SqlDataReader
+
+        ' Get the connection string out of the Web.Config file.  Connection is tha actual name portion of the name value pair
+        Dim objWebConfig As New clsWebConfig()
+        strConnectionString = objWebConfig.GetWebConfig("Connection".ToString)
+
+        ' Use the Connection string to instantiate a new Database class object.
+        objData_DB = New clsData_DB(strConnectionString)
+
+        ' Setup the parameters.  NOte that the Name, type and size must all match.  The final value is the paramter value
+        objParams(0) = objData_DB.MakeInParam("@TranCode", SqlDbType.VarChar, 10, "ALL")
+
+        ' Run the stored procedure by name.  Pass with it the parameter list.
+        objDR = objData_DB.RunStoredProc("usp_ShareLevelList_Select", objParams)
+
+        ' Do we have rows returned?
+        If objDR.HasRows Then
+            ' Clear the List before we populate
+            Me.ddRecipeSharing.Items.Clear()
+
+            ' Iterate Through the DataReader and Populate the Listbox
+            Me.ddRecipeSharing.Items.Add(New ListItem(""))
+            While objDR.Read()
+                Me.ddRecipeSharing.Items.Add(New ListItem(objDR("ShareLevelType").ToString))
+            End While
+        End If
+
+        ' CleanUp on our way out.  Make sure that we kill the connection so that we do not run our limit on concurrent 
+        ' database connections.
+        If Not IsNothing(objDR) Then
+            objDR.Close()
+            objDR = Nothing
+        End If
+
+        If Not IsNothing(objData_DB) Then
+            objData_DB.Close()
+            objData_DB = Nothing
+        End If
+
+    End Sub
+
+    Private Sub Populate_Uom_DropDown(ByVal ddCtrl As DropDownList)
+        Dim objData_DB As clsData_DB
+        Dim objParams(0) As SqlParameter
+        Dim strConnectionString As String
+        Dim objDR As SqlDataReader
+
+        ' Get the connection string out of the Web.Config file.  Connection is tha actual name portion of the name value pair
+        Dim objWebConfig As New clsWebConfig()
+        strConnectionString = objWebConfig.GetWebConfig("Connection".ToString)
+
+        ' Use the Connection string to instantiate a new Database class object.
+        objData_DB = New clsData_DB(strConnectionString)
+
+        ' Setup the parameters.  NOte that the Name, type and size must all match.  The final value is the paramter value
+        objParams(0) = objData_DB.MakeInParam("@TranCode", SqlDbType.VarChar, 10, "ALL")
+
+        ' Run the stored procedure by name.  Pass with it the parameter list.
+        If Me.rbRecipeMeasurement.SelectedIndex = 0 Then
+            objDR = objData_DB.RunStoredProc("usp_UOM_Select_US", objParams)
+        Else
+            objDR = objData_DB.RunStoredProc("usp_UOM_Select_NonUs", objParams)
+        End If
+
+        ' Do we have rows returned?
+        If objDR.HasRows Then
+            ' Clear the List before we populate
+            Dim arrCounter = 0
+            Dim arrayUomList(0)
+            ddCtrl.Items.Clear()
+            ' Iterate Through the DataReader and Populate the Listbox
+            'Me.arrayUomList.Items.Add(New ListItem(""))
+            While objDR.Read()
+                'Me.arrayUomList.Items.Add(New ListItem(objDR("ShareLevelType").ToString)
+                ddCtrl.Items.Add(New ListItem(objDR("UOMType").ToString))
+                ReDim arrayUomList(arrCounter)
+                arrayUomList(arrCounter) = objDR("UOMType")
+                arrCounter = arrCounter + 1
+            End While
+        End If
+
+        ' CleanUp on our way out.  Make sure that we kill the connection so that we do not run our limit on concurrent 
+        ' database connections.
+        If Not IsNothing(objDR) Then
+            objDR.Close()
+            objDR = Nothing
+        End If
+
+        If Not IsNothing(objData_DB) Then
+            objData_DB.Close()
+            objData_DB = Nothing
+        End If
+
+    End Sub
+
+    Private Sub InsertRecipeImage()
+
+        Dim strImageURL As String = Me.imRecipeImage.ImageUrl.ToString()
+
+        Dim objData_DB As clsData_DB
+        Dim objParams(1) As SqlParameter
+        Dim strConnectionString As String
+        Dim objDR As SqlDataReader
+        Dim objByte As Byte = &H20
+
+        If strImageURL <> "" Then
+            ' Get the connection string out of the Web.Config file.  Connection is tha actual name portion of the name value pair
+            Dim objWebConfig As New clsWebConfig()
+            strConnectionString = objWebConfig.GetWebConfig("Connection".ToString)
+
+            ' Use the Connection string to instantiate a new Database class object.
+            objData_DB = New clsData_DB(strConnectionString)
+
+            objParams(0) = objData_DB.MakeInParam("@RecipeId", SqlDbType.VarChar, 4, strRecipeId)
+            objParams(1) = objData_DB.MakeInParam("@ImageText", SqlDbType.VarChar, 200, strImageURL)
+
+            ' Run the stored procedure by name.  Pass with it the parameter list.
+            objDR = objData_DB.RunStoredProc("usp_RecipeImage_InsertUpdate", objParams)
+
+            ' CleanUp on our way out.  Make sure that we kill the connection so that we do not run our limit on concurrent 
+            ' database connections.
+            If Not IsNothing(objDR) Then
+                objDR.Close()
+                objDR = Nothing
+            End If
+
+            If Not IsNothing(objData_DB) Then
+                objData_DB.Close()
+                objData_DB = Nothing
+            End If
+
+        End If
+    End Sub
+
+    Protected Sub Recipe_Image_Upload(sender As Object, e As EventArgs)
+        If Me.fuRecipePicUpload.HasFile Then
+            Dim strFileName As String = Path.GetFileName(Me.fuRecipePicUpload.PostedFile.FileName)
+            fuRecipePicUpload.PostedFile.SaveAs(Server.MapPath("~/Images/") + strFileName)
+            Me.imRecipeImage.ImageUrl = Server.MapPath("~/Images/") + strFileName
+            Session("RMS_RecipeImage") = "~/Images/" & strFileName
+            Response.Redirect(Request.Url.AbsoluteUri)
+
+        End If
+    End Sub
+
 
     Private Sub InitializeComponent()
         Me.EventLog1 = New System.Diagnostics.EventLog()
