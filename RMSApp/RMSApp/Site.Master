@@ -83,7 +83,7 @@
                              <asp:MenuItem Text="HOME" NavigateUrl="~/Authenticated_Default.aspx" Value="Home" ></asp:MenuItem>
                              <asp:MenuItem Text="SEARCH"  Value="Search" NavigateUrl="~/Search.aspx"></asp:MenuItem>
                              <asp:MenuItem Text="MY RMS" Value="MyRMS">
-                                 <asp:MenuItem Text="PROFILE MANAGER" NavigateUrl="~/Account/ManageProfile.aspx"></asp:MenuItem>
+                                 <asp:MenuItem Text="Profile Manager" NavigateUrl="~/Account/ManageProfile.aspx"></asp:MenuItem>
                                  <asp:MenuItem Text="Change Password" NavigateUrl="~/Account/ManagePassword.aspx"></asp:MenuItem>
                                  <asp:MenuItem Text="Logout" NavigateUrl="~/Account/Logout.aspx" Value="Logout"></asp:MenuItem>
                              </asp:MenuItem>
@@ -91,7 +91,7 @@
                                  <asp:MenuItem Text="Add A Recipe" NavigateUrl="~/Account/AddRecipe.aspx" Value="AddARecipe"></asp:MenuItem>
                                  <asp:MenuItem Text="Manage My Recipes" Value="ManageMyRecipes"></asp:MenuItem>
                                  <asp:MenuItem Text="Favorites" Value="Favorites"></asp:MenuItem>
-                                 <asp:MenuItem Text="Recipe Search" Value="MySearch"></asp:MenuItem>
+                                 <asp:MenuItem Text="Recipe Search" Value="MySearch" NavigateUrl="~/Search.aspx" ></asp:MenuItem>
                              </asp:MenuItem>
                              <asp:MenuItem Text="CIRCLE OF FRIENDS" Value="CircleOfFriends">
                                  <asp:MenuItem Text="Manage Circles" Value="ManageCircles"></asp:MenuItem>

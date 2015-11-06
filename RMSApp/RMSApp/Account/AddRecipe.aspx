@@ -147,7 +147,7 @@
                     <h3>Recipe Image</h3>
                 </asp:TableCell>
                 <asp:TableCell ColumnSpan="3" HorizontalAlign="Left">
-                    <asp:Image ID="imRecipeImage" runat="server"  />
+                    <asp:Image ID="imRecipeImage" runat="server" width="300px" Height="300px" ImageUrl="~/images/Default_Image.png"/>
                 </asp:TableCell>
                 <asp:TableCell ColumnSpan="1" HorizontalAlign="Left">
                     <asp:FileUpload ID="fuRecipePicUpload" runat="server" />

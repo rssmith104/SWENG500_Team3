@@ -48,6 +48,10 @@ Partial Public Class AddRecipe
     End Property
     Protected m_IngredientsNumberOfControls As Integer
 
+    ''' <summary>
+    ''' InsertRecipe 
+    ''' </summary>
+    ''' <returns></returns>
     Private Function InsertRecipe() As String
         Dim strErr As String
         Dim strRecipeTitle As String = Me.RecipeTitle.Text
@@ -304,40 +308,6 @@ Partial Public Class AddRecipe
         Next
     End Sub
 
-    ''' <summary>
-    ''' Register_Load - Page Load Event Handler
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    Private Sub ManageProfile_Load(sender As Object, e As EventArgs) Handles Me.Load
-        ' On Page Load of the Registration Page, we want to populate the SecurityQuestion dropdown listbox.
-        ' Only perform is it is new.  If Postback, we should already be good to go.
-        strLoggedInUser = Session("RMS_LoggedInUser")
-        strAuthenticated = Session("RMS_Authenticated")
-        strRecipeImage = Session("RMS_RecipeImage")
-        strFunction = Session("RMS_Function")
-
-        If Not IsPostBack Then
-            Me.Populate_ServingSize_DropDown()
-            Me.populate_RecipeCategory_DropDown()
-            Me.Populate_Sharing_DropDown()
-            Me.rbRecipeMeasurement.SelectedIndex = 0
-            NumberOfControls = 0
-            Session("RMS_NumberOfControls") = Me.NumberOfControls.ToString
-            Session("RMS_IngredientsNumberOfControls") = Me.NumberOfControls.ToString
-        Else
-            Me.CreateIngredientsControls()
-            Me.CreateControls()
-            If Convert.ToInt16(Session("RMS_IngredientsNumberOfControls")) > 0 Then
-                Me.rbRecipeMeasurement.Enabled = False
-            End If
-            'Me.GetRecipeImage()
-        End If
-        If strRecipeImage <> "" Then
-            Me.imRecipeImage.ImageUrl = strRecipeImage
-        End If
-    End Sub
-
     Protected Sub AddIngredients(sender As Object, e As EventArgs)
 
         Dim ingredientCtrl1 As TextBox = New TextBox()
@@ -367,6 +337,8 @@ Partial Public Class AddRecipe
         Me.pnlIngredients.Controls.Add(ingredientDropDown3)
         Me.pnlIngredients.Controls.Add(New LiteralControl("<br />"))
         Me.Populate_Uom_DropDown(ingredientDropDown3)
+
+        Me.SetFocus(ingredientCtrl1)
 
     End Sub
 
@@ -408,8 +380,8 @@ Partial Public Class AddRecipe
         Me.pnlDirections.Controls.Add(objLabel)
         Me.pnlDirections.Controls.Add(objCtrl)
         Me.pnlDirections.Controls.Add(New LiteralControl("<br />"))
-        Me.SetFocus(btnAddStep)
-        Me.SetFocus(pnlDirections)
+        'Me.SetFocus(btnAddStep)
+        'Me.SetFocus(pnlDirections)
         Me.SetFocus(objCtrl)
 
     End Sub
@@ -627,9 +599,12 @@ Partial Public Class AddRecipe
         If Me.fuRecipePicUpload.HasFile Then
             Dim strFileName As String = Path.GetFileName(Me.fuRecipePicUpload.PostedFile.FileName)
             fuRecipePicUpload.PostedFile.SaveAs(Server.MapPath("~/Images/") + strFileName)
-            Me.imRecipeImage.ImageUrl = Server.MapPath("~/Images/") + strFileName
+            Me.imRecipeImage.ImageUrl = "~/images/" & strFileName
+            'Me.imRecipeImage.ImageUrl = Server.MapPath("~/Images/") + strFileName
+            'Me.imRecipeImage.Attributes.Add("ImageUrl", "Server.MapPath(""~/Images/"") + strFileName")
             Session("RMS_RecipeImage") = "~/Images/" & strFileName
-            Response.Redirect(Request.Url.AbsoluteUri)
+            Me.SetFocus(fuRecipePicUpload)
+            'Response.Redirect(Request.Url.AbsoluteUri)
 
         End If
     End Sub
@@ -648,6 +623,42 @@ Partial Public Class AddRecipe
     Private Sub EventLog1_EntryWritten(sender As Object, e As EntryWrittenEventArgs) Handles EventLog1.EntryWritten
 
     End Sub
+
+    ''' <summary>
+    ''' Register_Load - Page Load Event Handler
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' 
+    Private Sub AddARecipe_Load(sender As Object, e As EventArgs) Handles Me.Load
+        ' On Page Load of the Registration Page, we want to populate the SecurityQuestion dropdown listbox.
+        ' Only perform is it is new.  If Postback, we should already be good to go.
+        strLoggedInUser = Session("RMS_LoggedInUser")
+        strAuthenticated = Session("RMS_Authenticated")
+        strRecipeImage = Session("RMS_RecipeImage")
+        strFunction = Session("RMS_Function")
+
+        If Not IsPostBack Then
+            Me.Populate_ServingSize_DropDown()
+            Me.populate_RecipeCategory_DropDown()
+            Me.Populate_Sharing_DropDown()
+            Me.rbRecipeMeasurement.SelectedIndex = 0
+            NumberOfControls = 0
+            Session("RMS_NumberOfControls") = Me.NumberOfControls.ToString
+            Session("RMS_IngredientsNumberOfControls") = Me.NumberOfControls.ToString
+        Else
+            Me.CreateIngredientsControls()
+            Me.CreateControls()
+            If Convert.ToInt16(Session("RMS_IngredientsNumberOfControls")) > 0 Then
+                Me.rbRecipeMeasurement.Enabled = False
+            End If
+
+        End If
+        If strRecipeImage <> "" Then
+            Me.imRecipeImage.ImageUrl = strRecipeImage
+        End If
+    End Sub
+
 
 End Class
 
