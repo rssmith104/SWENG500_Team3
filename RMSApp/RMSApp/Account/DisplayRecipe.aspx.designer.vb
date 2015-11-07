@@ -59,6 +59,15 @@ Partial Public Class DisplayRecipe
     Protected WithEvents ltSubmissionDate As Global.System.Web.UI.WebControls.Literal
     
     '''<summary>
+    '''imgRating control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents imgRating As Global.System.Web.UI.WebControls.Image
+    
+    '''<summary>
     '''ltRating control.
     '''</summary>
     '''<remarks>

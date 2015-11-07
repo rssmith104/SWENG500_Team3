@@ -130,8 +130,11 @@ Partial Public Class DisplayRecipe
             Me.ltOwner.Text = objDR("Owner_Email").ToString
             Me.ltSubmissionDate.Text = objDR("SubmissionDate").ToString
 
+            '<TODO retrieve rating from database on bind to Page Data
             ' Bind the Rating
-            Me.ltRating.Text = "4.5 Out of 5 Stars"
+            Dim strRating As String = "3.17"  'Hardcoded for now.  Substitute database value here.
+            Me.ltRating.Text = strRating & " of 5"
+            Me.imgRating.ImageUrl = Me.RatingImageSelection(strRating)
 
             'Bind the Recipe Description
             Me.ltRecipeDescription.Text = objDR("RecipeDescription").ToString
@@ -301,7 +304,8 @@ Partial Public Class DisplayRecipe
         Me.ltSubmissionDate.Text = "February 3, 2014"
 
         ' Bind the Rating
-        Me.ltRating.Text = "4.5 Out of 5 Stars"
+        Me.ltRating.Text = "4.5 of 5"
+        Me.imgRating.ImageUrl = RatingImageSelection("4.5")
 
         'Bind the Image
         Me.imgRecipeImage.ImageUrl = "~/images/Lasagna_Meat.jpg"
@@ -375,6 +379,43 @@ Partial Public Class DisplayRecipe
 
     End Sub
 
+    Private Function RatingImageSelection(ByVal strRating As String) As String
+        Dim dblRating As Double
+        Dim strReturnImageRef As String = "~/images/RMSRating_NoRating.png"
+
+        If strRating = "No Rate" Then
+            Return strReturnImageRef
+        End If
+
+        dblRating = CDbl(strRating)
+
+        If dblRating > 4.75 Then
+            strReturnImageRef = "~/images/RMSRating_5.0.png"
+        ElseIf dblRating > 4.25 Then
+            strReturnImageRef = "~/images/RMSRating_4.5.png"
+        ElseIf dblRating > 3.75 Then
+            strReturnImageRef = "~/images/RMSRating_4.0.png"
+        ElseIf dblRating > 3.25 Then
+            strReturnImageRef = "~/images/RMSRating_3.5.png"
+        ElseIf dblRating > 2.75 Then
+            strReturnImageRef = "~/images/RMSRating_3.0.png"
+        ElseIf dblRating > 2.25 Then
+            strReturnImageRef = "~/images/RMSRating_2.5.png"
+        ElseIf dblRating > 1.75 Then
+            strReturnImageRef = "~/images/RMSRating_2.0.png"
+        ElseIf dblRating > 1.25 Then
+            strReturnImageRef = "~/images/RMSRating_1.5.png"
+        ElseIf dblRating > 0.75 Then
+            strReturnImageRef = "~/images/RMSRating_1.0.png"
+        ElseIf dblRating > 0.25 Then
+            strReturnImageRef = "~/images/RMSRating_0.5.png"
+        Else
+            strReturnImageRef = "~/images/RMSRating_0.5.png"
+        End If
+
+        Return strReturnImageRef
+
+    End Function
     Private Function PadRightSpace(ByVal strText As String, ByVal intPadNo As Int16) As String
         Dim strRet As String
         Dim iCounter As Int16 = 0

@@ -38,7 +38,8 @@
                 <asp:TableCell ColumnSpan="1" VerticalAlign="Middle" HorizontalAlign="Left"><b><asp:Literal ID="ltOwner" runat="server"></asp:Literal></b></asp:TableCell>
                 <asp:TableCell ColumnSpan="2" VerticalAlign="Middle" HorizontalAlign="Center"><i><asp:Literal ID="ltSubmissionDate" runat="server"></asp:Literal></i></asp:TableCell>
                 <asp:TableCell ColumnSpan="1" VerticalAlign="Middle" HorizontalAlign="Right"><p><i>Rating:&nbsp;</i></p></asp:TableCell>
-                <asp:TableCell ColumnSpan="2" VerticalAlign="Middle" HorizontalAlign="Center"><p><asp:Literal ID="ltRating" runat="server"></asp:Literal></p></asp:TableCell>
+                <asp:TableCell ColumnSpan="1" VerticalAlign="Middle" HorizontalAlign="Center"><asp:Image ID="imgRating" runat="server" Width="130px" Height="25px"/></asp:TableCell>
+                <asp:TableCell ColumnSpan="1" VerticalAlign="Middle" HorizontalAlign="Center"><p><asp:Literal ID="ltRating" runat="server"></asp:Literal></p></asp:TableCell>
                 <asp:TableCell ColumnSpan="2" VerticalAlign="Middle" HorizontalAlign="Center"><asp:HyperLink ID="hypReadReviews" runat="server">Read Reviews</asp:HyperLink></asp:TableCell>
             </asp:TableRow>
             <asp:TableRow>
