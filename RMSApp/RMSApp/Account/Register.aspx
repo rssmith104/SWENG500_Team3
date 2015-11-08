@@ -7,7 +7,7 @@
     <p class="text-danger">
         <asp:Literal runat="server" ID="ErrorMessage" />
     </p>
-    <div class="form-horizontal" style="background-image: url('/Images/vegetable-stock-recipe.jpg')">
+    <div class="form-horizontal">
         <h4>Create a new account</h4>
         <asp:Label ID="Label1" runat="server" Text="Label" ForeColor="#CC0000">Required fields are marked with an asterisk *</asp:Label>
         <hr />
