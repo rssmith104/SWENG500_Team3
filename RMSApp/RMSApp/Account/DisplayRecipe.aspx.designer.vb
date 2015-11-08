@@ -23,6 +23,15 @@ Partial Public Class DisplayRecipe
     Protected WithEvents ErrorMessage As Global.System.Web.UI.WebControls.Literal
     
     '''<summary>
+    '''hdnRecipeID control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents hdnRecipeID As Global.System.Web.UI.WebControls.HiddenField
+    
+    '''<summary>
     '''DisplayTable control.
     '''</summary>
     '''<remarks>

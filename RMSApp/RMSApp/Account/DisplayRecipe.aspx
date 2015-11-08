@@ -11,6 +11,8 @@
         <hr />
         <asp:ValidationSummary runat="server" CssClass="text-danger" />
 
+        <asp:HiddenField ID="hdnRecipeID" runat="server" />
+
         <asp:Table ID="DisplayTable" runat="server" Width="100%" GridLines="Both">
             <asp:TableRow>
                 <asp:TableCell Width="10%">&nbsp;</asp:TableCell>
@@ -83,8 +85,8 @@
             </asp:TableRow>
             <asp:TableRow>
                 <asp:TableCell ColumnSpan="3">&nbsp</asp:TableCell>
-                <asp:TableCell ColumnSpan="2" VerticalAlign="Middle" HorizontalAlign="Center"><asp:Button ID="btnReview" runat="server" Text="Review Recipe" CssClass="btn btn-primary btn-lg" /></asp:TableCell>
-                <asp:TableCell ColumnSpan="2" VerticalAlign="Middle" HorizontalAlign="Center"><asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn btn-primary btn-lg" /></asp:TableCell>
+                <asp:TableCell ColumnSpan="2" VerticalAlign="Middle" HorizontalAlign="Center"><asp:Button ID="btnReview" runat="server" Text="Submit Recipe Review" CssClass="btn btn-primary btn-lg" OnClick="ReviewRecipe_Click" /></asp:TableCell>
+                <asp:TableCell ColumnSpan="2" VerticalAlign="Middle" HorizontalAlign="Center"><asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn btn-primary btn-lg" OnClick="SearchRecipe_Click" /></asp:TableCell>
                 <asp:TableCell ColumnSpan="3">&nbsp</asp:TableCell>
             </asp:TableRow>
         </asp:Table>

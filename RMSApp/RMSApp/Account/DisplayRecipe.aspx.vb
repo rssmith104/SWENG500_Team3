@@ -67,10 +67,12 @@ Partial Public Class DisplayRecipe
 
             ' We then transalate it into an integer
             m_intRecipeID = ExtractRecipeID(m_strRecipeID)
+            Me.hdnRecipeID.Value = m_intRecipeID.ToString
 
             ' Bind the data to the form controls on the page.
             BindRecipeContent(m_intRecipeID)
         Else
+            m_intRecipeID = CInt(Me.hdnRecipeID.Value)
         End If
     End Sub
 
@@ -103,6 +105,8 @@ Partial Public Class DisplayRecipe
         Dim objParams(0) As SqlParameter
         Dim objDR As SqlDataReader
         Dim strConnectionString As String
+        Dim strRating As String
+        Dim strReviewCount As Integer
 
         ' Get the connection string out of the Web.Config file.  Connection is tha actual name portion of the name value pair
         Dim objWebConfig As New clsWebConfig()
@@ -132,8 +136,18 @@ Partial Public Class DisplayRecipe
 
             '<TODO retrieve rating from database on bind to Page Data
             ' Bind the Rating
-            Dim strRating As String = "3.17"  'Hardcoded for now.  Substitute database value here.
-            Me.ltRating.Text = strRating & " of 5"
+            strRating = GetRating(intRecipeID)
+            strReviewCount = GetReviewCount(intRecipeID)
+
+            If strRating <> "No Rate" Then
+                Me.ltRating.Text = FormatNumber(CDbl(strRating), 1).ToString & " of 5"
+                Me.hypReadReviews.Enabled = True
+                Me.hypReadReviews.Text = strReviewCount & " Reviews Found"
+            Else
+                Me.ltRating.Text = "No Rating"
+                Me.hypReadReviews.Enabled = False
+                Me.hypReadReviews.Text = "0 Reveiws Found"
+            End If
             Me.imgRating.ImageUrl = Me.RatingImageSelection(strRating)
 
             'Bind the Recipe Description
@@ -159,6 +173,83 @@ Partial Public Class DisplayRecipe
 
     End Sub
 
+    Private Function GetRating(ByVal intRecipeID As Integer) As String
+        Dim strRetVal As String = ""
+        Dim objData_DB As clsData_DB
+        Dim strConnectionString As String
+        Dim objParams(0) As SqlParameter
+        Dim objDR As SqlDataReader
+
+        ' Get the connection string out of the Web.Config file.  Connection is tha actual name portion of the name value pair
+        Dim objWebConfig As New clsWebConfig()
+        strConnectionString = objWebConfig.GetWebConfig("Connection".ToString)
+
+        ' Use the Connection string to instantiate a new Database class object.
+        objData_DB = New clsData_DB(strConnectionString)
+
+        ' Setup the parameters.  NOte that the Name, type and size must all match.  The final value is the paramter value
+        objParams(0) = objData_DB.MakeInParam("@RecipeID ", SqlDbType.Int, 4, CInt(intRecipeID))
+
+        objDR = objData_DB.RunStoredProc("usp_Review_Select_Total_byRecipeID", objParams)
+
+        If objDR.HasRows Then
+            objDR.Read()
+            strRetVal = objDR("AverageScore".ToString)
+        End If
+
+        ' CleanUp on our way out.  Make sure that we kill the connection so that we do not run our limit on concurrent 
+        ' database connections.
+        If Not IsNothing(objDR) Then
+            objDR.Close()
+            objDR = Nothing
+        End If
+
+        If Not IsNothing(objData_DB) Then
+            objData_DB.Close()
+            objData_DB = Nothing
+        End If
+
+        Return strRetVal
+    End Function
+
+    Private Function GetReviewCount(ByVal intRecipeID As Integer) As String
+        Dim strRetVal As String = ""
+        Dim objData_DB As clsData_DB
+        Dim strConnectionString As String
+        Dim objParams(0) As SqlParameter
+        Dim objDR As SqlDataReader
+
+        ' Get the connection string out of the Web.Config file.  Connection is tha actual name portion of the name value pair
+        Dim objWebConfig As New clsWebConfig()
+        strConnectionString = objWebConfig.GetWebConfig("Connection".ToString)
+
+        ' Use the Connection string to instantiate a new Database class object.
+        objData_DB = New clsData_DB(strConnectionString)
+
+        ' Setup the parameters.  NOte that the Name, type and size must all match.  The final value is the paramter value
+        objParams(0) = objData_DB.MakeInParam("@RecipeID ", SqlDbType.Int, 4, CInt(intRecipeID))
+
+        objDR = objData_DB.RunStoredProc("usp_Review_Select_Total_byRecipeID", objParams)
+
+        If objDR.HasRows Then
+            objDR.Read()
+            strRetVal = objDR("QtyReviews").ToString
+        End If
+
+        ' CleanUp on our way out.  Make sure that we kill the connection so that we do not run our limit on concurrent 
+        ' database connections.
+        If Not IsNothing(objDR) Then
+            objDR.Close()
+            objDR = Nothing
+        End If
+
+        If Not IsNothing(objData_DB) Then
+            objData_DB.Close()
+            objData_DB = Nothing
+        End If
+
+        Return strRetVal
+    End Function
 
     Private Sub BindRecipeImageData(ByVal intRecipeID As Int16)
         Dim objData_DB As clsData_DB
@@ -381,36 +472,37 @@ Partial Public Class DisplayRecipe
 
     Private Function RatingImageSelection(ByVal strRating As String) As String
         Dim dblRating As Double
-        Dim strReturnImageRef As String = "~/images/RMSRating_NoRating.png"
+        Dim strReturnImageRef As String
 
         If strRating = "No Rate" Then
-            Return strReturnImageRef
-        End If
-
-        dblRating = CDbl(strRating)
-
-        If dblRating > 4.75 Then
-            strReturnImageRef = "~/images/RMSRating_5.0.png"
-        ElseIf dblRating > 4.25 Then
-            strReturnImageRef = "~/images/RMSRating_4.5.png"
-        ElseIf dblRating > 3.75 Then
-            strReturnImageRef = "~/images/RMSRating_4.0.png"
-        ElseIf dblRating > 3.25 Then
-            strReturnImageRef = "~/images/RMSRating_3.5.png"
-        ElseIf dblRating > 2.75 Then
-            strReturnImageRef = "~/images/RMSRating_3.0.png"
-        ElseIf dblRating > 2.25 Then
-            strReturnImageRef = "~/images/RMSRating_2.5.png"
-        ElseIf dblRating > 1.75 Then
-            strReturnImageRef = "~/images/RMSRating_2.0.png"
-        ElseIf dblRating > 1.25 Then
-            strReturnImageRef = "~/images/RMSRating_1.5.png"
-        ElseIf dblRating > 0.75 Then
-            strReturnImageRef = "~/images/RMSRating_1.0.png"
-        ElseIf dblRating > 0.25 Then
-            strReturnImageRef = "~/images/RMSRating_0.5.png"
+            strReturnImageRef = "~/images/RMSRating_NoRating.png"
         Else
-            strReturnImageRef = "~/images/RMSRating_0.5.png"
+            dblRating = CDbl(strRating)
+
+            If dblRating > 4.75 Then
+                strReturnImageRef = "~/images/RMSRating_5.0.png"
+            ElseIf dblRating > 4.25 Then
+                strReturnImageRef = "~/images/RMSRating_4.5.png"
+            ElseIf dblRating > 3.75 Then
+                strReturnImageRef = "~/images/RMSRating_4.0.png"
+            ElseIf dblRating > 3.25 Then
+                strReturnImageRef = "~/images/RMSRating_3.5.png"
+            ElseIf dblRating > 2.75 Then
+                strReturnImageRef = "~/images/RMSRating_3.0.png"
+            ElseIf dblRating > 2.25 Then
+                strReturnImageRef = "~/images/RMSRating_2.5.png"
+            ElseIf dblRating > 1.75 Then
+                strReturnImageRef = "~/images/RMSRating_2.0.png"
+            ElseIf dblRating > 1.25 Then
+                strReturnImageRef = "~/images/RMSRating_1.5.png"
+            ElseIf dblRating > 0.75 Then
+                strReturnImageRef = "~/images/RMSRating_1.0.png"
+            ElseIf dblRating > 0.25 Then
+                strReturnImageRef = "~/images/RMSRating_0.5.png"
+            Else
+                strReturnImageRef = "~/images/RMSRating_0.5.png"
+            End If
+
         End If
 
         Return strReturnImageRef
@@ -482,5 +574,12 @@ Partial Public Class DisplayRecipe
 
     End Sub
 
+    Protected Sub ReviewRecipe_Click(sender As Object, e As EventArgs)
+        Response.Redirect("~/Account/SubmitRating?RecipeID=" & Me.m_intRecipeID.ToString)
+    End Sub
+
+    Protected Sub SearchRecipe_Click(sender As Object, e As EventArgs)
+        Response.Redirect("~/Search" & Me.m_intRecipeID.ToString)
+    End Sub
 End Class
 
