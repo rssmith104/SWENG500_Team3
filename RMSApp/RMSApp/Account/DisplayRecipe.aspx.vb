@@ -143,10 +143,12 @@ Partial Public Class DisplayRecipe
                 Me.ltRating.Text = FormatNumber(CDbl(strRating), 1).ToString & " of 5"
                 Me.hypReadReviews.Enabled = True
                 Me.hypReadReviews.Text = strReviewCount & " Reviews Found"
+                Me.hypReadReviews.NavigateUrl = "~/Account/DisplayReview?RecipeID=" & intRecipeID.ToString
             Else
                 Me.ltRating.Text = "No Rating"
                 Me.hypReadReviews.Enabled = False
                 Me.hypReadReviews.Text = "0 Reveiws Found"
+                Me.hypReadReviews.NavigateUrl = ""
             End If
             Me.imgRating.ImageUrl = Me.RatingImageSelection(strRating)
 
