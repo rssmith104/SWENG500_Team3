@@ -31,7 +31,7 @@
             </asp:TableRow>
             <asp:TableRow>
                 <asp:TableCell ColumnSpan="1">&nbsp</asp:TableCell>
-                <asp:TableCell ColumnSpan="3" HorizontalAlign="Center">
+                <asp:TableCell ColumnSpan="3" HorizontalAlign="Left">
                     <asp:Panel ID="pnlReviews" runat="server" BorderWidth="1"></asp:Panel>
                 </asp:TableCell>
                 <asp:TableCell ColumnSpan="1">&nbsp</asp:TableCell>
