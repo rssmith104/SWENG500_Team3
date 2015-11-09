@@ -5,7 +5,7 @@
         Session("RMS_LoggedInUser") = ""
         Session("RMS_Authenticated") = "False"
         Session("RMS_Function") = "LOGOUT"
-        Response.Redirect("/RMSApp/Default.aspx")
+        Response.Redirect("~/Default.aspx")
     End Sub
 
 End Class
