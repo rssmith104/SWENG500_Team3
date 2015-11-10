@@ -69,7 +69,7 @@
             </asp:TableRow>
             <asp:TableRow>
                 <asp:TableCell ColumnSpan="2" HorizontalAlign="Center">
-                    <asp:Button ID="btnSubmit" runat="server" Text="Submit Rating" OnClick="SaveChanges_Click" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:Button ID="btnCancel" runat="server" Text="Cancel" CausesValidation="false"/>
+                    <asp:Button ID="btnSubmit" runat="server" Text="Submit Rating" OnClick="SaveChanges_Click" CssClass="btn btn-primary btn-md" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:Button ID="btnCancel" runat="server" Text="Cancel" CausesValidation="false" CssClass="btn btn-primary btn-md"/>
                 </asp:TableCell>
             </asp:TableRow>
         </asp:Table>

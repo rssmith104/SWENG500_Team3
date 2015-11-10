@@ -147,6 +147,8 @@ Public Class SubmitRating
             objData_DB = Nothing
         End If
 
+        Response.Redirect("~/Account/DisplayRecipe?RecipeID=View_" & Me.strRecipeID.ToString)
+
     End Sub
 
 End Class
