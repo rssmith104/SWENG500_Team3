@@ -16,7 +16,7 @@
         <asp:HiddenField ID="hdnRecipeID" runat="server" />
         <asp:HiddenField ID="hdnLoggedInUser" runat="server" />
 
-        <asp:Table ID="Table1" runat="server" Width="100%" GridLines="Both" >
+        <asp:Table ID="Table1" runat="server" Width="100%" GridLines="None" >
             <asp:TableRow>
                 <asp:TableCell Width="5%">&nbsp;</asp:TableCell>
                 <asp:TableCell Width="30%">&nbsp;</asp:TableCell>

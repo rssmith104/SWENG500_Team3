@@ -215,7 +215,7 @@ Public Class DisplayReview
 
     End Function
     Protected Sub OK_Click(sender As Object, e As EventArgs)
-        Response.Redirect("~/Account/DisplayRecipe?RecipeID=" & Me.hdnRecipeID.Value)
+        Response.Redirect("~/Account/DisplayRecipe?RecipeID=View_" & Me.hdnRecipeID.Value)
     End Sub
 
 End Class
