@@ -160,6 +160,7 @@ Partial Public Class Search
 
         btnSearchCtrl.ID = "btnView_" & strRecipeID
         btnSearchCtrl.Text = "View Recipe"
+        btnSearchCtrl.Attributes.Add("Class", "btn btn-primary btn-sm")
         'btnSearchCtrl.Attributes.Add("OnClick", "btnDisplay_Click")
         AddHandler btnSearchCtrl.Click, AddressOf btnDisplay_Click
 
