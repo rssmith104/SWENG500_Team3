@@ -13,7 +13,7 @@
 
         <asp:HiddenField ID="hdnRecipeID" runat="server" />
 
-        <asp:Table ID="DisplayTable" runat="server" Width="100%" GridLines="Both">
+        <asp:Table ID="DisplayTable" runat="server" Width="100%" GridLines="None">
             <asp:TableRow>
                 <asp:TableCell Width="10%">&nbsp;</asp:TableCell>
                 <asp:TableCell Width="10%">&nbsp;</asp:TableCell>
