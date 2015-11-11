@@ -14,6 +14,15 @@ Option Explicit On
 Partial Public Class SiteMaster
     
     '''<summary>
+    '''imgProfile control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents imgProfile As Global.System.Web.UI.WebControls.Image
+    
+    '''<summary>
     '''Menu1 control.
     '''</summary>
     '''<remarks>
