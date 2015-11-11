@@ -13,7 +13,7 @@
         <asp:ValidationSummary runat="server" CssClass="text-danger" />
         <asp:table runat="server"></asp:table>
 
-        <asp:Table ID="Table1" runat="server">
+        <asp:Table ID="Table1" runat="server" GridLines="Both">
             <asp:TableRow>
                 <asp:TableCell VerticalAlign="Top" HorizontalAlign="Center" ColumnSpan="4">
                     <div class="col-md-10">
@@ -116,17 +116,11 @@
                 <asp:TableCell ColumnSpan="4"><hr /></asp:TableCell>
             </asp:TableRow>
             <asp:TableRow>
-                <asp:TableCell ColumnSpan="1" HorizontalAlign="Left">
-                    <h3>Profile Pic</h3>
+                <asp:TableCell ColumnSpan="2" HorizontalAlign="Center">
+                    <h3>Profile Pic</h3>&nbsp;&nbsp;&nbsp;<asp:Image ID="imProfileImage" runat="server" width="200px" Height="200px"  />
                 </asp:TableCell>
-                <asp:TableCell ColumnSpan="1" HorizontalAlign="Left">
-                    <asp:Image ID="imProfileImage" runat="server"  />
-                </asp:TableCell>
-                <asp:TableCell ColumnSpan="1" HorizontalAlign="Left">
-                    <asp:FileUpload ID="fuProfilePicUpload" runat="server" />
-                </asp:TableCell>
-                <asp:TableCell ColumnSpan="1" HorizontalAlign="Center">
-                    <asp:Button ID="btnImageUpload" runat="server" Text="Image Upload" OnClick="Image_Upload" />
+                <asp:TableCell ColumnSpan="2" HorizontalAlign="Center">
+                    <asp:FileUpload ID="fuProfilePicUpload" runat="server" /><br /><asp:Button ID="btnImageUpload" runat="server" Text="Image Upload" OnClick="Image_Upload" />
                 </asp:TableCell>
             </asp:TableRow>
             <asp:TableRow>
@@ -136,11 +130,11 @@
                 <asp:TableCell ColumnSpan="4" HorizontalAlign="Center">
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <asp:Button runat="server" OnClick="SaveChanges_Click" Text="Save Changes" CssClass="btn btn-primary btn-lg" />
+                            <asp:Button ID="btnSave" runat="server" OnClick="SaveChanges_Click" Text="Save Changes" CssClass="btn btn-primary btn-md" />
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <asp:Button runat="server" OnClick="SaveChanges_Click" Text="Cancel Changes" CssClass="btn btn-primary btn-lg" />
+                            <asp:Button ID="btnCancel" runat="server" OnClick="CancelChanges_Click" Text="Cancel Changes" CssClass="btn btn-primary btn-md" />
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <asp:Button runat="server" OnClick="ResetPassword_Click" Text="Reset Password" CssClass="btn btn-primary btn-lg" />
+                            <asp:Button runat="server" OnClick="ResetPassword_Click" Text="Reset Password" CssClass="btn btn-primary btn-md" />
                         </div>
                     </div>
                 </asp:TableCell>
