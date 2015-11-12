@@ -459,9 +459,12 @@ Partial Public Class ManageProfile
             Dim strFileName As String = Path.GetFileName(Me.fuProfilePicUpload.PostedFile.FileName)
             fuProfilePicUpload.PostedFile.SaveAs(Server.MapPath("~/Images/") + strFileName)
 
-            Me.imProfileImage.ImageUrl = Server.MapPath("~/Images/") + strFileName
+            Me.imProfileImage.ImageUrl = "~/images/" & strFileName
+
+            'Me.imProfileImage.ImageUrl = Server.MapPath("~/Images/") + strFileName
             Session("RMS_ProfileImage") = "~/Images/" & strFileName
-            Response.Redirect(Request.Url.AbsoluteUri)
+            SetFocus(Me.btnSave)
+            'Response.Redirect(Request.Url.AbsoluteUri)
 
         End If
     End Sub
@@ -497,6 +500,10 @@ Partial Public Class ManageProfile
             Me.imProfileImage.ImageUrl = strProfileImage
         End If
 
+    End Sub
+
+    Protected Sub CancelChanges_Click(sender As Object, e As EventArgs)
+        Response.Redirect("~/Authenticated_Default")
     End Sub
 
 End Class
