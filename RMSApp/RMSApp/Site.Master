@@ -99,7 +99,7 @@
                                  <asp:MenuItem Text="Diplay My Circles" Value="DisplayCircles"></asp:MenuItem>
                              </asp:MenuItem>
                              <asp:MenuItem Text="CONTACT" NavigateUrl="~/Contact.aspx" Value="Contact"></asp:MenuItem>
-                             <asp:MenuItem Text="FAQs" Value="FAQs"></asp:MenuItem>
+                             <asp:MenuItem Text="FAQs" NavigateUrl="~/FAQ.aspx" Value="FAQs"></asp:MenuItem>
                          </Items>
                         </asp:Menu>
                     </ul>
