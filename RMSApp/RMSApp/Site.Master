@@ -95,8 +95,7 @@
                                  <asp:MenuItem Text="Recipe Search" Value="MySearch" NavigateUrl="~/Search.aspx" ></asp:MenuItem>
                              </asp:MenuItem>
                              <asp:MenuItem Text="CIRCLE OF FRIENDS" Value="CircleOfFriends">
-                                 <asp:MenuItem Text="Manage Circles" Value="ManageCircles"  NavigateUrl="~/CircleOfFriend.aspx"></asp:MenuItem>
-                                 <asp:MenuItem Text="Diplay My Circles" Value="DisplayCircles" NavigateUrl="~/CircleOfFriend.aspx"></asp:MenuItem>
+                                 <asp:MenuItem Text="Manage My Circles" Value="ManageCircles"  NavigateUrl="~/CircleOfFriend.aspx"></asp:MenuItem>
                              </asp:MenuItem>
                              <asp:MenuItem Text="CONTACT" NavigateUrl="~/Contact.aspx" Value="Contact"></asp:MenuItem>
                              <asp:MenuItem Text="FAQs" NavigateUrl="~/FAQ.aspx" Value="FAQs"></asp:MenuItem>
