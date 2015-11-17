@@ -291,7 +291,7 @@ Partial Public Class CircleOfFriends
         Me.AddSpaces(Me.pnlFriends, 4)
         Me.pnlFriends.Controls.Add(lblName)
 
-        Me.AddSpaces(Me.pnlFriends, 40 - strName.Length)
+        Me.AddSpaces(Me.pnlFriends, 50 - strName.Length)
         Me.pnlFriends.Controls.Add(lblStatus)
 
         Me.AddSpaces(Me.pnlFriends, 15 - strStatus.Length)
@@ -363,10 +363,10 @@ Partial Public Class CircleOfFriends
             Me.AddSpaces(Me.pnlInvites, 4)
             Me.pnlInvites.Controls.Add(lblName)
 
-            Me.AddSpaces(Me.pnlInvites, 40 - strName.Length)
+            Me.AddSpaces(Me.pnlInvites, 50 - strName.Length)
             Me.pnlInvites.Controls.Add(btnAccept)
 
-            Me.AddSpaces(Me.pnlInvites, 15 - btnAccept.Text.Length)
+            Me.AddSpaces(Me.pnlInvites, 7 - btnAccept.Text.Length)
             Me.pnlInvites.Controls.Add(btnReject)
 
             Me.pnlInvites.Controls.Add(New LiteralControl("</font></p>"))
