@@ -50,13 +50,13 @@ Partial Public Class CircleOfFriends
     Protected WithEvents Table1 As Global.System.Web.UI.WebControls.Table
     
     '''<summary>
-    '''Button1 control.
+    '''btnInviteAFriend control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Button1 As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnInviteAFriend As Global.System.Web.UI.WebControls.Button
     
     '''<summary>
     '''pnlFriends control.
