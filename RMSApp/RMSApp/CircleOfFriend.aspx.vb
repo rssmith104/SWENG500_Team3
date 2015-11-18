@@ -399,6 +399,10 @@ Partial Public Class CircleOfFriends
         Response.Redirect("~/Authenticated_Default")
     End Sub
 
+    Protected Sub AddAFriend_Click(sender As Object, e As EventArgs)
+        Response.Redirect("~/AddAFriend")
+    End Sub
+
     Private Sub btnAccept_Click(sender As Object, e As EventArgs)
         Dim objBtnCtrl As System.Web.UI.WebControls.Button = sender
         Dim iCircleOfFriendsID As Int16

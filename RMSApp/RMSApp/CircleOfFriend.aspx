@@ -22,7 +22,7 @@
             </asp:TableRow>
             <asp:TableRow>
                 <asp:TableCell ColumnSpan="5" HorizontalAlign="Left"><h4><b>My Friends</b>&nbsp;&nbsp;
-                    <asp:Button ID="Button1" runat="server" Text="Invite A Friend" ToolTip="Invite A Friend" CssClass="btn btn-primary btn-sm"/></h4></asp:TableCell>
+                    <asp:Button ID="btnInviteAFriend" runat="server" Text="Invite A Friend" ToolTip="Invite A Friend" CssClass="btn btn-primary btn-sm" OnClick="AddAFriend_Click" /></h4></asp:TableCell>
             </asp:TableRow>
             <asp:TableRow>
                 <asp:TableCell ColumnSpan="1">&nbsp;</asp:TableCell>
