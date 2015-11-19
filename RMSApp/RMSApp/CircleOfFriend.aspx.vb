@@ -26,7 +26,7 @@ Partial Public Class CircleOfFriends
         lblCircleOwner.Text = strLoggedInUser
         Me.GetImageProfile(strLoggedInUser)
 
-        AddMyFriends(strLoggedInUser)
+        AddActiveAdPendingFriends(strLoggedInUser)
         AddMyInvitations(strLoggedInUser)
 
         If Not IsPostBack Then
@@ -120,7 +120,12 @@ Partial Public Class CircleOfFriends
 
     End Function
 
-    Public Sub AddMyFriends(ByVal strUserName As String)
+    Public Sub AddActiveAdPendingFriends(ByVal strUserName As String)
+        Dim i As Integer = AddMyFriends(strUserName)
+        AppendPendingRequests(strUserName, i)
+    End Sub
+
+    Public Function AddMyFriends(ByVal strUserName As String) As Int16
         Dim objData_DB As clsData_DB
         Dim objParams(0) As SqlParameter
         Dim objDR As SqlDataReader
@@ -140,10 +145,11 @@ Partial Public Class CircleOfFriends
         objParams(0) = objData_DB.MakeInParam("@OwnerEmail", SqlDbType.VarChar, 50, strUserName)
 
         ' Run the stored procedure by name.  Pass with it the parameter list.
-        objDR = objData_DB.RunStoredProc("usp_CircleOfFriends_Select", objParams)
+        objDR = objData_DB.RunStoredProc("usp_CircleOfFriends_SelectActiveFriends", objParams)
+
+        Dim iCounter As Int16 = 0
 
         If objDR.HasRows Then
-            Dim iCounter As Int16 = 0
 
             While objDR.Read
                 iCounter += 1
@@ -156,7 +162,7 @@ Partial Public Class CircleOfFriends
 
                 strImage = ReturnImageProfile(objDR("Email").ToString)
 
-                Me.AddAFriendControl(objDR("Friend Name").ToString & " (" & objDR("Email").ToString & ")", strImage, strPending, objDR("CircleOfFriendsID").ToString, iCounter)
+                Me.AddAFriendControl(objDR("Friend Name").ToString & " (" & objDR("Email").ToString & ")", strImage, strPending, objDR("LoginID").ToString, iCounter)
             End While
         Else
             Me.AddAFriendControl("NOFRIEND", "NOIMAGE", "NOSTATUS", "0", 1)
@@ -174,13 +180,77 @@ Partial Public Class CircleOfFriends
             objData_DB = Nothing
         End If
 
+        Return iCounter
         'Mockup Code used to test AddFriendControl
         'AddAFriendControl("John.Mason@gmail.com", "NOIMAGE", "Active", 1)
         'AddAFriendControl("Phyllis.Mason@gmail.com", "~/images/phyllis.png", "Active", 2)
         'AddAFriendControl("Scott.heigel@gmail.com", "~/images/Scott.png", "Pending", 3)
         'AddAFriendControl("Lydell.Peters@gmail.com", "NOIMAGE", "Active", 4)
         'AddAFriendControl("Jimmy.Jones@swanson.com", "~/images/jimmy.jpg", "Pending", 5)
-    End Sub
+    End Function
+
+    Public Function AppendPendingRequests(ByVal strUserName As String, ByVal iCounter As Integer) As Int16
+        Dim objData_DB As clsData_DB
+        Dim objParams(0) As SqlParameter
+        Dim objDR As SqlDataReader
+        Dim strConnectionString As String
+        Dim strPending As String
+        Dim strImage As String
+
+
+        ' Get the connection string out of the Web.Config file.  Connection is tha actual name portion of the name value pair
+        Dim objWebConfig As New clsWebConfig()
+        strConnectionString = objWebConfig.GetWebConfig("Connection".ToString)
+
+        ' Use the Connection string to instantiate a new Database class object.
+        objData_DB = New clsData_DB(strConnectionString)
+
+        ' Setup the parameters.  NOte that the Name, type and size must all match.  The final value is the paramter value
+        objParams(0) = objData_DB.MakeInParam("@OwnerEmail", SqlDbType.VarChar, 50, strUserName)
+
+        ' Run the stored procedure by name.  Pass with it the parameter list.
+        objDR = objData_DB.RunStoredProc("usp_CircleOfFriends_SelectPendingFriends", objParams)
+
+        If objDR.HasRows Then
+
+            While objDR.Read
+                iCounter += 1
+
+                If objDR("Pending").ToString = "True" Then
+                    strPending = "Pending"
+                Else
+                    strPending = "Active"
+                End If
+
+                strImage = ReturnImageProfile(objDR("Email").ToString)
+
+                Me.AddAFriendControl(objDR("Friend Name").ToString & " (" & objDR("Email").ToString & ")", strImage, strPending, objDR("LoginID").ToString, iCounter)
+            End While
+        Else
+            Me.AddAFriendControl("NOFRIEND", "NOIMAGE", "NOSTATUS", "0", 1)
+        End If
+
+        ' CleanUp on our way out.  Make sure that we kill the connection so that we do not run our limit on concurrent 
+        ' database connections.
+        If Not IsNothing(objDR) Then
+            objDR.Close()
+            objDR = Nothing
+        End If
+
+        If Not IsNothing(objData_DB) Then
+            objData_DB.Close()
+            objData_DB = Nothing
+        End If
+
+        Return iCounter
+        'Mockup Code used to test AddFriendControl
+        'AddAFriendControl("John.Mason@gmail.com", "NOIMAGE", "Active", 1)
+        'AddAFriendControl("Phyllis.Mason@gmail.com", "~/images/phyllis.png", "Active", 2)
+        'AddAFriendControl("Scott.heigel@gmail.com", "~/images/Scott.png", "Pending", 3)
+        'AddAFriendControl("Lydell.Peters@gmail.com", "NOIMAGE", "Active", 4)
+        'AddAFriendControl("Jimmy.Jones@swanson.com", "~/images/jimmy.jpg", "Pending", 5)
+    End Function
+
 
     Public Sub AddMyInvitations(ByVal strUserName As String)
         Dim objData_DB As clsData_DB
