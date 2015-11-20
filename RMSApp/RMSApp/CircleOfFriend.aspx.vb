@@ -26,7 +26,7 @@ Partial Public Class CircleOfFriends
         lblCircleOwner.Text = strLoggedInUser
         Me.GetImageProfile(strLoggedInUser)
 
-        AddActiveAdPendingFriends(strLoggedInUser)
+        AddActiveAndPendingFriends(strLoggedInUser)
         AddMyInvitations(strLoggedInUser)
 
         If Not IsPostBack Then
@@ -120,7 +120,7 @@ Partial Public Class CircleOfFriends
 
     End Function
 
-    Public Sub AddActiveAdPendingFriends(ByVal strUserName As String)
+    Public Sub AddActiveAndPendingFriends(ByVal strUserName As String)
         Dim i As Integer = AddMyFriends(strUserName)
         AppendPendingRequests(strUserName, i)
     End Sub
@@ -164,8 +164,6 @@ Partial Public Class CircleOfFriends
 
                 Me.AddAFriendControl(objDR("Friend Name").ToString & " (" & objDR("Email").ToString & ")", strImage, strPending, objDR("LoginID").ToString, iCounter)
             End While
-        Else
-            Me.AddAFriendControl("NOFRIEND", "NOIMAGE", "NOSTATUS", "0", 1)
         End If
 
         ' CleanUp on our way out.  Make sure that we kill the connection so that we do not run our limit on concurrent 
@@ -227,7 +225,9 @@ Partial Public Class CircleOfFriends
                 Me.AddAFriendControl(objDR("Friend Name").ToString & " (" & objDR("Email").ToString & ")", strImage, strPending, objDR("LoginID").ToString, iCounter)
             End While
         Else
-            Me.AddAFriendControl("NOFRIEND", "NOIMAGE", "NOSTATUS", "0", 1)
+            If iCounter = 0 Then
+                Me.AddAFriendControl("NOFRIEND", "NOIMAGE", "NOSTATUS", "0", 1)
+            End If
         End If
 
         ' CleanUp on our way out.  Make sure that we kill the connection so that we do not run our limit on concurrent 
@@ -498,11 +498,14 @@ Partial Public Class CircleOfFriends
 
     Private Sub btnCancelFriend_Click(sender As Object, e As EventArgs)
         Dim objBtnCtrl As System.Web.UI.WebControls.Button = sender
-        Dim iCircleOfFriendsID As Int16
+        Dim iFriendID As Int16
 
-        iCircleOfFriendsID = Me.ExtractCircleOfFriendsID(objBtnCtrl.ID.ToString)
+        iFriendID = Me.ExtractCircleOfFriendsID(objBtnCtrl.ID.ToString)
+        'Response.Write("Logged In User: " & strLoggedInUser & "<br />")
+        'Response.Write("Friend ID:      " & iFriendID.ToString)
+        'Response.End()
 
-        Me.RejectCircleOfFriendsRequest(iCircleOfFriendsID)
+        Me.CancelFriendsRequest(strLoggedInUser, iFriendID)
 
         Response.Redirect("~/CircleOfFriend")
     End Sub
@@ -545,6 +548,48 @@ Partial Public Class CircleOfFriends
         End Try
 
     End Sub
+
+    Private Sub CancelFriendsRequest(ByVal strOwnerEmail As String, ByVal intFriendsID As Int16)
+        Dim objData_DB As clsData_DB
+        Dim objParams(1) As SqlParameter
+        Dim objDR As SqlDataReader
+        Dim strConnectionString As String
+
+        ' Get the connection string out of the Web.Config file.  Connection is tha actual name portion of the name value pair
+        Dim objWebConfig As New clsWebConfig()
+        strConnectionString = objWebConfig.GetWebConfig("Connection".ToString)
+
+        ' Use the Connection string to instantiate a new Database class object.
+        objData_DB = New clsData_DB(strConnectionString)
+
+        ' Setup the parameters.  NOte that the Name, type and size must all match.  The final value is the paramter value
+        objParams(0) = objData_DB.MakeInParam("@OwnerEmail", SqlDbType.VarChar, 50, strOwnerEmail)
+        objParams(1) = objData_DB.MakeInParam("@FriendID", SqlDbType.Int, 2, intFriendsID)
+
+        Try
+            ' Run the stored procedure by name.  Pass with it the parameter list.
+            objDR = objData_DB.RunStoredProc("usp_CircleOfFriends_CancleFriendshipRequests", objParams)
+
+        Catch ex As Exception
+
+
+        Finally
+            ' CleanUp on our way out.  Make sure that we kill the connection so that we do not run our limit on concurrent 
+            ' database connections.
+            If Not IsNothing(objDR) Then
+                objDR.Close()
+                objDR = Nothing
+            End If
+
+            If Not IsNothing(objData_DB) Then
+                objData_DB.Close()
+                objData_DB = Nothing
+            End If
+        End Try
+
+    End Sub
+
+
 
     Private Sub AcceptCircleOfFriendsRequest(ByVal intCircleOfFriendsID As Int16)
         Dim objData_DB As clsData_DB
