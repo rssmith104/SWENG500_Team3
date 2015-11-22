@@ -42,7 +42,7 @@ Partial Public Class ManagePassword
             LoggedInUser = objDes_Codec.DecodeString(strUser)
             objDes_Codec = Nothing
 
-            Session("RMS_LoggedInUser") = LoggedInUser()
+            'Session("RMS_LoggedInUser") = LoggedInUser()
 
             setPassword.Visible = True
             changePasswordHolder.Visible = False
@@ -59,7 +59,11 @@ Partial Public Class ManagePassword
             Dim message = Request.QueryString("m")
             If message IsNot Nothing Then
                 ' Strip the query string from action
-                Form.Action = ResolveUrl("~/Account/ManageProfile")
+                If Me.m_strLoggedInUser = "" Then
+                    Form.Action = ResolveUrl("~/Account/Login")
+                Else
+                    Form.Action = ResolveUrl("~/Account/ManageProfile")
+                End If
             End If
         Else
             LoggedInUser = Session("RMS_LoggedInUser")

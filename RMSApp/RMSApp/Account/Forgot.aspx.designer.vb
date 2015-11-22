@@ -12,8 +12,7 @@ Option Explicit On
 
 
 Partial Public Class ForgotPassword
-
-
+    
     '''<summary>
     '''loginForm control.
     '''</summary>
@@ -22,7 +21,7 @@ Partial Public Class ForgotPassword
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents loginForm As Global.System.Web.UI.WebControls.PlaceHolder
-
+    
     '''<summary>
     '''ErrorMessage control.
     '''</summary>
@@ -31,7 +30,7 @@ Partial Public Class ForgotPassword
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ErrorMessage As Global.System.Web.UI.WebControls.PlaceHolder
-
+    
     '''<summary>
     '''FailureText control.
     '''</summary>
@@ -40,16 +39,43 @@ Partial Public Class ForgotPassword
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents FailureText As Global.System.Web.UI.WebControls.Literal
-
+    
     '''<summary>
-    '''Email control.
+    '''txtEmail control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Email As Global.System.Web.UI.WebControls.TextBox
-
+    Protected WithEvents txtEmail As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
+    '''phDisplaySecurityQuestion control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents phDisplaySecurityQuestion As Global.System.Web.UI.WebControls.PlaceHolder
+    
+    '''<summary>
+    '''lblSecurityQuestion control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblSecurityQuestion As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
+    '''txtAnswer control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtAnswer As Global.System.Web.UI.WebControls.TextBox
+    
     '''<summary>
     '''DisplayEmail control.
     '''</summary>
