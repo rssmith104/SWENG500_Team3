@@ -4,8 +4,9 @@
 
     <div class="jumbotron" style="background-image: url('<%= imgPath %>')">
         <h1 style="color:black">WELCOME TO THE RECIPE MANAGEMENT SYSTEM</h1>
-        <p class="lead" style="color:white">Let's get started.  If you already have an account, Log In by selecting the Log In Link above.  Otherwise, let's create an account
-                        and start accessing millions of recipes.</p>
+        <p class="lead" style="color:white">Let's get started.</p>
+        <p class="lead" style="color:white">If you already have an account, Log In by selecting the Log In Link above.</p>
+        <p class="lead" style="color:white">Otherwise, let's create an account and start accessing millions of recipes.</p>
         <p><a href="./Account/Register" class="btn btn-primary btn-lg">Create An Account &raquo;</a></p>
     </div>
 
@@ -16,7 +17,7 @@
                 Store hundreds of you family favorite recipes.  Share them with family.  
             </p>
             <p>
-                <a class="btn btn-default" href="./Account/Register">Create An Account &raquo;</a>
+                <a class="btn btn-primary btn-lg" href="./Account/Register">Create An Account &raquo;</a>
             </p>
         </div>
         <div class="col-md-4">
@@ -26,7 +27,7 @@
                 from other RMS users..
             </p>
             <p>
-                <a class="btn btn-default" href="./Account/Login">Already Have an Account &raquo;</a>
+                <a class="btn btn-primary btn-lg" href="./Account/Login">Already Have an Account &raquo;</a>
             </p>
         </div>
         <div class="col-md-4">
@@ -36,7 +37,7 @@
                 purchasing for those hard-to-find ingredients.  Who actually has "liquid smoke" in their pantry!  Really!
             </p>
             <p>
-                <a class="btn btn-default" href="./Account/Register">Let's Get Started &raquo;</a>
+                <a class="btn btn-primary btn-lg" href="./Account/Register">Let's Get Started &raquo;</a>
             </p>
         </div>
     </div>

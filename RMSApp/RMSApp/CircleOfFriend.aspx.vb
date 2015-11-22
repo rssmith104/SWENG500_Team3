@@ -30,10 +30,10 @@ Partial Public Class CircleOfFriends
         AddMyInvitations(strLoggedInUser)
 
         If Not IsPostBack Then
-            Response.Write("First Time Through")
+
         Else
             'In PostBack Condition
-            Response.Write("PostBack Code")
+
         End If
 
     End Sub
