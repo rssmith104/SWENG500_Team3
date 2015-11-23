@@ -12,9 +12,16 @@ Imports System.Data.SqlClient
 
 Partial Public Class Search
     Inherits Page
+
+    Public strLoggedInUser As String
+
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
+
+        strLoggedInUser = Session("RMS_LoggedInUser")
+
         If Not IsPostBack Then
             populate_RecipeCategory_DropDown()
+            populate_PrivacyCategory_DropDown()
         Else
             RecipeResults()
         End If
@@ -65,6 +72,52 @@ Partial Public Class Search
 
     End Sub
 
+    Private Sub populate_PrivacyCategory_DropDown()
+        Dim objData_DB As clsData_DB
+        Dim objParams(0) As SqlParameter
+        Dim strConnectionString As String
+        Dim objDR As SqlDataReader
+
+        ' Get the connection string out of the Web.Config file.  Connection is tha actual name portion of the name value pair
+        Dim objWebConfig As New clsWebConfig()
+        strConnectionString = objWebConfig.GetWebConfig("Connection".ToString)
+
+        ' Use the Connection string to instantiate a new Database class object.
+        objData_DB = New clsData_DB(strConnectionString)
+
+        ' Setup the parameters.  NOte that the Name, type and size must all match.  The final value is the paramter value
+        objParams(0) = objData_DB.MakeInParam("@TranCode", SqlDbType.VarChar, 10, "ALL")
+
+        ' Run the stored procedure by name.  Pass with it the parameter list.
+        objDR = objData_DB.RunStoredProc("usp_ShareLevelList_Select", objParams)
+
+        ' Do we have rows returned?
+        If objDR.HasRows Then
+            ' Clear the List before we populate
+            Me.ddShareList.Items.Clear()
+
+            ' Iterate Through the DataReader and Populate the Listbox
+            While objDR.Read()
+                Me.ddShareList.Items.Add(New ListItem(objDR("ShareLevelType").ToString))
+            End While
+        End If
+
+        Me.ddShareList.SelectedValue = "Public"
+
+        ' CleanUp on our way out.  Make sure that we kill the connection so that we do not run our limit on concurrent 
+        ' database connections.
+        If Not IsNothing(objDR) Then
+            objDR.Close()
+            objDR = Nothing
+        End If
+
+        If Not IsNothing(objData_DB) Then
+            objData_DB.Close()
+            objData_DB = Nothing
+        End If
+
+    End Sub
+
     Protected Sub SearchRecipe(Sender As Object, e As EventArgs)
         'RecipeResults()
     End Sub
@@ -89,14 +142,37 @@ Partial Public Class Search
                              "u.FirstName + ' ' + u.LastName AS [OwnerName] " &
                         "FROM dbo.Recipe r " &
                         "RIGHT JOIN dbo.RecipeIngredientList il ON il.RecipeID = r.RecipeID " &
-                        "JOIN dbo.UserAccount u ON u.LoginID = r.OwnerID "
+                        "JOIN dbo.UserAccount u ON u.LoginID = r.OwnerID " &
+                        "JOIN dbo.ShareLevel s ON s.ShareLevelID = r.ShareLevelID " &
+                        "JOIN dbo.LoginAccount l ON l.LoginID = u.LoginID "
         '"JOIN dbo.RecipeCuisineCategoryMap rc ON rc.RecipeID = r.RecipeID " &
         '"JOIN dbo.CuisineCatgList cc ON cc.CuisineCategoryID = rc.CuisineCategoryID"
 
 
         If ddCategoryList.Text <> "" Then
-            strSQL_where &= "r.CuisineCategory = '" & ddCategoryList.Text & "'"
+            strSQL_where &= "r.CuisineCategory = '" & ddCategoryList.Text & "' "
             bAnd = True
+        End If
+
+        If ddShareList.Text <> "" Then
+
+            If bAnd = True Then
+                strSQL_where &= " AND "
+            End If
+
+            Select Case ddShareList.SelectedValue
+                Case "Private"
+                    strSQL_where &= "l.Email = '" & strLoggedInUser & "' "
+                Case "Public"
+                    strSQL_where &= "s.ShareLevelType = '" & ddShareList.Text & "' "
+                'And strSQL_where &= "l.Email = '" & strLoggedInUser & "' "
+                Case "Circles"
+                    strSQL_where &= "l.Email = '" & strLoggedInUser & "' OR "
+                    strSQL_where &= "dbo.fn_IsAFriend('" & strLoggedInUser & "', r.OwnerID) = (1)"
+            End Select
+
+            'strSQL_where &= "s.ShareLevelType = '" & ddShareList.Text & "' "
+            'bAnd = True
         End If
 
         If txtSearchBox.Text <> "" Then
@@ -125,11 +201,7 @@ Partial Public Class Search
 
         End If
 
-        If txtSearchBox.Text = "" And ddCategoryList.Text = "" Then
-
-        Else
-            strSQL_command &= strSQL_where & strInClause
-        End If
+        strSQL_command &= strSQL_where & strInClause
 
         'strSQL_command &= strSQL_where & strInClause
 

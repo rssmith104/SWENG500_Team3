@@ -16,6 +16,9 @@
                     <asp:TableCell runat="server" BorderWidth="1px">
                         <b>Category</b>
                     </asp:TableCell>
+                    <asp:TableCell>
+                        <b>Privacy</b>
+                    </asp:TableCell>
                     <asp:TableCell runat="server" BorderWidth="1px">
                         &nbsp;
                     </asp:TableCell>
@@ -27,6 +30,9 @@
                     </asp:TableCell>
                     <asp:TableCell runat="server" BorderWidth="1px">
                         <asp:DropDownList ID="ddCategoryList" runat="server"></asp:DropDownList>
+                    </asp:TableCell>
+                    <asp:TableCell runat="server" BorderWidth="1px">
+                        <asp:DropDownList ID="ddShareList" runat="server"></asp:DropDownList>
                     </asp:TableCell>
                     <asp:TableCell runat="server" BorderWidth="1px">
                         <asp:Button ID="btnSearchButton" runat="server" Text="Search" CssClass="btn btn-primary btn-sm" OnClick="SearchRecipe" />
@@ -56,7 +62,6 @@
         </div>
 
         <hr />
-
         
     </div>
 </asp:Content>
