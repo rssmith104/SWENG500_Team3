@@ -18,11 +18,11 @@ Partial Public Class ForgotPassword
     End Sub
 
     Protected Sub Forgot(sender As Object, e As EventArgs)
-        Dim objCommunicate As clsCommunication = New clsCommunication()
+        'Dim objCommunicate As clsCommunication = New clsCommunication()
 
         Response.Write("Before the Email Call <br />")
 
-        Dim StrErr As String = objCommunicate.SendEmail("smtp.gmail.com", "rss261@psu.edu", "RMSAPP_Server@psu.edu", "Test Line", "Does this message get through?",,)
+        'Dim StrErr As String = objCommunicate.SendEmail("smtp.gmail.com", "rss261@psu.edu", "RMSAPP_Server@psu.edu", "Test Line", "Does this message get through?",,)
 
 
     End Sub
@@ -48,15 +48,17 @@ Partial Public Class ForgotPassword
         If objDR.HasRows Then
             objDR.Read()
             If objDR("SecurityQuestion").ToString = "NOTFOUND" Then
-                Me.FailureText.Text = "CRITICAL ERROR:  Server Unable to Process Request.  Try Again Later"
+                Me.FailureText.Text = "CRITICAL ERROR:  Email Unrecognized.  Please use a Valid Account"
+                Me.ErrorMessage.Visible = True
             Else
                 Me.lblSecurityQuestion.Text = objDR("SecurityQuestion")
                 Me.phDisplaySecurityQuestion.Visible = True
-                Me.FailureText.Text = ""
+                Me.ErrorMessage.Visible = False
             End If
 
         Else
-            Me.FailureText.Text = "CRITICAL ERROR:  Server Unable to Process Request.  Try Again Later"
+            Me.FailureText.Text = "CRITICAL ERROR:  Email Unrecognized.  Please use a Valid Account"
+            Me.ErrorMessage.Visible = True
         End If
 
 
