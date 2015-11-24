@@ -95,8 +95,14 @@
                                  <asp:MenuItem Text="Recipe Search" Value="MySearch" NavigateUrl="~/Search.aspx" ></asp:MenuItem>
                              </asp:MenuItem>
                              <asp:MenuItem Text="CIRCLE OF FRIENDS" Value="CircleOfFriends">
-                                 <asp:MenuItem Text="Manage My Circles" Value="ManageCircles"  NavigateUrl="~/CircleOfFriend.aspx"></asp:MenuItem>
+                                 <asp:MenuItem Text="Manage My Circles" Value="ManageCircles"  NavigateUrl="~/CircleOfFriend.aspx" Target="_blank"></asp:MenuItem>
                              </asp:MenuItem>
+                            <asp:MenuItem Text="TOOLS" Value="Tools">
+                                <asp:MenuItem Text="Nutrition Calculator" Value="NutritionCalculator" NavigateUrl="javascript:openNutritionCalculator();" Target="_self"></asp:MenuItem>
+                                <asp:MenuItem Text="Calorie Calculator" Value="CalorieCalculator" NavigateUrl="javascript:openCalorieCalculator();" Target="_self"></asp:MenuItem>
+                                <asp:MenuItem Text="Daily Calories" Value="DailyCalories" NavigateUrl="javascript:openDailyCalories();" Target="_self"></asp:MenuItem>
+                                <asp:MenuItem Text="Kitchen Conversions" Value="KitchenConversions" NavigateUrl="javascript:openKitchenConversions();" Target="_self"></asp:MenuItem>
+                            </asp:MenuItem>
                              <asp:MenuItem Text="CONTACT" NavigateUrl="~/Contact.aspx" Value="Contact"></asp:MenuItem>
                              <asp:MenuItem Text="FAQs" NavigateUrl="~/FAQ.aspx" Value="FAQs"></asp:MenuItem>
                          </Items>
@@ -107,6 +113,27 @@
                 <%End If%>
             </div>
         </div>
+        <script>
+            function openNutritionCalculator()
+            {
+                window.open("Tools/NutritionCalculator.aspx", "_blank","width=640, height=225, resizable=yes");
+            }
+
+            function openCalorieCalculator()
+            {
+                window.open("Tools/CalorieCalculator.aspx", "_blank", "width=640, height=700, resizable=yes");
+            }
+
+            function openDailyCalories()
+            {
+                window.open("Tools/DailyCalorieCalculator.aspx", "_blank", "width=220, height=320, resizable=yes");
+            }
+
+            function openKitchenConversions()
+            {
+                window.open("Tools/KitchenMeasurementCalculator.aspx", "_blank", "width=220, height=320, resizable=yes");
+            }
+        </script>
         <div class="container body-content">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
