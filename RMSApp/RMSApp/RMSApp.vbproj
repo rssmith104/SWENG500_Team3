@@ -215,36 +215,13 @@
   <ItemGroup>
     <Content Include="About.aspx" />
     <Content Include="Account\AddPhoneNumber.aspx" />
+    <Content Include="Account\DisplayReview.aspx" />
+    <Content Include="Account\SubmitRating.aspx" />
+    <Content Include="Account\DisplayRecipe.aspx" />
     <Content Include="Account\AddRecipe.aspx" />
     <Content Include="Account\Confirm.aspx" />
-    <Content Include="Account\DisplayRecipe.aspx" />
-    <Content Include="Account\DisplayReview.aspx" />
     <Content Include="Account\Forgot.aspx" />
     <Content Include="Account\Lockout.aspx" />
-    <Content Include="Account\SubmitRating.aspx" />
-    <Content Include="AddAFriend.aspx" />
-    <Content Include="CircleOfFriend.aspx" />
-    <Content Include="FAQ.aspx" />
-    <Content Include="Images\cordonbleu.jpg" />
-    <Content Include="Images\GrilledChickenCaesarSalad.jpg" />
-    <Content Include="Images\Japanese_Salt_flavor_Sapporo_Ramen.JPG" />
-    <Content Include="Images\Lasagna_Meat.jpg" />
-    <Content Include="Images\maxresdefault.jpg" />
-    <Content Include="Images\RMSRating_0.0.png" />
-    <Content Include="Images\RMSRating_0.5.png" />
-    <Content Include="Images\RMSRating_1.0.png" />
-    <Content Include="Images\RMSRating_1.5.png" />
-    <Content Include="Images\RMSRating_2.0.png" />
-    <Content Include="Images\RMSRating_2.5.png" />
-    <Content Include="Images\RMSRating_3.0.png" />
-    <Content Include="Images\RMSRating_3.5.png" />
-    <Content Include="Images\RMSRating_4.0.png" />
-    <Content Include="Images\RMSRating_4.5.png" />
-    <Content Include="Images\RMSRating_5.0.png" />
-    <Content Include="Images\RMSRating_NoRating.png" />
-    <Content Include="Images\stew-460x345.jpg" />
-    <Content Include="Images\unnamed.jpg" />
-    <Content Include="Search.aspx" />
     <Content Include="Account\Login.aspx" />
     <Content Include="Account\Logout.aspx" />
     <Content Include="Account\PanelControl.aspx" />
@@ -259,6 +236,8 @@
     <Content Include="Account\ResetPasswordConfirmation.aspx" />
     <Content Include="Account\TwoFactorAuthenticationSignIn.aspx" />
     <Content Include="Account\VerifyPhoneNumber.aspx" />
+    <Content Include="AddAFriend.aspx" />
+    <Content Include="FAQ.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
@@ -269,7 +248,45 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Account\Web.config" />
+    <Content Include="Images\2013-06-30 001.JPG" />
+    <Content Include="Images\cordonbleu.jpg" />
+    <Content Include="Images\Default_Image.png" />
+    <Content Include="Images\GrilledChickenCaesarSalad.jpg" />
+    <Content Include="Images\Japanese_Salt_flavor_Sapporo_Ramen.JPG" />
+    <Content Include="Images\Lasagna_Meat.jpg" />
+    <Content Include="Images\P6290371.JPG" />
+    <Content Include="Images\P7301220.JPG" />
+    <Content Include="Images\PC220784.JPG" />
+    <Content Include="Images\Polar.jpg" />
+    <Content Include="Images\ProfilePic.jpg" />
+    <Content Include="Images\ProfilePic1.jpg" />
+    <Content Include="Images\ProfilePic1.png" />
+    <Content Include="Images\RMSRating_0.0.png" />
+    <Content Include="Images\RMSRating_0.5.png" />
+    <Content Include="Images\RMSRating_1.0.png" />
+    <Content Include="Images\RMSRating_1.5.png" />
+    <Content Include="Images\RMSRating_2.0.png" />
+    <Content Include="Images\RMSRating_2.5.png" />
+    <Content Include="Images\RMSRating_3.0.png" />
+    <Content Include="Images\RMSRating_3.5.png" />
+    <Content Include="Images\RMSRating_4.0.png" />
+    <Content Include="Images\RMSRating_4.5.png" />
+    <Content Include="Images\RMSRating_5.0.png" />
+    <Content Include="Images\RMSRating_NoRating.png" />
+    <Content Include="Images\RSmith_ThumbNail.jpg" />
+    <Content Include="Images\RSmith_Thumbnail2.jpg" />
+    <Content Include="Images\Steak.jpg" />
+    <Content Include="Images\stew-460x345.jpg" />
+    <Content Include="CircleOfFriend.aspx" />
+    <Content Include="Account\ManageMyRecipe.aspx" />
+    <Content Include="Account\SearchMyRecipe.aspx" />
+    <Content Include="Search.aspx" />
+    <Content Include="Tools\CalorieCalculator.aspx" />
+    <Content Include="Tools\DailyCalorieCalculator.aspx" />
+    <Content Include="Tools\KitchenMeasurementCalculator.aspx" />
+    <Content Include="Tools\NutritionCalculator.aspx" />
     <Content Include="Welcome.aspx" />
+    <Content Include="ClassDiagram1.cd" />
     <None Include="My Project\PublishProfiles\LOCALDEV.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Images\ChickenStock.jpg" />
@@ -329,6 +346,27 @@
       <DependentUpon>AddPhoneNumber.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Account\DisplayReview.aspx.designer.vb">
+      <DependentUpon>DisplayReview.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\DisplayReview.aspx.vb">
+      <DependentUpon>DisplayReview.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Account\SubmitRating.aspx.designer.vb">
+      <DependentUpon>SubmitRating.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\SubmitRating.aspx.vb">
+      <DependentUpon>SubmitRating.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Account\DisplayRecipe.aspx.designer.vb">
+      <DependentUpon>DisplayRecipe.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\DisplayRecipe.aspx.vb">
+      <DependentUpon>DisplayRecipe.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Account\AddRecipe.aspx.designer.vb">
       <DependentUpon>AddRecipe.aspx</DependentUpon>
     </Compile>
@@ -343,20 +381,6 @@
       <DependentUpon>Confirm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Account\DisplayRecipe.aspx.designer.vb">
-      <DependentUpon>DisplayRecipe.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Account\DisplayRecipe.aspx.vb">
-      <DependentUpon>DisplayRecipe.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Account\DisplayReview.aspx.designer.vb">
-      <DependentUpon>DisplayReview.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Account\DisplayReview.aspx.vb">
-      <DependentUpon>DisplayReview.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Account\Forgot.aspx.designer.vb">
       <DependentUpon>Forgot.aspx</DependentUpon>
     </Compile>
@@ -369,41 +393,6 @@
     </Compile>
     <Compile Include="Account\Lockout.aspx.vb">
       <DependentUpon>Lockout.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Account\SubmitRating.aspx.designer.vb">
-      <DependentUpon>SubmitRating.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Account\SubmitRating.aspx.vb">
-      <DependentUpon>SubmitRating.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="AddAFriend.aspx.designer.vb">
-      <DependentUpon>AddAFriend.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="AddAFriend.aspx.vb">
-      <DependentUpon>AddAFriend.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CircleOfFriend.aspx.designer.vb">
-      <DependentUpon>CircleOfFriend.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CircleOfFriend.aspx.vb">
-      <DependentUpon>CircleOfFriend.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="FAQ.aspx.designer.vb">
-      <DependentUpon>FAQ.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="FAQ.aspx.vb">
-      <DependentUpon>FAQ.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Search.aspx.designer.vb">
-      <DependentUpon>Search.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Search.aspx.vb">
-      <DependentUpon>Search.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Account\Login.aspx.designer.vb">
@@ -516,9 +505,24 @@
     </Compile>
     <Compile Include="App_Start\Startup.Auth.vb" />
     <Compile Include="App_Start\WebApiConfig.vb" />
+    <Compile Include="AddAFriend.aspx.designer.vb">
+      <DependentUpon>AddAFriend.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AddAFriend.aspx.vb">
+      <DependentUpon>AddAFriend.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ClsCommunication.vb" />
     <Compile Include="clsData_DB.vb" />
     <Compile Include="clsRMSSession.vb" />
     <Compile Include="clsWebConfig.vb" />
+    <Compile Include="FAQ.aspx.designer.vb">
+      <DependentUpon>FAQ.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FAQ.aspx.vb">
+      <DependentUpon>FAQ.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
     <Compile Include="Contact.aspx.designer.vb">
       <DependentUpon>Contact.aspx</DependentUpon>
     </Compile>
@@ -544,6 +548,27 @@
     <Compile Include="Global.asax.vb">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="CircleOfFriend.aspx.designer.vb">
+      <DependentUpon>CircleOfFriend.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CircleOfFriend.aspx.vb">
+      <DependentUpon>CircleOfFriend.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\ManageMyRecipe.aspx.designer.vb">
+      <DependentUpon>ManageMyRecipe.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\ManageMyRecipe.aspx.vb">
+      <DependentUpon>ManageMyRecipe.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\SearchMyRecipe.aspx.designer.vb">
+      <DependentUpon>SearchMyRecipe.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\SearchMyRecipe.aspx.vb">
+      <DependentUpon>SearchMyRecipe.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Models\IdentityModels.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -564,6 +589,13 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Search.aspx.designer.vb">
+      <DependentUpon>Search.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Search.aspx.vb">
+      <DependentUpon>Search.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Site.Master.designer.vb">
       <DependentUpon>Site.Master</DependentUpon>
     </Compile>
@@ -572,6 +604,34 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Startup.vb" />
+    <Compile Include="Tools\CalorieCalculator.aspx.designer.vb">
+      <DependentUpon>CalorieCalculator.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\CalorieCalculator.aspx.vb">
+      <DependentUpon>CalorieCalculator.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Tools\DailyCalorieCalculator.aspx.designer.vb">
+      <DependentUpon>DailyCalorieCalculator.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\DailyCalorieCalculator.aspx.vb">
+      <DependentUpon>DailyCalorieCalculator.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Tools\KitchenMeasurementCalculator.aspx.designer.vb">
+      <DependentUpon>KitchenMeasurementCalculator.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\KitchenMeasurementCalculator.aspx.vb">
+      <DependentUpon>KitchenMeasurementCalculator.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Tools\NutritionCalculator.aspx.designer.vb">
+      <DependentUpon>NutritionCalculator.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\NutritionCalculator.aspx.vb">
+      <DependentUpon>NutritionCalculator.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="ViewSwitcher.ascx.vb">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -619,6 +679,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\" />
+    <Folder Include="ManageMyRecipe\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
