@@ -90,7 +90,7 @@
                              </asp:MenuItem>
                              <asp:MenuItem Text="MY RECIPES" Value="MyRecipes">
                                  <asp:MenuItem Text="Add A Recipe" NavigateUrl="~/Account/AddRecipe.aspx" Value="AddARecipe"></asp:MenuItem>
-                                 <asp:MenuItem Text="Manage My Recipes" Value="ManageMyRecipes"></asp:MenuItem>
+                                 <asp:MenuItem Text="Manage My Recipes" Value="ManageMyRecipes" NavigateUrl="~/Account/SearchMyRecipe.aspx"></asp:MenuItem>
                                  <asp:MenuItem Text="Favorites" Value="Favorites"></asp:MenuItem>
                                  <asp:MenuItem Text="Recipe Search" Value="MySearch" NavigateUrl="~/Search.aspx" ></asp:MenuItem>
                              </asp:MenuItem>
@@ -116,23 +116,31 @@
         <script>
             function openNutritionCalculator()
             {
-                window.open("Tools/NutritionCalculator.aspx", "_blank","width=640, height=225, resizable=yes");
+                window.open(getBaseUrl() + "/Tools/NutritionCalculator.aspx", "_blank", "width=640, height=225, resizable=yes");
             }
 
             function openCalorieCalculator()
             {
-                window.open("Tools/CalorieCalculator.aspx", "_blank", "width=640, height=700, resizable=yes");
+                window.open(getBaseUrl() + "/Tools/CalorieCalculator.aspx", "_blank", "width=640, height=700, resizable=yes");
             }
 
             function openDailyCalories()
             {
-                window.open("Tools/DailyCalorieCalculator.aspx", "_blank", "width=220, height=320, resizable=yes");
+                window.open(getBaseUrl() + "/Tools/DailyCalorieCalculator.aspx", "_blank", "width=220, height=320, resizable=yes");
             }
 
             function openKitchenConversions()
             {
-                window.open("Tools/KitchenMeasurementCalculator.aspx", "_blank", "width=220, height=320, resizable=yes");
+                window.open(getBaseUrl() + "/Tools/KitchenMeasurementCalculator.aspx", "_blank", "width=220, height=320, resizable=yes");
             }
+
+            function getBaseUrl()
+            {
+                pathArray = location.href.split('/');
+
+                return pathArray[0] + '//' + pathArray[2] + '/' + pathArray[3]
+            }
+
         </script>
         <div class="container body-content">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
