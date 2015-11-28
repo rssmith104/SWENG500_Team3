@@ -690,26 +690,28 @@ Partial Public Class ManageMyRecipe
 
     End Sub
 
-    Private Sub AddInstruction(ByVal strInstruction As String, ByVal intStepNo As Int16)
+    Private Sub AddInstruction(ByVal strInstruction As String, ByVal intStepNo As Int16, ByVal strStepID As String)
         Dim strInstructionText As String
         Dim objLabelCtrl As Label = New Label()
         Dim objBtnModCtrl As Button = New Button()
         Dim objBtnDelCtrl As Button = New Button()
 
         objBtnModCtrl.Text = "Modify"
-        objBtnModCtrl.ID = "btnDirectionModify_" & intStepNo.ToString
+        objBtnModCtrl.ID = "btnDirectionModify_" & strStepID.ToString
         objBtnModCtrl.Attributes.Add("Class", "btn btn-primary btn-sm")
+        AddHandler objBtnModCtrl.Click, AddressOf btnModStep_Click
 
         objBtnDelCtrl.Text = "Remove"
-        objBtnDelCtrl.ID = "btnDirectionDel_" & intStepNo.ToString
+        objBtnDelCtrl.ID = "btnDirectionDel_" & strStepID.ToString
         objBtnDelCtrl.Attributes.Add("Class", "btn btn-primary btn-sm")
+        AddHandler objBtnDelCtrl.Click, AddressOf btnDelStep_Click
 
         ' Setup Textbox Attributes
         strInstructionText = "<p style=""font-family: 'Courier New'"">&nbsp;&nbsp;&nbsp;"
 
         objLabelCtrl.ID = "lblInstruction_" & intStepNo.ToString
         'objLabelCtrl.Text = strInstruction
-        objLabelCtrl.Text = Me.PadRightSpace(strInstruction, 62)
+        objLabelCtrl.Text = Me.PadRightSpace(strInstruction, 82)
 
         Me.pnlDirections.Controls.Add(New LiteralControl(strInstructionText))
         Me.pnlDirections.Controls.Add(objLabelCtrl)
@@ -725,7 +727,7 @@ Partial Public Class ManageMyRecipe
     Private Sub AddInstructionHeader()
         Dim strInstructionHdr As String
 
-        strInstructionHdr = "<p style=""font-family: 'Courier New'""><b>INSTRUCTIONS (Abbreviated to 60 chars max)</b></p>"
+        strInstructionHdr = "<p style=""font-family: 'Courier New'""><b>INSTRUCTIONS (Abbreviated to 80 chars for display)</b></p>"
 
         Me.pnlDirections.Controls.Add(New LiteralControl(strInstructionHdr))
 
@@ -757,7 +759,7 @@ Partial Public Class ManageMyRecipe
             While objDR.Read()
 
                 'Add Instructions
-                AddInstruction(objDR("StepText").ToString, iCounter)
+                AddInstruction(objDR("StepText").ToString, iCounter, objDR("InstructionStepID".ToString))
                 iCounter += 1
             End While
         End If
@@ -996,6 +998,20 @@ Partial Public Class ManageMyRecipe
         Return strRetVal
     End Function
 
+    Private Sub btnModStep_Click(sender As Object, e As EventArgs)
+        Dim objBtnCtrl As System.Web.UI.WebControls.Button = sender
+
+        Response.Redirect("~/Account/ModifyRecipeStep?StepID=" & objBtnCtrl.ID.ToString)
+
+    End Sub
+
+    Private Sub btnDelStep_Click(sender As Object, e As EventArgs)
+        Dim objBtnCtrl As System.Web.UI.WebControls.Button = sender
+
+        Response.Redirect("~/Account/RemoveRecipeStep?StepID=" & objBtnCtrl.ID.ToString)
+
+    End Sub
+
     ''' <summary>
     ''' Register_Load - Page Load Event Handler
     ''' </summary>
@@ -1010,39 +1026,42 @@ Partial Public Class ManageMyRecipe
         strRecipeImage = Session("RMS_RecipeImage")
         strFunction = Session("RMS_Function")
 
+
+        ' On initial load, we need to first extract the target recipe from the querystring indicator
+        m_strRecipeID = Request.QueryString("RecipeID")
+
+        ' We then transalate it into an integer
+        m_intRecipeID = ExtractRecipeID(m_strRecipeID)
+        Me.hdnRecipeID.Value = m_intRecipeID.ToString
+
+        Me.Populate_ServingSize_DropDown()
+        Me.populate_RecipeCategory_DropDown()
+        Me.Populate_Sharing_DropDown()
+        Me.rbRecipeMeasurement.SelectedIndex = 0
+        NumberOfControls = 0
+        Session("RMS_NumberOfControls") = Me.NumberOfControls.ToString
+        Session("RMS_IngredientsNumberOfControls") = Me.NumberOfControls.ToString
+
+        Dim strErr As String
+        strErr = Request.QueryString("err")
+
+        If strErr = "Success" Then
+            ErrorMessage.Text = "Record Successfully Updated"
+        End If
+
+        BindRecipeContent(m_intRecipeID)
+
         If Not IsPostBack Then
-            ' On initial load, we need to first extract the target recipe from the querystring indicator
-            m_strRecipeID = Request.QueryString("RecipeID")
-
-            ' We then transalate it into an integer
-            m_intRecipeID = ExtractRecipeID(m_strRecipeID)
-            Me.hdnRecipeID.Value = m_intRecipeID.ToString
-
-            Me.Populate_ServingSize_DropDown()
-            Me.populate_RecipeCategory_DropDown()
-            Me.Populate_Sharing_DropDown()
-            Me.rbRecipeMeasurement.SelectedIndex = 0
-            NumberOfControls = 0
-            Session("RMS_NumberOfControls") = Me.NumberOfControls.ToString
-            Session("RMS_IngredientsNumberOfControls") = Me.NumberOfControls.ToString
-
-            Dim strErr As String
-            strErr = Request.QueryString("err")
-
-            If strErr = "Success" Then
-                ErrorMessage.Text = "Record Successfully Updated"
-            End If
-
-            BindRecipeContent(m_intRecipeID)
 
         Else
-            Me.CreateIngredientsControls()
-            Me.CreateControls()
-            If Convert.ToInt16(Session("RMS_IngredientsNumberOfControls")) > 0 Then
-                Me.rbRecipeMeasurement.Enabled = False
-            End If
+            'Me.CreateIngredientsControls()
+            'Me.CreateControls()
+            'If Convert.ToInt16(Session("RMS_IngredientsNumberOfControls")) > 0 Then
+            'Me.rbRecipeMeasurement.Enabled = False
+            'End If
 
         End If
+
         If strRecipeImage <> "" Then
             Me.imgRecipeImage.ImageUrl = strRecipeImage
         End If
