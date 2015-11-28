@@ -48,16 +48,19 @@ Partial Public Class ManageMyRecipe
     End Property
     Protected m_IngredientsNumberOfControls As Integer
 
+    Private m_strRecipeID As String
+    Private m_intRecipeID As Int16
+
     ''' <summary>
     ''' InsertRecipe 
     ''' </summary>
     ''' <returns></returns>
     Private Function InsertRecipe() As String
         Dim strErr As String
-        Dim strRecipeTitle As String = Me.RecipeTitle.Text
-        Dim strRecipeDescription As String = Me.RecipeDescription.Text
-        Dim strCookingTime As String = Me.RecipeCookingTime.Text
-        Dim intServingSize As Int16 = Me.RecipeServingSize.Text
+        Dim strRecipeTitle As String = Me.txtRecipeTitle.Text
+        Dim strRecipeDescription As String = Me.txtRecipeDescription.Text
+        Dim strCookingTime As String = Me.txtRecipeCookingTime.Text
+        Dim intServingSize As Int16 = Me.ddRecipeServingSize.SelectedValue.ToString
         Dim strCategory As String = Me.ddRecipeCategory.Text
         Dim strShareRecipe As String = Me.ddRecipeSharing.Text
         Dim strSearchKeyWord As String = Me.txtRecipeSearch.Text
@@ -435,12 +438,12 @@ Partial Public Class ManageMyRecipe
         Dim iServingSize As Integer
 
         ' Clear the List before we populate
-        Me.RecipeServingSize.Items.Clear()
+        Me.ddRecipeServingSize.Items.Clear()
 
         ' Iterate Through the DataReader and Populate the Listbox
-        Me.RecipeServingSize.Items.Add(New ListItem(""))
+        Me.ddRecipeServingSize.Items.Add(New ListItem(""))
         For iServingSize = 1 To 20
-            Me.RecipeServingSize.Items.Add(New ListItem(iServingSize.ToString))
+            Me.ddRecipeServingSize.Items.Add(New ListItem(iServingSize.ToString))
         Next
     End Sub
 
@@ -630,6 +633,136 @@ Partial Public Class ManageMyRecipe
 
     End Sub
 
+    Private Sub BindRecipeHeaderData(ByVal intRecipeID As Int16)
+        '
+        Dim objData_DB As clsData_DB
+        Dim objParams(0) As SqlParameter
+        Dim objDR As SqlDataReader
+        Dim strConnectionString As String
+        Dim strRating As String
+        Dim strReviewCount As Integer
+
+        ' Get the connection string out of the Web.Config file.  Connection is tha actual name portion of the name value pair
+        Dim objWebConfig As New clsWebConfig()
+        strConnectionString = objWebConfig.GetWebConfig("Connection".ToString)
+
+        ' Use the Connection string to instantiate a new Database class object.
+        objData_DB = New clsData_DB(strConnectionString)
+
+        ' Setup the parameters.  NOte that the Name, type and size must all match.  The final value is the paramter value
+        objParams(0) = objData_DB.MakeInParam("@RecipeID", SqlDbType.Int, 1, intRecipeID)
+
+        ' Run the stored procedure by name.  Pass with it the parameter list.
+        objDR = objData_DB.RunStoredProc("usp_Recipe_Select_byRecipeID", objParams)
+
+        ' Do we have rows returned?
+        If objDR.HasRows Then
+
+            objDR.Read()
+
+            'Add Header Data
+            ' Bind the Recipe Name
+            Me.txtRecipeTitle.Text = objDR("RecipeName").ToString
+
+            ' Bind the Owner Name
+            ''Me.ltOwner.Text = objDR("Owner_Email").ToString
+            ''Me.ltSubmissionDate.Text = objDR("SubmissionDate").ToString
+
+            '<TODO retrieve rating from database on bind to Page Data
+            ' Bind the Rating
+            'strRating = GetRating(intRecipeID)
+            'strReviewCount = GetReviewCount(intRecipeID)
+
+            If strRating <> "No Rate" Then
+                ''Me.ltRating.Text = FormatNumber(CDbl(strRating), 1).ToString & " of 5"
+                ''Me.hypReadReviews.Enabled = True
+                ''Me.hypReadReviews.Text = strReviewCount & " Reviews Found"
+                ''Me.hypReadReviews.NavigateUrl = "~/Account/DisplayReview?RecipeID=" & intRecipeID.ToString
+            Else
+                ''Me.ltRating.Text = "No Rating"
+                ''Me.hypReadReviews.Enabled = False
+                ''Me.hypReadReviews.Text = "0 Reveiws Found"
+                ''Me.hypReadReviews.NavigateUrl = ""
+            End If
+            ''Me.imgRating.ImageUrl = Me.RatingImageSelection(strRating)
+
+            'Bind the Recipe Description
+            Me.txtRecipeDescription.Text = objDR("RecipeDescription").ToString
+
+            'Cooking Time
+            Me.txtRecipeCookingTime.Text = objDR("CookingTime").ToString
+
+            ' Serving Size 
+            Me.ddRecipeServingSize.SelectedIndex = ddRecipeServingSize.Items.IndexOf(ddRecipeServingSize.Items.FindByText(objDR("ServingSize").ToString))
+
+            'Cuisine Category
+            Me.ddRecipeCategory.SelectedIndex = ddRecipeCategory.Items.IndexOf(ddRecipeCategory.Items.FindByText(objDR("CuisineCategory").ToString))
+
+            ' Share Level
+            Me.ddRecipeSharing.SelectedIndex = ddRecipeSharing.Items.IndexOf(ddRecipeSharing.Items.FindByText(objDR("ShareLevelType").ToString))
+
+            ' Search Keywords
+            Me.txtRecipeSearch.Text = objDR("SearchTerm").ToString
+
+            ' Measurement System
+            If objDR("MeasurementSystem").ToString = "Metric" Then
+                Me.rbRecipeMeasurement.Items(1).Selected = True
+            Else
+                Me.rbRecipeMeasurement.Items(0).Selected = True
+            End If
+
+        Else
+            '<TODO>  Assign Invalid Recipe
+        End If
+
+        ' CleanUp on our way out.  Make sure that we kill the connection so that we do not run our limit on concurrent 
+        ' database connections.
+        If Not IsNothing(objDR) Then
+            objDR.Close()
+            objDR = Nothing
+        End If
+
+        If Not IsNothing(objData_DB) Then
+            objData_DB.Close()
+            objData_DB = Nothing
+        End If
+
+    End Sub
+
+
+    Private Function ExtractRecipeID(ByVal strRecipeID As String) As Int16
+        Dim intReturnID As Int16
+        Dim strTokens() As String
+
+        strTokens = Split(strRecipeID, "_")
+
+        Try
+            intReturnID = CInt(strTokens(1))
+        Catch ex As Exception
+            intReturnID = -1
+        End Try
+
+        Return intReturnID
+    End Function
+
+    Private Function BindRecipeData(ByVal intRecipeID As Int16) As String
+        Dim strRetVal As String = ""
+
+        BindRecipeHeaderData(intRecipeID)
+        'BindRecipeImageData(intRecipeID)
+        'BindIngredientData(intRecipeID)
+        'BindInstructionData(intRecipeID)
+
+        Return strRetVal
+    End Function
+    Private Function BindRecipeContent(ByVal intRecipeID As Int16) As String
+        Dim strRetVal As String = ""
+
+        strRetVal = BindRecipeData(intRecipeID)
+
+        Return strRetVal
+    End Function
+
     ''' <summary>
     ''' Register_Load - Page Load Event Handler
     ''' </summary>
@@ -645,6 +778,13 @@ Partial Public Class ManageMyRecipe
         strFunction = Session("RMS_Function")
 
         If Not IsPostBack Then
+            ' On initial load, we need to first extract the target recipe from the querystring indicator
+            m_strRecipeID = Request.QueryString("RecipeID")
+
+            ' We then transalate it into an integer
+            m_intRecipeID = ExtractRecipeID(m_strRecipeID)
+            Me.hdnRecipeID.Value = m_intRecipeID.ToString
+
             Me.Populate_ServingSize_DropDown()
             Me.populate_RecipeCategory_DropDown()
             Me.Populate_Sharing_DropDown()
@@ -659,6 +799,8 @@ Partial Public Class ManageMyRecipe
             If strErr = "Success" Then
                 ErrorMessage.Text = "Record Successfully Updated"
             End If
+
+            BindRecipeContent(m_intRecipeID)
 
         Else
             Me.CreateIngredientsControls()

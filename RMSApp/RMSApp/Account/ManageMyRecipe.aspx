@@ -13,6 +13,8 @@
         <asp:ValidationSummary runat="server" CssClass="text-danger" />
         <asp:table runat="server"></asp:table>
 
+        <asp:HiddenField ID="hdnRecipeID" runat="server" />
+
         <asp:Table ID="Table1" runat="server" Width="100%" GridLines="None" >
             <asp:TableRow>
                 <asp:TableCell Width="16%">&nbsp;</asp:TableCell>
@@ -28,8 +30,8 @@
                 </asp:TableCell>
                 <asp:TableCell VerticalAlign="Middle" HorizontalAlign="Left" ColumnSpan="5">
                     <div class="col-md-10">
-                        <asp:TextBox runat="server" ID="RecipeTitle" CssClass="form-control" TextMode="MultiLine" ReadOnly="false" MaxLength="150" Rows="1" />
-                        <asp:RequiredFieldValidator runat="server" ControlToValidate="RecipeTitle"
+                        <asp:TextBox runat="server" ID="txtRecipeTitle" CssClass="form-control" ReadOnly="false" MaxLength="150" Rows="1" />
+                        <asp:RequiredFieldValidator runat="server" ControlToValidate="txtRecipeTitle"
                              CssClass="text-danger" ErrorMessage="The Recipe Title field is required." />
                     </div> 
                 </asp:TableCell>
@@ -40,7 +42,7 @@
                     </asp:TableCell> 
                 <asp:TableCell VerticalAlign="Middle" HorizontalAlign="Left" ColumnSpan="5">
                     <div class="col-md-10">
-                        <asp:TextBox runat="server" ID="RecipeDescription" CssClass="form-control" TextMode="MultiLine" ReadOnly="false" Rows="4" MaxLength="150" />
+                        <asp:TextBox runat="server" ID="txtRecipeDescription" CssClass="form-control" TextMode="MultiLine" ReadOnly="false" Rows="4" MaxLength="150" />
                     </div> 
                 </asp:TableCell>
             </asp:TableRow>
@@ -50,7 +52,7 @@
                     </asp:TableCell>
                 <asp:TableCell VerticalAlign="Middle" HorizontalAlign="Left" ColumnSpan="5">
                     <div class="col-md-10">
-                        <asp:TextBox runat="server" ID="RecipeCookingTime" CssClass="form-control" TextMode="SingleLine" ReadOnly="false" MaxLength="50" />
+                        <asp:TextBox runat="server" ID="txtRecipeCookingTime" CssClass="form-control" TextMode="SingleLine" ReadOnly="false" MaxLength="50" />
                     </div> 
                 </asp:TableCell>
             </asp:TableRow>
@@ -63,8 +65,8 @@
                 </asp:TableCell>
                 <asp:TableCell VerticalAlign="Middle" HorizontalAlign="Left" ColumnSpan="5">
                     <div class="col-md-10">
-                        <asp:DropDownList runat="server" ID="RecipeServingSize" CssClass="form-control" ReadOnly="false"/>
-                        <asp:RequiredFieldValidator runat="server" ControlToValidate="RecipeServingSize"
+                        <asp:DropDownList runat="server" ID="ddRecipeServingSize" CssClass="form-control" ReadOnly="false"/>
+                        <asp:RequiredFieldValidator runat="server" ControlToValidate="ddRecipeServingSize"
                              CssClass="text-danger" ErrorMessage="The Recipe Serving Size field is required." />
                      </div>
                 </asp:TableCell>
