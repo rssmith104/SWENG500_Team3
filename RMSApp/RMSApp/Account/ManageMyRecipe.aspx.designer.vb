@@ -158,13 +158,13 @@ Partial Public Class ManageMyRecipe
     Protected WithEvents pnlDirections As Global.System.Web.UI.WebControls.Panel
     
     '''<summary>
-    '''imRecipeImage control.
+    '''imgRecipeImage control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents imRecipeImage As Global.System.Web.UI.WebControls.Image
+    Protected WithEvents imgRecipeImage As Global.System.Web.UI.WebControls.Image
     
     '''<summary>
     '''fuRecipePicUpload control.

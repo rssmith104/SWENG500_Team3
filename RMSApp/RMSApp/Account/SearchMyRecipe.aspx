@@ -3,7 +3,7 @@
 <%@ Register Src="~/Account/OpenAuthProviders.ascx" TagPrefix="uc" TagName="OpenAuthProviders" %>
 
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
-    <h2>RMS Search</h2>
+    <h2>RMS Manage My Recipes Search</h2>
 
     <div class="row">
         <!--<div class="col-md-8">-->

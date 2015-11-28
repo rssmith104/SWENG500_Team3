@@ -567,7 +567,7 @@ Partial Public Class ManageMyRecipe
 
     Private Sub InsertRecipeImage()
 
-        Dim strImageURL As String = Me.imRecipeImage.ImageUrl.ToString()
+        Dim strImageURL As String = Me.imgRecipeImage.ImageUrl.ToString()
 
         Dim objData_DB As clsData_DB
         Dim objParams(1) As SqlParameter
@@ -608,7 +608,7 @@ Partial Public Class ManageMyRecipe
         If Me.fuRecipePicUpload.HasFile Then
             Dim strFileName As String = Path.GetFileName(Me.fuRecipePicUpload.PostedFile.FileName)
             fuRecipePicUpload.PostedFile.SaveAs(Server.MapPath("~/Images/") + strFileName)
-            Me.imRecipeImage.ImageUrl = "~/images/" & strFileName
+            Me.imgRecipeImage.ImageUrl = "~/images/" & strFileName
             'Me.imRecipeImage.ImageUrl = Server.MapPath("~/Images/") + strFileName
             'Me.imRecipeImage.Attributes.Add("ImageUrl", "Server.MapPath(""~/Images/"") + strFileName")
             Session("RMS_RecipeImage") = "~/Images/" & strFileName
@@ -630,6 +630,239 @@ Partial Public Class ManageMyRecipe
     End Sub
 
     Private Sub EventLog1_EntryWritten(sender As Object, e As EntryWrittenEventArgs) Handles EventLog1.EntryWritten
+
+    End Sub
+
+    Private Function PadRightSpace(ByVal strText As String, ByVal intPadNo As Int16) As String
+        Dim strRet As String
+        Dim iCounter As Int16 = 0
+
+        strRet = Trim(strText)
+
+        Do While iCounter < intPadNo - Len(Trim(strText))
+            strRet &= "&nbsp;"
+            iCounter += 1
+        Loop
+
+        Return strRet
+
+    End Function
+
+    Private Sub AddIngredientHeader()
+        Dim strIngredHdr As String
+
+        strIngredHdr = "<p style=""font-family: 'Courier New'""><b>" &
+                       PadRightSpace("NO", 4) &
+                       PadRightSpace("INGREDIENT", 32) &
+                       PadRightSpace("QUANTITY", 12) &
+                       PadRightSpace("MEASUREMENT", 12) &
+                       PadRightSpace("PREPARATION", 20) &
+                       "</b></p>"
+        Me.pnlIngredients.Controls.Add(New LiteralControl(strIngredHdr))
+
+    End Sub
+
+    Private Sub AddIngredient(ByVal strIngredName As String,
+                              ByVal strQty As String,
+                              ByVal strUOM As String,
+                              ByVal strPrepText As String,
+                              ByVal intIngredNo As Int16)
+
+        Dim strIngredText As String
+        Dim objBtnModCtrl As Button = New Button()
+        Dim objBtnDelCtrl As Button = New Button()
+
+        objBtnModCtrl.Text = "Modify"
+        objBtnModCtrl.ID = "btnIngredModify_" & intIngredNo.ToString
+        objBtnModCtrl.Attributes.Add("Class", "btn btn-primary btn-sm")
+
+        objBtnDelCtrl.Text = "Remove"
+        objBtnDelCtrl.ID = "btnIngredDel_" & intIngredNo.ToString
+        objBtnDelCtrl.Attributes.Add("Class", "btn btn-primary btn-sm")
+
+        strIngredText = "<p style=""font-family: 'Courier New'"">" & PadRightSpace(CInt(intIngredNo), 4) & PadRightSpace(strIngredName, 32) & PadRightSpace(strQty, 12) & PadRightSpace(strUOM, 12) & PadRightSpace(strPrepText, 20)
+
+        Me.pnlIngredients.Controls.Add(New LiteralControl(strIngredText))
+        Me.pnlIngredients.Controls.Add(objBtnModCtrl)
+        Me.pnlIngredients.Controls.Add(New LiteralControl(Me.PadRightSpace("", 2)))
+        Me.pnlIngredients.Controls.Add(objBtnDelCtrl)
+        Me.pnlIngredients.Controls.Add(New LiteralControl("</p>"))  '<br />
+
+    End Sub
+
+    Private Sub AddInstruction(ByVal strInstruction As String, ByVal intStepNo As Int16)
+        Dim strInstructionText As String
+        Dim objLabelCtrl As Label = New Label()
+        Dim objBtnModCtrl As Button = New Button()
+        Dim objBtnDelCtrl As Button = New Button()
+
+        objBtnModCtrl.Text = "Modify"
+        objBtnModCtrl.ID = "btnDirectionModify_" & intStepNo.ToString
+        objBtnModCtrl.Attributes.Add("Class", "btn btn-primary btn-sm")
+
+        objBtnDelCtrl.Text = "Remove"
+        objBtnDelCtrl.ID = "btnDirectionDel_" & intStepNo.ToString
+        objBtnDelCtrl.Attributes.Add("Class", "btn btn-primary btn-sm")
+
+        ' Setup Textbox Attributes
+        strInstructionText = "<p style=""font-family: 'Courier New'"">&nbsp;&nbsp;&nbsp;"
+
+        objLabelCtrl.ID = "lblInstruction_" & intStepNo.ToString
+        'objLabelCtrl.Text = strInstruction
+        objLabelCtrl.Text = Me.PadRightSpace(strInstruction, 62)
+
+        Me.pnlDirections.Controls.Add(New LiteralControl(strInstructionText))
+        Me.pnlDirections.Controls.Add(objLabelCtrl)
+
+        Me.pnlDirections.Controls.Add(objBtnModCtrl)
+        Me.pnlDirections.Controls.Add(New LiteralControl(Me.PadRightSpace("", 2)))
+        Me.pnlDirections.Controls.Add(objBtnDelCtrl)
+
+        Me.pnlDirections.Controls.Add(New LiteralControl("</p>"))  '<br />
+
+    End Sub
+
+    Private Sub AddInstructionHeader()
+        Dim strInstructionHdr As String
+
+        strInstructionHdr = "<p style=""font-family: 'Courier New'""><b>INSTRUCTIONS (Abbreviated to 60 chars max)</b></p>"
+
+        Me.pnlDirections.Controls.Add(New LiteralControl(strInstructionHdr))
+
+    End Sub
+
+    Private Sub BindInstructionData(ByVal intRecipeID As Int16)
+        Dim objData_DB As clsData_DB
+        Dim objParams(0) As SqlParameter
+        Dim objDR As SqlDataReader
+        Dim strConnectionString As String
+
+        ' Get the connection string out of the Web.Config file.  Connection is tha actual name portion of the name value pair
+        Dim objWebConfig As New clsWebConfig()
+        strConnectionString = objWebConfig.GetWebConfig("Connection".ToString)
+
+        ' Use the Connection string to instantiate a new Database class object.
+        objData_DB = New clsData_DB(strConnectionString)
+
+        ' Setup the parameters.  NOte that the Name, type and size must all match.  The final value is the paramter value
+        objParams(0) = objData_DB.MakeInParam("@RecipeID", SqlDbType.Int, 1, intRecipeID)
+
+        ' Run the stored procedure by name.  Pass with it the parameter list.
+        objDR = objData_DB.RunStoredProc("usp_InstructionStep_SelectByRecipe_Limit", objParams)
+
+        ' Do we have rows returned?
+        If objDR.HasRows Then
+            AddInstructionHeader()
+            Dim iCounter As Integer = 1
+            While objDR.Read()
+
+                'Add Instructions
+                AddInstruction(objDR("StepText").ToString, iCounter)
+                iCounter += 1
+            End While
+        End If
+
+        ' CleanUp on our way out.  Make sure that we kill the connection so that we do not run our limit on concurrent 
+        ' database connections.
+        If Not IsNothing(objDR) Then
+            objDR.Close()
+            objDR = Nothing
+        End If
+
+        If Not IsNothing(objData_DB) Then
+            objData_DB.Close()
+            objData_DB = Nothing
+        End If
+
+    End Sub
+
+
+    Private Sub BindIngredientData(ByVal intRecipeID As Int16)
+        Dim objData_DB As clsData_DB
+        Dim objParams(0) As SqlParameter
+        Dim objDR As SqlDataReader
+        Dim strConnectionString As String
+
+        ' Get the connection string out of the Web.Config file.  Connection is tha actual name portion of the name value pair
+        Dim objWebConfig As New clsWebConfig()
+        strConnectionString = objWebConfig.GetWebConfig("Connection".ToString)
+
+        ' Use the Connection string to instantiate a new Database class object.
+        objData_DB = New clsData_DB(strConnectionString)
+
+        ' Setup the parameters.  NOte that the Name, type and size must all match.  The final value is the paramter value
+        objParams(0) = objData_DB.MakeInParam("@RecipeID", SqlDbType.Int, 1, intRecipeID)
+
+        ' Run the stored procedure by name.  Pass with it the parameter list.
+        objDR = objData_DB.RunStoredProc("usp_RecipeIngredient_SelectByRecipe", objParams)
+
+        ' Do we have rows returned?
+        If objDR.HasRows Then
+            AddIngredientHeader()
+            Dim iCounter As Integer = 1
+            While objDR.Read()
+
+                'Add Ingredient
+                AddIngredient(objDR("IngredientName").ToString, objDR("Qty").ToString, objDR("UOMType").ToString, objDR("PreparationText").ToString, iCounter)
+                iCounter += 1
+            End While
+        End If
+
+        ' CleanUp on our way out.  Make sure that we kill the connection so that we do not run our limit on concurrent 
+        ' database connections.
+        If Not IsNothing(objDR) Then
+            objDR.Close()
+            objDR = Nothing
+        End If
+
+        If Not IsNothing(objData_DB) Then
+            objData_DB.Close()
+            objData_DB = Nothing
+        End If
+    End Sub
+
+
+    Private Sub BindRecipeImageData(ByVal intRecipeID As Int16)
+        Dim objData_DB As clsData_DB
+        Dim objParams(0) As SqlParameter
+        Dim objDR As SqlDataReader
+        Dim strConnectionString As String
+
+        ' Get the connection string out of the Web.Config file.  Connection is tha actual name portion of the name value pair
+        Dim objWebConfig As New clsWebConfig()
+        strConnectionString = objWebConfig.GetWebConfig("Connection".ToString)
+
+        ' Use the Connection string to instantiate a new Database class object.
+        objData_DB = New clsData_DB(strConnectionString)
+
+        ' Setup the parameters.  NOte that the Name, type and size must all match.  The final value is the paramter value
+        objParams(0) = objData_DB.MakeInParam("@RecipeID", SqlDbType.Int, 1, intRecipeID)
+
+        ' Run the stored procedure by name.  Pass with it the parameter list.
+        objDR = objData_DB.RunStoredProc("usp_RecipeImage_Select", objParams)
+
+        ' Do we have rows returned?
+        If objDR.HasRows Then
+
+            objDR.Read()
+
+            'Add Image
+            Me.imgRecipeImage.ImageUrl = objDR("ImageText").ToString
+        Else
+            '<TODO>  Assign No Image Image
+        End If
+
+        ' CleanUp on our way out.  Make sure that we kill the connection so that we do not run our limit on concurrent 
+        ' database connections.
+        If Not IsNothing(objDR) Then
+            objDR.Close()
+            objDR = Nothing
+        End If
+
+        If Not IsNothing(objData_DB) Then
+            objData_DB.Close()
+            objData_DB = Nothing
+        End If
 
     End Sub
 
@@ -749,9 +982,9 @@ Partial Public Class ManageMyRecipe
         Dim strRetVal As String = ""
 
         BindRecipeHeaderData(intRecipeID)
-        'BindRecipeImageData(intRecipeID)
-        'BindIngredientData(intRecipeID)
-        'BindInstructionData(intRecipeID)
+        BindRecipeImageData(intRecipeID)
+        BindIngredientData(intRecipeID)
+        BindInstructionData(intRecipeID)
 
         Return strRetVal
     End Function
@@ -811,7 +1044,7 @@ Partial Public Class ManageMyRecipe
 
         End If
         If strRecipeImage <> "" Then
-            Me.imRecipeImage.ImageUrl = strRecipeImage
+            Me.imgRecipeImage.ImageUrl = strRecipeImage
         End If
     End Sub
 

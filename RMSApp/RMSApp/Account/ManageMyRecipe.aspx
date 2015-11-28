@@ -130,6 +130,7 @@
                     </asp:Panel>
                 </asp:TableCell>
             </asp:TableRow>
+            <asp:TableRow><asp:TableCell ColumnSpan="6">&nbsp;</asp:TableCell></asp:TableRow>
              <asp:TableRow>
                 <asp:TableCell><b>Directions</b></asp:TableCell>
                 <asp:TableCell HorizontalAlign="Left" ColumnSpan="5">
@@ -144,12 +145,13 @@
                     </asp:Panel>
                 </asp:TableCell>
             </asp:TableRow>
+            <asp:TableRow><asp:TableCell ColumnSpan="6">&nbsp;</asp:TableCell></asp:TableRow>
             <asp:TableRow>
                 <asp:TableCell ColumnSpan="2" HorizontalAlign="Right">
                     <h3><b>Recipe Image:&nbsp</b></h3>
                 </asp:TableCell>
                 <asp:TableCell ColumnSpan="2" HorizontalAlign="Center">
-                    <asp:Image ID="imRecipeImage" runat="server" width="300px" Height="300px" ImageUrl="~/images/Default_Image.png"/>
+                    <asp:Image ID="imgRecipeImage" runat="server" width="300px" Height="300px" ImageUrl="~/images/Default_Image.png"/>
                 </asp:TableCell>
                 <asp:TableCell ColumnSpan="2" HorizontalAlign="Left">
                     <asp:FileUpload ID="fuRecipePicUpload" runat="server" /><br /><asp:Button ID="btnRecipeImageUpload" runat="server" Text="Upload Image" OnClick="Recipe_Image_Upload" CausesValidation="false"/>
