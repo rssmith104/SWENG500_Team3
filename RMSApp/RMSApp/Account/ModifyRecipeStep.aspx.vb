@@ -109,6 +109,10 @@ Public Class ModifyRecipeStep
 
     End Sub
 
+    Protected Sub CancelChanges_Click(sender As Object, e As EventArgs)
+        Response.Redirect("~/Account/ManageMyRecipe?RecipeID=btnView_" & Me.hdnRecipeID.Value)
+    End Sub
+
     Private Function ExtractStepID(ByVal strStepID As String) As String
         Dim strReturnID As Int16
         Dim strTokens() As String

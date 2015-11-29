@@ -666,19 +666,22 @@ Partial Public Class ManageMyRecipe
                               ByVal strQty As String,
                               ByVal strUOM As String,
                               ByVal strPrepText As String,
-                              ByVal intIngredNo As Int16)
+                              ByVal intIngredNo As Int16,
+                              ByVal strIngredID As String)
 
         Dim strIngredText As String
         Dim objBtnModCtrl As Button = New Button()
         Dim objBtnDelCtrl As Button = New Button()
 
         objBtnModCtrl.Text = "Modify"
-        objBtnModCtrl.ID = "btnIngredModify_" & intIngredNo.ToString
+        objBtnModCtrl.ID = "btnIngredModify_" & strIngredID.ToString
         objBtnModCtrl.Attributes.Add("Class", "btn btn-primary btn-sm")
+        AddHandler objBtnModCtrl.Click, AddressOf btnModIngred_Click
 
         objBtnDelCtrl.Text = "Remove"
-        objBtnDelCtrl.ID = "btnIngredDel_" & intIngredNo.ToString
+        objBtnDelCtrl.ID = "btnIngredDel_" & strIngredID.ToString
         objBtnDelCtrl.Attributes.Add("Class", "btn btn-primary btn-sm")
+        AddHandler objBtnDelCtrl.Click, AddressOf btnDelIngred_Click
 
         strIngredText = "<p style=""font-family: 'Courier New'"">" & PadRightSpace(CInt(intIngredNo), 4) & PadRightSpace(strIngredName, 32) & PadRightSpace(strQty, 12) & PadRightSpace(strUOM, 12) & PadRightSpace(strPrepText, 20)
 
@@ -805,7 +808,7 @@ Partial Public Class ManageMyRecipe
             While objDR.Read()
 
                 'Add Ingredient
-                AddIngredient(objDR("IngredientName").ToString, objDR("Qty").ToString, objDR("UOMType").ToString, objDR("PreparationText").ToString, iCounter)
+                AddIngredient(objDR("IngredientName").ToString, objDR("Qty").ToString, objDR("UOMType").ToString, objDR("PreparationText").ToString, iCounter, objDR("RecipeIngredientListID").ToString)
                 iCounter += 1
             End While
         End If
@@ -1009,6 +1012,30 @@ Partial Public Class ManageMyRecipe
         Dim objBtnCtrl As System.Web.UI.WebControls.Button = sender
 
         Response.Redirect("~/Account/RemoveRecipeStep?StepID=" & objBtnCtrl.ID.ToString)
+
+    End Sub
+
+    ''' <summary>
+    ''' Handler for Modify Ingredient Button Click
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub btnModIngred_Click(sender As Object, e As EventArgs)
+        Dim objBtnCtrl As System.Web.UI.WebControls.Button = sender
+
+        Response.Redirect("~/Account/ModifyRecipeIngred?IngredID=" & objBtnCtrl.ID.ToString)
+
+    End Sub
+
+    ''' <summary>
+    ''' Handler for Delete Ingredient Button Click
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub btnDelIngred_Click(sender As Object, e As EventArgs)
+        Dim objBtnCtrl As System.Web.UI.WebControls.Button = sender
+
+        Response.Redirect("~/Account/RemoveRecipeIngred?IngredID=" & objBtnCtrl.ID.ToString)
 
     End Sub
 

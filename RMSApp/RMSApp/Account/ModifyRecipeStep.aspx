@@ -22,14 +22,17 @@
                 <asp:TableCell Width="80%">&nbsp;</asp:TableCell>
             </asp:TableRow>
             <asp:TableRow>
-                <asp:TableCell ColumnSpan="2" HorizontalAlign="Center">
+                <asp:TableCell ColumnSpan="1" HorizontalAlign="Center">
+                    <b>Step Instruction:</b>
+                </asp:TableCell>
+                <asp:TableCell ColumnSpan="1" HorizontalAlign="Center">
                     <asp:TextBox runat="server" ID="txtStepText" CssClass="form-control" TextMode="MultiLine" ReadOnly="false" MaxLength="1000" Rows="5" />
                     <asp:RequiredFieldValidator runat="server" ControlToValidate="txtStepText" CssClass="text-danger" ErrorMessage="Recipe Step Text is Required." />
                 </asp:TableCell>
             </asp:TableRow>
             <asp:TableRow>
                 <asp:TableCell ColumnSpan="2" HorizontalAlign="Center">
-                    <asp:Button ID="btnSubmit" runat="server" Text="Save" OnClick="SaveChanges_Click" CssClass="btn btn-primary btn-md" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:Button ID="btnCancel" runat="server" Text="Cancel" CausesValidation="false" CssClass="btn btn-primary btn-md"/>
+                    <asp:Button ID="btnSubmit" runat="server" Text="Save" OnClick="SaveChanges_Click" CssClass="btn btn-primary btn-md" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:Button ID="btnCancel" runat="server" Text="Cancel" CausesValidation="false" CssClass="btn btn-primary btn-md" OnClick="CancelChanges_Click"/>
                 </asp:TableCell>
             </asp:TableRow>
         </asp:Table>
