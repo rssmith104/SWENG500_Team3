@@ -30,8 +30,8 @@
                 </asp:TableCell><asp:TableCell>
                     <div class="col-md-10">
                         <asp:TextBox runat="server" ID="Password" TextMode="Password" CssClass="form-control" />
-                        <asp:RequiredFieldValidator runat="server" ControlToValidate="Password"
-                            CssClass="text-danger" ErrorMessage="The password field is required." />
+                        <asp:RequiredFieldValidator runat="server" ControlToValidate="Password" CssClass="text-danger" ErrorMessage="The password field is required." />
+                        <asp:RegularExpressionValidator runat="server" ControlToValidate="Password" CssClass="text-danger" ErrorMessage="Minimum 6 Characters Required" Display="Dynamic" ValidationGroup="SetPassword" ValidationExpression="^[\s\S]{6,}$" />
                     </div>
                 </asp:TableCell></asp:TableRow><asp:TableRow>
                 <asp:TableCell>&nbsp;</asp:TableCell><asp:TableCell>&nbsp;</asp:TableCell><asp:TableCell VerticalAlign="Top">
@@ -86,9 +86,7 @@
                     <div class="col-md-10">
                         <asp:DropDownList ID="ddState" runat="server" CssClass="form-control"></asp:DropDownList>
                     </div>
-                </asp:TableCell>
-            </asp:TableRow>
-            <asp:TableRow>
+                </asp:TableCell></asp:TableRow><asp:TableRow>
                 <asp:TableCell VerticalAlign="Top">
                     <asp:Label runat="server" AssociatedControlID="Zip" CssClass="col-md-2 control-label" ForeColor="#CC0000">Zip*</asp:Label>
                 </asp:TableCell><asp:TableCell>
@@ -111,9 +109,7 @@
                     <asp:Label runat="server" AssociatedControlID="SecurityResponse" CssClass="col-md-2 control-label" ForeColor="#CC0000">Security Response*</asp:Label>
                 </asp:TableCell><asp:TableCell>
                         <asp:TextBox runat="server" ID="SecurityResponse" CssClass="form-control" />
-                </asp:TableCell>
-            </asp:TableRow>
-            <asp:TableRow>
+                </asp:TableCell></asp:TableRow><asp:TableRow>
                 <asp:TableCell ColumnSpan="4"><hr /></asp:TableCell>
             </asp:TableRow>
             <asp:TableRow>
@@ -123,7 +119,4 @@
                             <asp:Button runat="server" OnClick="CreateUser_Click" Text="Register" CssClass="btn btn-primary btn-lg" />
                         </div>
                     </div>
-                </asp:TableCell>
-            </asp:TableRow>
-        </asp:Table>
-    </div></asp:Content>
+                </asp:TableCell></asp:TableRow></asp:Table></div></asp:Content>
