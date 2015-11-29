@@ -55,12 +55,12 @@ Partial Public Class ManageMyRecipe
     ''' InsertRecipe 
     ''' </summary>
     ''' <returns></returns>
-    Private Function InsertRecipe() As String
+    Private Function UpdateRecipe() As String
         Dim strErr As String
         Dim strRecipeTitle As String = Me.txtRecipeTitle.Text
         Dim strRecipeDescription As String = Me.txtRecipeDescription.Text
         Dim strCookingTime As String = Me.txtRecipeCookingTime.Text
-        Dim intServingSize As Int16 = Me.ddRecipeServingSize.SelectedValue.ToString
+        Dim strServingSize As Int16 = Me.ddRecipeServingSize.SelectedValue.ToString
         Dim strCategory As String = Me.ddRecipeCategory.Text
         Dim strShareRecipe As String = Me.ddRecipeSharing.Text
         Dim strSearchKeyWord As String = Me.txtRecipeSearch.Text
@@ -74,6 +74,17 @@ Partial Public Class ManageMyRecipe
 
         Dim strDebugMsg As String = ""
 
+        'Response.Write("@RecipeID: " & m_intRecipeID.ToString & "<br />")
+        'Response.Write("@RecipeName: " & strRecipeTitle & "<br />")
+        'Response.Write("@RecipeDescription: " & strRecipeDescription & "<br />")
+        'Response.Write("@ServingSize: " & strServingSize & "<br />")
+        'Response.Write("@SearchTerm: " & strSearchKeyWord & "<br />")
+        'Response.Write("@ShareLevelType: " & strShareRecipe & "<br />")
+        'Response.Write("@CuisineCategory: " & strCategory & "<br />")
+        'Response.Write("@CookingTime: " & strCookingTime & "<br />")
+        'Response.Write("@MeasurementSystem: " & strMeasurementSystem & "<br />")
+        'Response.End()
+
         strErr = Me.ValidateInput()
         If strErr = "NOERROR" Then
             Try
@@ -85,19 +96,18 @@ Partial Public Class ManageMyRecipe
                 ' Use the Connection string to instantiate a new Database class object.
                 objData_DB = New clsData_DB(strConnectionString)
 
-                objParams(0) = objData_DB.MakeInParam("@RecipeName", SqlDbType.VarChar, 150, strRecipeTitle)
-                objParams(1) = objData_DB.MakeInParam("@RecipeDescription", SqlDbType.VarChar, 150, strRecipeDescription)
-                objParams(2) = objData_DB.MakeInParam("@ServingSize", SqlDbType.SmallInt, 2, intServingSize)
-                objParams(3) = objData_DB.MakeInParam("@ShareLevelType", SqlDbType.VarChar, 30, strShareRecipe)
+                objParams(0) = objData_DB.MakeInParam("@RecipeID", SqlDbType.Int, 4, m_intRecipeID)
+                objParams(1) = objData_DB.MakeInParam("@RecipeName", SqlDbType.VarChar, 150, strRecipeTitle)
+                objParams(2) = objData_DB.MakeInParam("@RecipeDescription", SqlDbType.VarChar, 150, strRecipeDescription)
+                objParams(3) = objData_DB.MakeInParam("@ServingSize", SqlDbType.SmallInt, 2, CInt(strServingSize))
                 objParams(4) = objData_DB.MakeInParam("@SearchTerm", SqlDbType.VarChar, 500, strSearchKeyWord)
-                objParams(5) = objData_DB.MakeInParam("@CookingTime", SqlDbType.VarChar, 50, strCookingTime)
-                objParams(6) = objData_DB.MakeInParam("@MeasurementSystem", SqlDbType.VarChar, 30, strMeasurementSystem)
-                objParams(7) = objData_DB.MakeInParam("@Email", SqlDbType.VarChar, 50, strLogInUser)
-                objParams(8) = objData_DB.MakeInParam("@CuisineCategory", SqlDbType.VarChar, 50, strCategory)
-
+                objParams(5) = objData_DB.MakeInParam("@ShareLevelType", SqlDbType.VarChar, 30, strShareRecipe)
+                objParams(6) = objData_DB.MakeInParam("@CuisineCategory", SqlDbType.VarChar, 50, strCategory)
+                objParams(7) = objData_DB.MakeInParam("@CookingTime", SqlDbType.VarChar, 50, strCookingTime)
+                objParams(8) = objData_DB.MakeInParam("@MeasurementSystem", SqlDbType.VarChar, 30, strMeasurementSystem)
 
                 ' Run the stored procedure by name.  Pass with it the parameter list.
-                objDR = objData_DB.RunStoredProc("usp_Recipe_Insert_Full", objParams)
+                objDR = objData_DB.RunStoredProc("usp_Recipe_Update_RecipeID", objParams)
 
                 If objDR.HasRows Then
                     objDR.Read()
@@ -269,10 +279,6 @@ Partial Public Class ManageMyRecipe
     Private Function ValidateInput() As String
         Dim strRet As String = "NOERROR"
 
-        ' If Me.Email.Text = "" Then
-        'strRet = "Email Address is Required"
-        'End If
-
         Return strRet
 
     End Function
@@ -438,14 +444,14 @@ Partial Public Class ManageMyRecipe
     Protected Sub SaveRecipeChanges_Click(sender As Object, e As EventArgs)
         Dim strErr As String = ""
 
-        ErrorMessage.Text = Me.InsertRecipe()
+        ErrorMessage.Text = Me.UpdateRecipe()
         If ErrorMessage.Text = "" Then
             Me.InsertRecipeImage()
-            Me.GetIngredients()
-            Me.GetDirections()
+            'Me.GetIngredients()
+            'Me.GetDirections()
             ErrorMessage.Text = "Record Successfully Updated"
 
-            Response.Redirect("~/Account/AddRecipe?err=Success")
+            Response.Redirect("~/Account/ManageMyRecipe?err=Success")
         End If
 
     End Sub
@@ -866,7 +872,6 @@ Partial Public Class ManageMyRecipe
         Dim objDR As SqlDataReader
         Dim strConnectionString As String
         Dim strRating As String
-        Dim strReviewCount As Integer
 
         ' Get the connection string out of the Web.Config file.  Connection is tha actual name portion of the name value pair
         Dim objWebConfig As New clsWebConfig()
@@ -1036,50 +1041,48 @@ Partial Public Class ManageMyRecipe
     Private Sub ManageMyRecipe_Load(sender As Object, e As EventArgs) Handles Me.Load
         ' On Page Load of the Registration Page, we want to populate the SecurityQuestion dropdown listbox.
         ' Only perform is it is new.  If Postback, we should already be good to go.
+        Dim strErr As String
+        strErr = Request.QueryString("err")
+
         strLoggedInUser = Session("RMS_LoggedInUser")
         strAuthenticated = Session("RMS_Authenticated")
         strRecipeImage = Session("RMS_RecipeImage")
         strFunction = Session("RMS_Function")
 
-
-        ' On initial load, we need to first extract the target recipe from the querystring indicator
-        m_strRecipeID = Request.QueryString("RecipeID")
-
-        ' We then transalate it into an integer
-        m_intRecipeID = ExtractRecipeID(m_strRecipeID)
-        Me.hdnRecipeID.Value = m_intRecipeID.ToString
-
-        Me.Populate_ServingSize_DropDown()
-        Me.populate_RecipeCategory_DropDown()
-        Me.Populate_Sharing_DropDown()
-        Me.rbRecipeMeasurement.SelectedIndex = 0
-        NumberOfControls = 0
-        Session("RMS_NumberOfControls") = Me.NumberOfControls.ToString
-        Session("RMS_IngredientsNumberOfControls") = Me.NumberOfControls.ToString
-
-        Dim strErr As String
-        strErr = Request.QueryString("err")
-
         If strErr = "Success" Then
             ErrorMessage.Text = "Record Successfully Updated"
         End If
 
-        BindRecipeContent(m_intRecipeID)
-
         If Not IsPostBack Then
+            ' On initial load, we need to first extract the target recipe from the querystring indicator
+            m_strRecipeID = Request.QueryString("RecipeID")
+
+            ' We then transalate it into an integer
+            m_intRecipeID = ExtractRecipeID(m_strRecipeID)
+            Me.hdnRecipeID.Value = m_intRecipeID.ToString
+
+            Me.Populate_ServingSize_DropDown()
+            Me.populate_RecipeCategory_DropDown()
+            Me.Populate_Sharing_DropDown()
+            Me.rbRecipeMeasurement.SelectedIndex = 0
+            NumberOfControls = 0
+            Session("RMS_NumberOfControls") = Me.NumberOfControls.ToString
+            Session("RMS_IngredientsNumberOfControls") = Me.NumberOfControls.ToString
+
+            BindRecipeContent(m_intRecipeID)
+
+            If strRecipeImage <> "" Then
+                Me.imgRecipeImage.ImageUrl = strRecipeImage
+            End If
 
         Else
-            'Me.CreateIngredientsControls()
-            'Me.CreateControls()
-            'If Convert.ToInt16(Session("RMS_IngredientsNumberOfControls")) > 0 Then
-            'Me.rbRecipeMeasurement.Enabled = False
-            'End If
+            m_intRecipeID = Me.hdnRecipeID.Value
+
+            BindIngredientData(m_intRecipeID)
+            BindInstructionData(m_intRecipeID)
 
         End If
 
-        If strRecipeImage <> "" Then
-            Me.imgRecipeImage.ImageUrl = strRecipeImage
-        End If
     End Sub
 
 

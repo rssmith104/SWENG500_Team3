@@ -91,11 +91,10 @@
                              <asp:MenuItem Text="MY RECIPES" Value="MyRecipes">
                                  <asp:MenuItem Text="Add A Recipe" NavigateUrl="~/Account/AddRecipe.aspx" Value="AddARecipe"></asp:MenuItem>
                                  <asp:MenuItem Text="Manage My Recipes" Value="ManageMyRecipes" NavigateUrl="~/Account/SearchMyRecipe.aspx"></asp:MenuItem>
-                                 <asp:MenuItem Text="Favorites" Value="Favorites"></asp:MenuItem>
                                  <asp:MenuItem Text="Recipe Search" Value="MySearch" NavigateUrl="~/Search.aspx" ></asp:MenuItem>
                              </asp:MenuItem>
                              <asp:MenuItem Text="CIRCLE OF FRIENDS" Value="CircleOfFriends">
-                                 <asp:MenuItem Text="Manage My Circles" Value="ManageCircles"  NavigateUrl="~/CircleOfFriend.aspx" Target="_blank"></asp:MenuItem>
+                                 <asp:MenuItem Text="Manage My Circles" Value="ManageCircles"  NavigateUrl="~/CircleOfFriend.aspx"></asp:MenuItem>
                              </asp:MenuItem>
                             <asp:MenuItem Text="TOOLS" Value="Tools">
                                 <asp:MenuItem Text="Nutrition Calculator" Value="NutritionCalculator" NavigateUrl="javascript:openNutritionCalculator();" Target="_self"></asp:MenuItem>
@@ -136,9 +135,17 @@
 
             function getBaseUrl()
             {
+                var strReturnPath;
+
                 pathArray = location.href.split('/');
 
-                return pathArray[0] + '//' + pathArray[2] + '/' + pathArray[3]
+                if (pathArray[2].toLowerCase() == "localhost")
+                {
+                    strReturnPath = pathArray[0] + '//' + pathArray[2] + '/' + pathArray[3];
+                } else {
+                    strReturnPath = pathArray[0] + '//' + pathArray[2];
+                }
+                return strReturnPath
             }
 
         </script>
