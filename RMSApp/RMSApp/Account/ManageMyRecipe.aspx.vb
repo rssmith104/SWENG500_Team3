@@ -371,6 +371,12 @@ Partial Public Class ManageMyRecipe
 
     End Sub
 
+    Protected Sub AddAnIngredient(sender As Object, e As EventArgs)
+
+        Response.Redirect("~/Account/AddRecipeIngred?RecipeID=btnView_" & Me.m_intRecipeID.ToString)
+
+    End Sub
+
     Private Sub populate_RecipeCategory_DropDown()
         Dim objData_DB As clsData_DB
         Dim objParams(0) As SqlParameter
