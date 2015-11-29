@@ -55,7 +55,8 @@ Partial Public Class ManageProfile
         strEncryptString = objDes_Codec.EncodeString(strLoggedInUser)
         objDes_Codec = Nothing
 
-        Response.Redirect("~/Account/ManagePassword.aspx?et=" & strEncryptString)
+        'Response.Redirect("~/Account/ManagePassword.aspx?et=" & strEncryptString)
+        Response.Redirect("~/Account/ManagePassword.aspx?et=" & strLoggedInUser)
     End Sub
 
     Private Function UpdateUserAccount() As String

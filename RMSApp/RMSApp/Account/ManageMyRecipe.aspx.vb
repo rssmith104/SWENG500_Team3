@@ -367,25 +367,7 @@ Partial Public Class ManageMyRecipe
 
     Protected Sub AddAStep(sender As Object, e As EventArgs)
 
-        Dim objCtrl As TextBox = New TextBox()
-        Dim objLabel As Label = New Label()
-
-
-        Me.NumberOfControls += 1
-        Session("RMS_NumberOfControls") = Me.NumberOfControls.ToString
-
-        objCtrl.ID = "Control_" & NumberOfControls.ToString
-        objCtrl.TextMode = TextBoxMode.MultiLine
-        objCtrl.Attributes.Add("style", "width:800px")
-        objLabel.ID = "Label_" & NumberOfControls.ToString
-        objLabel.Text = "Step " & NumberOfControls.ToString & ":  "
-
-        Me.pnlDirections.Controls.Add(objLabel)
-        Me.pnlDirections.Controls.Add(objCtrl)
-        Me.pnlDirections.Controls.Add(New LiteralControl("<br />"))
-        'Me.SetFocus(btnAddStep)
-        'Me.SetFocus(pnlDirections)
-        Me.SetFocus(objCtrl)
+        Response.Redirect("~/Account/AddRecipeStep?RecipeID=btnView_" & Me.m_intRecipeID.ToString)
 
     End Sub
 

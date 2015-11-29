@@ -38,9 +38,10 @@ Partial Public Class ManagePassword
         If Not IsPostBack Then
             Dim strUser As String = Request.QueryString("et")
 
-            Dim objDes_Codec As DES_Codec = New DES_Codec()
-            LoggedInUser = objDes_Codec.DecodeString(strUser)
-            objDes_Codec = Nothing
+            'Dim objDes_Codec As DES_Codec = New DES_Codec()
+            'LoggedInUser = objDes_Codec.DecodeString(strUser)
+            LoggedInUser = strUser
+            'objDes_Codec = Nothing
 
             'Session("RMS_LoggedInUser") = LoggedInUser()
 
