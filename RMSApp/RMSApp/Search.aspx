@@ -6,7 +6,7 @@
     <h2>RMS Search</h2>
 
     <div class="row">
-        <div class="col-md-8">
+        <!--div class="col-md-8"-->
             <asp:Table Width="100%" runat="server" BorderWidth="1px">
 
                 <asp:TableRow runat="server" BorderWidth="1px">
@@ -59,9 +59,9 @@
                 </asp:TableRow>
 
             </asp:Table>
-        </div>
+        </!--div>
 
         <hr />
         
-    </div>
+    <!--/div-->
 </asp:Content>

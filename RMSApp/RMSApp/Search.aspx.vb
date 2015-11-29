@@ -245,7 +245,7 @@ Partial Public Class Search
         End If
 
         Me.pnlSearch.Controls.Add(New LiteralControl("<p style=""background-color:" & strBackColor & """>"))
-        Me.pnlSearch.Controls.Add(New LiteralControl("<font face=""Courier"">" & strRecipeResult & "</font>"))
+        Me.pnlSearch.Controls.Add(New LiteralControl("<font face=""Courier"">" & strRecipeResult & "</font>" & padSpaces("&nbsp;", 15)))
         Me.pnlSearch.Controls.Add(btnSearchCtrl)
         Me.pnlSearch.Controls.Add(New LiteralControl("</p>"))
 
