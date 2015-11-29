@@ -120,7 +120,7 @@
                 <asp:TableCell><b>Ingredients</b></asp:TableCell>
                 <asp:TableCell HorizontalAlign="Left" ColumnSpan="5">
                     <div class="col-md-10">
-                        <asp:Button ID="Button1" Text="+" OnClick="AddIngredients" runat="server" CausesValidation="false"/>
+                        <asp:Button ID="btnAddIngredient" Text="+" OnClick="AddAnIngredient" runat="server" CausesValidation="false"/>
                     </div>
                 </asp:TableCell>
             </asp:TableRow>

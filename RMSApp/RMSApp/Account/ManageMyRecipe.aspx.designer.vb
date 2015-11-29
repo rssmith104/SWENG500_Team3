@@ -122,13 +122,13 @@ Partial Public Class ManageMyRecipe
     Protected WithEvents rbRecipeMeasurement As Global.System.Web.UI.WebControls.RadioButtonList
     
     '''<summary>
-    '''Button1 control.
+    '''btnAddIngredient control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Button1 As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnAddIngredient As Global.System.Web.UI.WebControls.Button
     
     '''<summary>
     '''pnlIngredients control.
