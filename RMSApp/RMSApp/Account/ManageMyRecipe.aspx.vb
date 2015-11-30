@@ -692,6 +692,8 @@ Partial Public Class ManageMyRecipe
         Dim objLabelCtrl As Label = New Label()
         Dim objBtnModCtrl As Button = New Button()
         Dim objBtnDelCtrl As Button = New Button()
+        Dim objBtnDownCtrl As Button = New Button()
+        Dim objBtnUpCtrl As Button = New Button()
 
         objBtnModCtrl.Text = "Modify"
         objBtnModCtrl.ID = "btnDirectionModify_" & strStepID.ToString
@@ -703,12 +705,22 @@ Partial Public Class ManageMyRecipe
         objBtnDelCtrl.Attributes.Add("Class", "btn btn-primary btn-sm")
         AddHandler objBtnDelCtrl.Click, AddressOf btnDelStep_Click
 
+        objBtnUpCtrl.Text = "Up"
+        objBtnUpCtrl.ID = "btnStepUp_" & strStepID.ToString
+        objBtnUpCtrl.Attributes.Add("Class", "btn btn-primary btn-sm")
+        AddHandler objBtnUpCtrl.Click, AddressOf btnUpStep_Click
+
+        objBtnDownCtrl.Text = "Down"
+        objBtnDownCtrl.ID = "btnStepDown_" & strStepID.ToString
+        objBtnDownCtrl.Attributes.Add("Class", "btn btn-primary btn-sm")
+        AddHandler objBtnDownCtrl.Click, AddressOf btnDownStep_Click
+
         ' Setup Textbox Attributes
         strInstructionText = "<p style=""font-family: 'Courier New'"">&nbsp;&nbsp;&nbsp;"
 
         objLabelCtrl.ID = "lblInstruction_" & intStepNo.ToString
         'objLabelCtrl.Text = strInstruction
-        objLabelCtrl.Text = Me.PadRightSpace(strInstruction, 82)
+        objLabelCtrl.Text = Me.PadRightSpace(strInstruction, 62)
 
         Me.pnlDirections.Controls.Add(New LiteralControl(strInstructionText))
         Me.pnlDirections.Controls.Add(objLabelCtrl)
@@ -716,6 +728,10 @@ Partial Public Class ManageMyRecipe
         Me.pnlDirections.Controls.Add(objBtnModCtrl)
         Me.pnlDirections.Controls.Add(New LiteralControl(Me.PadRightSpace("", 2)))
         Me.pnlDirections.Controls.Add(objBtnDelCtrl)
+        Me.pnlDirections.Controls.Add(New LiteralControl(Me.PadRightSpace("", 2)))
+        Me.pnlDirections.Controls.Add(objBtnUpCtrl)
+        Me.pnlDirections.Controls.Add(New LiteralControl(Me.PadRightSpace("", 2)))
+        Me.pnlDirections.Controls.Add(objBtnDownCtrl)
 
         Me.pnlDirections.Controls.Add(New LiteralControl("</p>"))  '<br />
 
@@ -724,7 +740,7 @@ Partial Public Class ManageMyRecipe
     Private Sub AddInstructionHeader()
         Dim strInstructionHdr As String
 
-        strInstructionHdr = "<p style=""font-family: 'Courier New'""><b>INSTRUCTIONS (Abbreviated to 80 chars for display)</b></p>"
+        strInstructionHdr = "<p style=""font-family: 'Courier New'""><b>INSTRUCTIONS (Abbreviated to 60 chars for display)</b></p>"
 
         Me.pnlDirections.Controls.Add(New LiteralControl(strInstructionHdr))
 
@@ -1031,6 +1047,88 @@ Partial Public Class ManageMyRecipe
         Response.Redirect("~/Account/RemoveRecipeIngred?IngredID=" & objBtnCtrl.ID.ToString)
 
     End Sub
+
+    ''' <summary>
+    ''' Handler for Moving Instruction Step Up
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub btnUpStep_Click(sender As Object, e As EventArgs)
+        Dim objBtnCtrl As System.Web.UI.WebControls.Button = sender
+
+        Me.MoveStep(ExtractIngredID(objBtnCtrl.ID.ToString), "UP")
+
+        Response.Redirect("~/Account/ManageMyRecipe?RecipeID=btnView_" & m_intRecipeID.ToString)
+
+    End Sub
+
+
+    ''' <summary>
+    ''' Handler for Moving Instruction Step Down
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub btnDownStep_Click(sender As Object, e As EventArgs)
+        Dim objBtnCtrl As System.Web.UI.WebControls.Button = sender
+
+        Me.MoveStep(ExtractIngredID(objBtnCtrl.ID.ToString), "DOWN")
+
+        Response.Redirect("~/Account/ManageMyRecipe?RecipeID=btnView_" & m_intRecipeID.ToString)
+
+    End Sub
+
+    ''' <summary>
+    ''' Handler for Moving Instruction Down
+    ''' </summary>
+    ''' <param name="strStepID"></param>
+    Private Sub MoveStep(ByVal strStepID As String, ByVal strOper As String)
+        Dim objData_DB As clsData_DB
+        Dim objParams(0) As SqlParameter
+        Dim objDR As SqlDataReader
+        Dim strConnectionString As String
+
+        ' Get the connection string out of the Web.Config file.  Connection is tha actual name portion of the name value pair
+        Dim objWebConfig As New clsWebConfig()
+        strConnectionString = objWebConfig.GetWebConfig("Connection".ToString)
+
+        ' Use the Connection string to instantiate a new Database class object.
+        objData_DB = New clsData_DB(strConnectionString)
+
+        ' Setup the parameters.  NOte that the Name, type and size must all match.  The final value is the paramter value
+        objParams(0) = objData_DB.MakeInParam("@InstructionStepID", SqlDbType.Int, 4, CInt(strStepID))
+
+        ' Run the stored procedure by name.  Pass with it the parameter list.
+        If strOper = "DOWN" Then
+            objDR = objData_DB.RunStoredProc("usp_InstructionStep_Update_MoveDown", objParams)
+        Else
+            objDR = objData_DB.RunStoredProc("usp_InstructionStep_Update_MoveUp", objParams)
+        End If
+
+        If Not IsNothing(objDR) Then
+            objDR.Close()
+            objDR = Nothing
+        End If
+
+        If Not IsNothing(objData_DB) Then
+            objData_DB.Close()
+            objData_DB = Nothing
+        End If
+    End Sub
+
+    Private Function ExtractIngredID(ByVal strID As String) As String
+        Dim strReturnID As String
+        Dim strTokens() As String
+
+        strTokens = Split(strID, "_")
+
+        Try
+            strReturnID = strTokens(1)
+        Catch ex As Exception
+            strReturnID = -1
+        End Try
+
+        Return strReturnID
+    End Function
 
     ''' <summary>
     ''' Register_Load - Page Load Event Handler
