@@ -692,8 +692,8 @@ Partial Public Class ManageMyRecipe
         Dim objLabelCtrl As Label = New Label()
         Dim objBtnModCtrl As Button = New Button()
         Dim objBtnDelCtrl As Button = New Button()
-        Dim objBtnDownCtrl As Button = New Button()
-        Dim objBtnUpCtrl As Button = New Button()
+        Dim objBtnDownCtrl As ImageButton = New ImageButton()
+        Dim objBtnUpCtrl As ImageButton = New ImageButton()
 
         objBtnModCtrl.Text = "Modify"
         objBtnModCtrl.ID = "btnDirectionModify_" & strStepID.ToString
@@ -705,14 +705,19 @@ Partial Public Class ManageMyRecipe
         objBtnDelCtrl.Attributes.Add("Class", "btn btn-primary btn-sm")
         AddHandler objBtnDelCtrl.Click, AddressOf btnDelStep_Click
 
-        objBtnUpCtrl.Text = "Up"
+        objBtnUpCtrl.ImageUrl = "~/Images/UpArrow.png"
+        objBtnUpCtrl.Width = "25"
+        objBtnUpCtrl.Height = "25"
+        'objBtnUpCtrl.Text = "Up"
         objBtnUpCtrl.ID = "btnStepUp_" & strStepID.ToString
-        objBtnUpCtrl.Attributes.Add("Class", "btn btn-primary btn-sm")
+        'objBtnUpCtrl.Attributes.Add("Class", "btn btn-primary btn-sm")
         AddHandler objBtnUpCtrl.Click, AddressOf btnUpStep_Click
 
-        objBtnDownCtrl.Text = "Down"
+        objBtnDownCtrl.ImageUrl = "~/Images/DownArrow.png"
+        objBtnDownCtrl.Width = "25"
+        objBtnDownCtrl.Height = "25"        'objBtnDownCtrl.Text = "Down"
         objBtnDownCtrl.ID = "btnStepDown_" & strStepID.ToString
-        objBtnDownCtrl.Attributes.Add("Class", "btn btn-primary btn-sm")
+        'objBtnDownCtrl.Attributes.Add("Class", "btn btn-primary btn-sm")
         AddHandler objBtnDownCtrl.Click, AddressOf btnDownStep_Click
 
         ' Setup Textbox Attributes
@@ -1054,7 +1059,7 @@ Partial Public Class ManageMyRecipe
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub btnUpStep_Click(sender As Object, e As EventArgs)
-        Dim objBtnCtrl As System.Web.UI.WebControls.Button = sender
+        Dim objBtnCtrl As System.Web.UI.WebControls.ImageButton = sender
 
         Me.MoveStep(ExtractIngredID(objBtnCtrl.ID.ToString), "UP")
 
@@ -1069,7 +1074,7 @@ Partial Public Class ManageMyRecipe
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub btnDownStep_Click(sender As Object, e As EventArgs)
-        Dim objBtnCtrl As System.Web.UI.WebControls.Button = sender
+        Dim objBtnCtrl As System.Web.UI.WebControls.ImageButton = sender
 
         Me.MoveStep(ExtractIngredID(objBtnCtrl.ID.ToString), "DOWN")
 
