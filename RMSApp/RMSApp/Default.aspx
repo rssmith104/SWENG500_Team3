@@ -31,7 +31,7 @@
             </p>
         </div>
         <div class="col-md-4">
-            <h2>Online Purchasing</h2>
+            <h2>Locate a Store Near You</h2>
             <p>
                 Do not have an ingredient on-hand? RMS provides One-Click shopping directly from the recipe to the vendor for fast, accruate & convenient
                 purchasing for those hard-to-find ingredients.  Who actually has "liquid smoke" in their pantry!  Really!
