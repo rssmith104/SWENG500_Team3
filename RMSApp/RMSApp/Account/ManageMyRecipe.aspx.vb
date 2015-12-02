@@ -88,6 +88,8 @@ Partial Public Class ManageMyRecipe
         strErr = Me.ValidateInput()
         If strErr = "NOERROR" Then
             Try
+                ' Clear the Message.
+                strErr = ""
 
                 ' Get the connection string out of the Web.Config file.  Connection is tha actual name portion of the name value pair
                 Dim objWebConfig As New clsWebConfig()
@@ -120,8 +122,7 @@ Partial Public Class ManageMyRecipe
                     End If
                 End If
             Catch ex As Exception
-                Response.Write(ex.Message)
-                Response.End()
+                strErr = ex.Message.ToString
             End Try
         End If
 
@@ -577,7 +578,7 @@ Partial Public Class ManageMyRecipe
             ' Use the Connection string to instantiate a new Database class object.
             objData_DB = New clsData_DB(strConnectionString)
 
-            objParams(0) = objData_DB.MakeInParam("@RecipeId", SqlDbType.VarChar, 4, strRecipeId)
+            objParams(0) = objData_DB.MakeInParam("@RecipeId", SqlDbType.VarChar, 4, m_intRecipeID.ToString)
             objParams(1) = objData_DB.MakeInParam("@ImageText", SqlDbType.VarChar, 200, strImageURL)
 
             ' Run the stored procedure by name.  Pass with it the parameter list.
