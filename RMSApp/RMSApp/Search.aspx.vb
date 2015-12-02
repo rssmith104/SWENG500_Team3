@@ -172,7 +172,7 @@ Partial Public Class Search
             End Select
 
             'strSQL_where &= "s.ShareLevelType = '" & ddShareList.Text & "' "
-            'bAnd = True
+            bAnd = True
         End If
 
         If txtSearchBox.Text <> "" Then
