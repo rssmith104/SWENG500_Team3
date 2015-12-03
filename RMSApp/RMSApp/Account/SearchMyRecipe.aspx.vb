@@ -73,7 +73,7 @@ Partial Public Class SearchMyRecipe
 
     Protected Sub RecipeResults()
         Dim strSQL_command As String
-        Dim strSQL_where As String = " WHERE "
+        Dim strSQL_where As String = ""
         Dim strArray() As String
         Dim intCount As Integer
         Dim strInClause As String = ""
@@ -93,21 +93,17 @@ Partial Public Class SearchMyRecipe
                         "FROM dbo.Recipe r " &
                         "RIGHT JOIN dbo.RecipeIngredientList il ON il.RecipeID = r.RecipeID " &
                         "JOIN dbo.UserAccount u ON u.LoginID = r.OwnerID " &
-                        "JOIN dbo.LoginAccount l ON u.LoginID = l.LoginID WHERE l.Email = '" & strLogInUser & "'"
+                        "JOIN dbo.LoginAccount l ON u.LoginID = l.LoginID " &
+                        "WHERE l.Email = '" & strLogInUser & "'"
 
 
         If ddCategoryList.Text <> "" Then
-            strSQL_where &= "r.CuisineCategory = '" & ddCategoryList.Text & "'"
-            bAnd = True
+            strSQL_where &= " AND r.CuisineCategory = '" & ddCategoryList.Text & "'"
         End If
 
         If txtSearchBox.Text <> "" Then
 
-            If bAnd = True Then
-                strSQL_where &= " AND "
-            End If
-
-            strInClause = "("
+            strInClause = " AND ("
             strArray = Split(txtSearchBox.Text, " ")
             For intCount = LBound(strArray) To UBound(strArray)
 
@@ -123,8 +119,6 @@ Partial Public Class SearchMyRecipe
                 End If
             Next
             strInClause &= ")"
-
-
         End If
 
         If txtSearchBox.Text = "" And ddCategoryList.Text = "" Then
@@ -159,11 +153,17 @@ Partial Public Class SearchMyRecipe
         Dim strRecipeResult As String
         Dim btnSearchCtrl As Button = New Button()
         Dim strBackColor As String
+        Dim btnDeleteCtrl As Button = New Button()
 
         btnSearchCtrl.ID = "btnView_" & strRecipeID
-        btnSearchCtrl.Text = "Manage Recipe"
+        btnSearchCtrl.Text = "Manage"
         btnSearchCtrl.Attributes.Add("Class", "btn btn-primary btn-sm")
         AddHandler btnSearchCtrl.Click, AddressOf btnDisplay_Click
+
+        btnDeleteCtrl.ID = "btnDel_" & strRecipeID
+        btnDeleteCtrl.Text = "Delete"
+        btnDeleteCtrl.Attributes.Add("Class", "btn btn-primary btn-sm")
+        AddHandler btnDeleteCtrl.Click, AddressOf btnDelete_Click
 
         strRecipeResult = padSpaces(strRecipeID, 10) & "&nbsp;" & padSpaces(strRecipeName, 20) & "&nbsp;" & padSpaces(strRecipeDesc, 30) & "&nbsp;" & padSpaces(strOwnerName, 10)
 
@@ -177,6 +177,8 @@ Partial Public Class SearchMyRecipe
         Me.pnlSearch.Controls.Add(New LiteralControl("<font face=""Courier"">" & strRecipeResult & "</font>"))
         Me.pnlSearch.Controls.Add(New LiteralControl("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"))
         Me.pnlSearch.Controls.Add(btnSearchCtrl)
+        Me.pnlSearch.Controls.Add(New LiteralControl(padSpaces("", 5)))
+        Me.pnlSearch.Controls.Add(btnDeleteCtrl)
         Me.pnlSearch.Controls.Add(New LiteralControl("</p>"))
 
     End Sub
@@ -208,5 +210,70 @@ Partial Public Class SearchMyRecipe
         Response.Redirect("~/Account/ManageMyRecipe?RecipeID=" & objBtnCtrl.ID.ToString)
 
     End Sub
+
+    Private Sub btnDelete_Click(sender As Object, e As EventArgs)
+        Dim objBtnCtrl As System.Web.UI.WebControls.Button = sender
+        Dim strRecipeID As String
+
+        strRecipeID = ExtractRecipeID(objBtnCtrl.ID.ToString)
+        Me.DeleteRecipe(strRecipeID)
+
+        Response.Redirect("~/Account/SearchMyRecipe")
+
+    End Sub
+
+    Private Sub DeleteRecipe(ByVal strRecipeID As String)
+        Dim objData_DB As clsData_DB
+        Dim objParams(0) As SqlParameter
+        Dim strConnectionString As String
+        Dim objDR As SqlDataReader
+
+        ' Get the connection string out of the Web.Config file.  Connection is tha actual name portion of the name value pair
+        Dim objWebConfig As New clsWebConfig()
+        strConnectionString = objWebConfig.GetWebConfig("Connection".ToString)
+
+        ' Use the Connection string to instantiate a new Database class object.
+        objData_DB = New clsData_DB(strConnectionString)
+
+        ' Setup the parameters.  NOte that the Name, type and size must all match.  The final value is the paramter value
+        objParams(0) = objData_DB.MakeInParam("@RecipeID", SqlDbType.Int, 2, CInt(strRecipeID))
+
+        Try
+            ' Run the stored procedure by name.  Pass with it the parameter list.
+            objDR = objData_DB.RunStoredProc("usp_Recipe_Delete_By_RecipeID", objParams)
+
+        Catch ex As Exception
+
+        End Try
+
+        ' CleanUp on our way out.  Make sure that we kill the connection so that we do not run our limit on concurrent 
+        ' database connections.
+        If Not IsNothing(objDR) Then
+            objDR.Close()
+            objDR = Nothing
+        End If
+
+        If Not IsNothing(objData_DB) Then
+            objData_DB.Close()
+            objData_DB = Nothing
+        End If
+
+    End Sub
+
+
+    Private Function ExtractRecipeID(ByVal strRecipeID As String) As Int16
+        Dim intReturnID As Int16
+        Dim strTokens() As String
+
+        strTokens = Split(strRecipeID, "_")
+
+        Try
+            intReturnID = CInt(strTokens(1))
+        Catch ex As Exception
+            intReturnID = -1
+        End Try
+
+        Return intReturnID
+    End Function
 
 End Class
