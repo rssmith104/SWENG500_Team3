@@ -14,6 +14,7 @@
   }
   </style>
 
+
   <div id="myCarousel" class="carousel slide" data-ride="carousel">
     <!-- Indicators -->
     <ol class="carousel-indicators">
@@ -27,15 +28,20 @@
     <div class="carousel-inner" role="listbox">
 
       <div class="item active">
-        <img src="Images/cordonbleu.jpg" alt="Bleu" width="460" height="345">
+        <a href="./Search">
+            <img src="Images/cordonbleu.jpg" alt="Bleu" width="460" height="345">
+        </a>
+          
         <div class="carousel-caption">
-          <h3>Favorites</h3>
-          <p>View your Favorite recipes!</p>
+          <h3>Search</h3>
+          <p>Search through our library of user recipes for something new!</p>
         </div>
       </div>
 
       <div class="item">
-        <img src="Images/Japanese_Salt_flavor_Sapporo_Ramen.JPG" alt="Ramen" width="460" height="345">
+          <a href="./CircleOfFriend">
+            <img src="Images/Japanese_Salt_flavor_Sapporo_Ramen.JPG" alt="Ramen" width="460" height="345">
+          </a>
         <div class="carousel-caption">
           <h3>Circles</h3>
           <p>Check out what people in your circles are posting!</p>
@@ -43,18 +49,22 @@
       </div>
     
       <div class="item">
-        <img src="Images/vegetable-stock-recipe.jpg" alt="Vegetable" width="460" height="345">
+          <a href="./Account/ManageProfile">
+              <img src="Images/vegetable-stock-recipe.jpg" alt="Vegetable" width="460" height="345">
+          </a>
         <div class="carousel-caption">
-          <h3>Top Rated</h3>
-          <p>Enjoy some of the top rated recipes!</p>
+          <h3>Manage your profile</h3>
+          <p>Update your profile information!</p>
         </div>
       </div>
 
       <div class="item">
-        <img src="Images/stew-460x345.jpg" alt="BeefStew" width="460" height="345">
+          <a href="./Account/AddRecipe">
+              <img src="Images/stew-460x345.jpg" alt="BeefStew" width="460" height="345">
+          </a>
         <div class="carousel-caption">
           <h3>Create a Recipe</h3>
-          <p>Idea for a recipe? Why not create one?</p>
+          <p>Idea for a recipe? Why not create one!</p>
         </div>
       </div>
   
