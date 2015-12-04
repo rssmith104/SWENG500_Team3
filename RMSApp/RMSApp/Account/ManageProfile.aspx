@@ -13,7 +13,7 @@
         <asp:ValidationSummary runat="server" CssClass="text-danger" />
         <asp:table runat="server"></asp:table>
 
-        <asp:Table ID="Table1" runat="server" GridLines="Both">
+        <asp:Table ID="Table1" runat="server" GridLines="None">
             <asp:TableRow>
                 <asp:TableCell VerticalAlign="Top" HorizontalAlign="Center" ColumnSpan="4">
                     <div class="col-md-10">
