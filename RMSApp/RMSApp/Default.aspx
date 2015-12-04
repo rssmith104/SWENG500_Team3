@@ -17,7 +17,7 @@
                 Store hundreds of your favorite recipes.  Share them with family and friends.  
             </p>
             <p>
-                <a class="btn btn-primary btn-lg" href="./Account/Register">Create An Account &raquo;</a>
+                <a class="btn btn-primary btn-md" href="./Account/Register">Create An Account &raquo;</a>
             </p>
         </div>
         <div class="col-md-4">
@@ -27,7 +27,7 @@
                 from other RMS users..
             </p>
             <p>
-                <a class="btn btn-primary btn-lg" href="./Account/Login">Already Have an Account &raquo;</a>
+                <a class="btn btn-primary btn-md" href="./Account/Login">Already Have an Account &raquo;</a>
             </p>
         </div>
         <div class="col-md-4">
@@ -37,7 +37,7 @@
                 purchasing for those hard-to-find ingredients.  Who actually has "liquid smoke" in their pantry!  Really!
             </p>
             <p>
-                <a class="btn btn-primary btn-lg" href="./Account/Register">Let's Get Started &raquo;</a>
+                <a class="btn btn-primary btn-md" href="./Account/Register">Let's Get Started &raquo;</a>
             </p>
         </div>
     </div>
