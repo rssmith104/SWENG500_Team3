@@ -115,7 +115,7 @@
         <script>
             function openNutritionCalculator()
             {
-                window.open(getBaseUrl() + "/Tools/NutritionCalculator.aspx", "_blank", "width=640, height=225, resizable=yes");
+                window.open(getBaseUrl() + "/Tools/NutritionCalculator.aspx", "_blank", "width=640, height=800, resizable=yes");
             }
 
             function openCalorieCalculator()
