@@ -136,7 +136,7 @@ Partial Public Class Search
         Dim intCounter As Integer = 0
 
 
-        strSQL_command = "SELECT DISTINCT r.RecipeID, " &
+        strSQL_command = "SELECT DISTINCT TOP 30 r.RecipeID, " &
                             "LEFT(r.RecipeName,20) As RecipeName, " &
                              "LEFT(r.RecipeDescription,20) As RecipeDescription, " &
                              "u.FirstName + ' ' + u.LastName AS [OwnerName] " &
@@ -201,7 +201,7 @@ Partial Public Class Search
 
         End If
 
-        strSQL_command &= strSQL_where & strInClause
+        strSQL_command &= strSQL_where & strInClause & " ORDER BY r.recipeID ASC"
 
         'strSQL_command &= strSQL_where & strInClause
 
