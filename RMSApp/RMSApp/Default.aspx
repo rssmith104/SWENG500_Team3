@@ -23,7 +23,7 @@
         <div class="col-md-4">
             <h2>Search for Popular Recipes</h2>
             <p>
-                Search the Recipe Management System Recipe archives for thousands of favorite recipes from either your own circle of friends or
+                Search the Recipe Management System recipe archives for thousands of favorite recipes from either your own circle of friends or
                 from other RMS users..
             </p>
             <p>
