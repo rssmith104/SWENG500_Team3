@@ -182,7 +182,7 @@ Partial Public Class Search
             End If
 
             strInClause = "("
-            strArray = Split(txtSearchBox.Text, " ")
+            strArray = Split(Trim(txtSearchBox.Text), " ")
             For intCount = LBound(strArray) To UBound(strArray)
 
                 strInClause &= "(" &
