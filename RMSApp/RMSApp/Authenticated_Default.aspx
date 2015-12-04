@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Home Page" Language="VB" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Authenticated_Default.aspx.vb" Inherits="RMSApp._Default" %>
+<%@ Page Title="Home Page" Language="VB" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Authenticated_Default.aspx.vb" Inherits="RMSApp._Default" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
   <meta charset="utf-8">
@@ -85,7 +85,7 @@
         <div class="col-md-4">
             <h2>Store Recipes</h2>
             <p>
-                Store hundreds of you family favorite recipes.  Share them with family.  
+                Store hundreds of your favorite recipes.  Share them with family and friends.  
             </p>
             <p>
                 <a class="btn btn-default" href="./Account/Register">Create An Account &raquo;</a>
@@ -104,7 +104,7 @@
         <div class="col-md-4">
             <h2>Locate a Store Near You</h2>
             <p>
-                Do not have an ingredient on-hand? RMS provides One-Click shopping directly from the recipe to the vendor for fast, accruate & convenient
+                Do not have an ingredient on-hand? RMS provides One-Click shopping directly from the recipe to the vendor for fast, accurate & convenient
                 purchasing for those hard-to-find ingredients.  Who actually has "liquid smoke" in their pantry!  Really!
             </p>
             <p>
