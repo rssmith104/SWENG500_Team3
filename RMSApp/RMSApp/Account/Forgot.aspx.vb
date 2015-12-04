@@ -106,7 +106,8 @@ Partial Public Class ForgotPassword
                 Dim strEncryptString As String = objDes_Codec.EncodeString(txtEmail.Text)
                 objDes_Codec = Nothing
 
-                Response.Redirect("~/Account/ManagePassword.aspx?et=" & strEncryptString)
+                'Response.Redirect("~/Account/ManagePassword.aspx?et=" & strEncryptString)
+                Response.Redirect("~/Account/ManagePassword.aspx?et=" & txtEmail.Text)
             End If
 
         Else

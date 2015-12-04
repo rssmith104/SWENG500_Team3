@@ -6,8 +6,7 @@
         <section id="passwordForm">
             <asp:PlaceHolder runat="server" ID="setPassword" Visible="false">
                 <p>
-                    You do not have a local password for this site. Add a local
-                        password so you can log in without an external login.
+                    Enter New Password and Confirm.
                 </p>
                 <div class="form-horizontal">
                     <h4>Set Password Form User Account:  <%=LoggedInUser() %></h4>
